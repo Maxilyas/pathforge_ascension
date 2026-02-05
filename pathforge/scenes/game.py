@@ -213,8 +213,9 @@ class GameScene(Scene):
         self.game.request_save = True
 
         # perk selection
-        options = self._roll_perks(3)
-        self.request("PERK", {"options": options, "stats": self.stats, "rng": self.rng})
+        bias = self._perk_bias()
+        options = self.game.roll_perks(3, rarity_bias=bias)
+        self.request("PERK", {"options": options, "stats": self.stats, "rng": self.rng, "rarity_bias": bias})
 
         # wave increments by 1 ONLY (no skipping bosses)
         self.stats.wave += 1

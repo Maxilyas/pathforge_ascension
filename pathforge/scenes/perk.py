@@ -9,6 +9,7 @@ class PerkScene(Scene):
     def enter(self, payload=None):
         self.stats = payload["stats"]
         self.options = payload["options"]
+        self.rarity_bias = float(payload.get("rarity_bias", 0.0))
         self.rerolls = int(self.stats.perk_rerolls)
         self.rng = payload.get("rng")
         self.towers = payload.get("towers", [])
@@ -29,7 +30,7 @@ class PerkScene(Scene):
                     self.stats.fragments -= 25
                     self.rerolls -= 1
                     self.stats.perk_rerolls = self.rerolls
-                    self.options = self.game.roll_perks(3, rarity_bias=0.0)  # reroll baseline
+                    self.options = self.game.roll_perks(3, rarity_bias=self.rarity_bias)
         if event.type == pygame.MOUSEBUTTONDOWN:
             mx,my = event.pos
             w,h = self.game.w, self.game.h
@@ -48,6 +49,8 @@ class PerkScene(Scene):
 
         t = self.game.fonts.l.render("CHOIX DU BONUS", True, (255,215,0))
         screen.blit(t, (self.game.w//2 - t.get_width()//2, 90))
+        info = self.game.fonts.s.render(f"Fragments: {self.stats.fragments}   Rerolls: {self.rerolls} (R = -25)", True, (220,220,220))
+        screen.blit(info, (self.game.w//2 - info.get_width()//2, 130))
 
         cx, cy = self.game.w//2, self.game.h//2
         for i,p in enumerate(self.options):

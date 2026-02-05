@@ -229,18 +229,18 @@ class Tower:
             if world.adjacent_path_count(self.gx, self.gy, T_PATH_CONDUCT) > 0:
                 chains += 1
             shock_dur = 1.0 + float(self._branch_mods().get("shock_dur_add", 0.0))
-            first.take_damage(dmg, "ENERGY")
+            first.take_damage(dmg, "ENERGY", weakness_mul=getattr(world, "weakness_mul", 1.8))
             first.add_status("SHOCK", shock_dur, 1, 0.0)
             world.fx_arc(cx, cy, first.x, first.y, (100,200,255), 0.14)
-            used = {first}
+            used_ids = {id(first)}
             curr = first
             for _ in range(chains):
-                near = [e for e in world.query_radius(curr.x, curr.y, tile*3.0) if e not in used]
+                near = [e for e in world.query_radius(curr.x, curr.y, tile*3.0) if id(e) not in used_ids]
                 if not near:
                     break
                 nxt = min(near, key=lambda e: (e.x-curr.x)**2+(e.y-curr.y)**2)
-                used.add(nxt)
-                nxt.take_damage(dmg*0.72, "ENERGY")
+                used_ids.add(id(nxt))
+                nxt.take_damage(dmg*0.72, "ENERGY", weakness_mul=getattr(world, "weakness_mul", 1.8))
                 nxt.add_status("SHOCK", shock_dur, 1, 0.0)
                 world.fx_arc(curr.x, curr.y, nxt.x, nxt.y, (100,200,255), 0.12)
                 curr = nxt

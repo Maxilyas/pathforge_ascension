@@ -19,7 +19,7 @@ def draw_top_bar(
     pygame.draw.rect(screen, C_UI_BG, (0, 0, w, top_h))
 
     paves = getattr(stats, "paves", 0)
-    line1 = f"VAGUE {stats.wave}   $ {stats.gold}   PV {stats.lives}   SH {stats.core_shield}   FRAG {fragments}   PAVES {paves}"
+    line1 = f"VAGUE {stats.wave}   $ {stats.gold}   PV {stats.lives}   SH {stats.core_shield}   FRAG {fragments}   RR {getattr(stats, 'perk_rerolls', 0)}   PAVES {paves}"
     t = fonts.l.render(line1, True, C_TEXT)
     screen.blit(t, (80, 14))
 

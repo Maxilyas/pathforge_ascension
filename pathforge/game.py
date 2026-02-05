@@ -1,5 +1,6 @@
 from __future__ import annotations
 import json
+import random
 from pathlib import Path
 import pygame
 
@@ -37,6 +38,8 @@ class Game:
         self.perks_db = json.loads((base/"perks.json").read_text(encoding="utf-8"))
         self.biomes = json.loads((base/"biomes.json").read_text(encoding="utf-8"))
 
+        self._perk_rng = random.Random()
+
         self.running = True
         self.request_save = False
 
@@ -68,6 +71,36 @@ class Game:
         self.scene.exit()
         self.scene = self.scenes["MENU"]
         self.scene.enter(None)
+
+
+    def roll_perks(self, n: int = 3, rarity_bias: float = 0.0) -> list[dict]:
+        """Roll n perk options with rarity bias (0..0.6). No duplicates in a single roll."""
+        weights = {"C": 66.0, "R": 22.0, "E": 9.0, "L": 2.0, "SS+": 0.8, "SS++": 0.2}
+        b = max(0.0, min(0.60, float(rarity_bias)))
+        # shift probability mass upward
+        weights["C"] *= (1.0 - 0.70*b)
+        weights["R"] *= (1.0 - 0.40*b)
+        weights["E"] *= (1.0 + 0.70*b)
+        weights["L"] *= (1.0 + 1.40*b)
+        weights["SS+"] *= (1.0 + 2.00*b)
+        weights["SS++"] *= (1.0 + 2.60*b)
+
+        pool = list(self.perks_db)
+        picks: list[dict] = []
+        for _ in range(min(n, len(pool))):
+            total = 0.0
+            for p in pool:
+                total += weights.get(p.get("rarity", "C"), 1.0)
+            r = self._perk_rng.random() * total
+            acc = 0.0
+            chosen_idx = 0
+            for i, p in enumerate(pool):
+                acc += weights.get(p.get("rarity", "C"), 1.0)
+                if acc >= r:
+                    chosen_idx = i
+                    break
+            picks.append(pool.pop(chosen_idx))
+        return picks
 
     def loop(self):
         while self.running:
