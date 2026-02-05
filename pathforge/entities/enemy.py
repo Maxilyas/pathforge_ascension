@@ -91,7 +91,7 @@ class Enemy:
     def is_elite(self) -> bool:
         return "ELITE" in self.arch.tags
 
-    def take_damage(self, amt: float, dmg_type: str):
+    def take_damage(self, amt: float, dmg_type: str, weakness_mul: float = 1.8):
         if not self.alive:
             return False
 
@@ -126,7 +126,7 @@ class Enemy:
 
         # weakness
         if self.arch.weak and dmg_type == self.arch.weak:
-            amt *= float(self.weakness_mul)
+            amt *= float(getattr(self, 'weakness_mul', weakness_mul))
             crit = True
 
         # resistances (final multipliers)
@@ -144,7 +144,11 @@ class Enemy:
             self.statuses[k] = Status(kind=k, dur=dur, stacks=stacks, strength=strength)
         else:
             s.dur = max(s.dur, dur)
-            s.stacks = min(10, s.stacks + stacks)
+            # Some statuses should refresh / keep the strongest stack, not accumulate every hit.
+            if k in ("SLOW","BURN","POISON","SHOCK","STUN"):
+                s.stacks = max(s.stacks, stacks)
+            else:
+                s.stacks = min(10, s.stacks + stacks)
             s.strength = max(s.strength, strength)
 
     def _apply_tile_effects(self, world, rng):
@@ -199,7 +203,9 @@ class Enemy:
                 del self.statuses[k]
                 continue
             if k == "SLOW":
-                slow = max(slow, 0.25 + s.stacks*0.05 + s.strength)
+                # strength is the primary slow factor; stacking is capped to avoid immobilization
+                cap = 0.45 if ("BOSS" in self.arch.tags) else 0.60
+                slow = max(slow, min(cap, float(s.strength) + 0.06*max(0, s.stacks-1)))
             elif k == "STUN":
                 stunned = max(stunned, 0.1)
             elif k == "SHRED":
@@ -207,9 +213,10 @@ class Enemy:
             elif k == "VULN":
                 vuln = max(vuln, 0.12 * s.stacks)
             elif k == "BURN":
-                burn_dps += (3.0 + 2.0*s.stacks)
+                # toned-down burn: strong vs REGEN but not a solo win
+                burn_dps += (1.2 + 0.9*s.stacks)
             elif k == "POISON":
-                poison_dps += (2.0 + 1.2*s.stacks)
+                poison_dps += (0.9 + 0.7*s.stacks)
             elif k == "SHOCK":
                 shock = True
 

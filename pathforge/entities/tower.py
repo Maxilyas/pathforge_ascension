@@ -195,10 +195,10 @@ class Tower:
             targets = world.query_radius(cx, cy, rng_px)
             if not targets:
                 return
-            strength = 0.35 + float(self._branch_mods().get("slow_strength_add", 0.0)) + float(stats.tower_bonus.get("CRYO", {}).get("slow_strength_add", 0.0))
+            strength = 0.22 + float(self._branch_mods().get("slow_strength_add", 0.0)) + float(stats.tower_bonus.get("CRYO", {}).get("slow_strength_add", 0.0))
             for e in targets:
                 e.take_damage(dmg, "COLD")
-                e.add_status("SLOW", 1.4, 1, strength)
+                e.add_status("SLOW", 1.0, 1, strength)
                 # optional stun
                 bm = self._branch_mods()
                 if bm.get("stun_chance") and rng.random() < float(bm["stun_chance"]):

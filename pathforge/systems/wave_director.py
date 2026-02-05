@@ -29,16 +29,42 @@ class WaveDirector:
 
     def spawn_list(self, plan: WavePlan) -> List[str]:
         w = plan.wave
+
+        # Boss waves: boss + a themed escort (hard)
         if plan.boss:
-            # boss + support
-            return ["BOSS","ELITE","TANK","SCOUT","MUTANT","SCOUT"]
-        # progressive roster
-        max_tier = min(4, w//3)
-        base = ["SOLDIER","SCOUT","TANK","MUTANT","ELITE"]
-        avail = base[:max(2, max_tier+2)]
-        # budget-ish list
-        out = []
+            return ["BOSS","ELITE","TANK","WISP","SCOUT","MUTANT","PYRO","SCOUT"]
+
+        # Progressive roster unlock by tier
+        base = ["SOLDIER","SCOUT","TANK","MUTANT","ELITE","WISP","PYRO"]
+        tier = 1 + w//4
+        avail = base[:max(3, min(len(base), tier+2))]
+
+        # Theme bias based on keywords
+        keys = set(plan.keywords or [])
+        weights = {k: 1.0 for k in avail}
+
+        if "Fast" in keys or "Swarm" in keys:
+            for k in avail:
+                if k in ("SCOUT","WISP","SOLDIER"):
+                    weights[k] *= 1.45
+        if "Armored" in keys or "Siege" in keys:
+            for k in avail:
+                if k in ("TANK","ELITE","PYRO"):
+                    weights[k] *= 1.40
+        if "Regen" in keys or "Mutant" in keys:
+            if "MUTANT" in weights:
+                weights["MUTANT"] *= 1.60
+        if "Shields" in keys or "Elite" in keys:
+            for k in avail:
+                if k in ("ELITE","WISP"):
+                    weights[k] *= 1.55
+
+        # Create a "budget-ish" list: more enemies with wave, but difficulty relies on counters, not raw HP.
+        out: List[str] = []
         count = 10 + w*2
+        pool = []
+        for k, wt in weights.items():
+            pool.extend([k] * max(1, int(round(wt*10))))
         for _ in range(count):
-            out.append(self.rng.choice(avail))
+            out.append(self.rng.choice(pool))
         return out

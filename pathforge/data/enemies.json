@@ -18,11 +18,11 @@
       "PIERCE": 1.0,
       "ENERGY": 1.0,
       "FIRE": 1.0,
-      "COLD": 0.9,
+      "COLD": 0.95,
       "BIO": 1.0,
       "EXPLOSIVE": 1.0
     },
-    "desc": "Infanterie standard. Facile à abattre mais sert de référence pour le timing."
+    "desc": "Infanterie standard. Le test de votre lane. Ne résiste à rien: optimisez vos synergies plutôt que le brut."
   },
   "SCOUT": {
     "name": "Scout",
@@ -45,11 +45,11 @@
       "PIERCE": 0.85,
       "ENERGY": 1.0,
       "FIRE": 1.0,
-      "COLD": 1.1,
+      "COLD": 1.08,
       "BIO": 1.0,
       "EXPLOSIVE": 1.0
     },
-    "desc": "Très rapide. Difficile à toucher à longue distance. À contrôler tôt (slow) ou rafales KINETIC."
+    "desc": "Très rapide. Les projectiles lents/mono-cible peinent. Cryo/Chain/AOE stabilisent. Faiblesse: Cinétique."
   },
   "TANK": {
     "name": "Tank",
@@ -60,7 +60,7 @@
     ],
     "spd": 0.65,
     "hp": 3.8,
-    "armor": 7,
+    "armor": 9,
     "regen": 2,
     "shield": 0,
     "weak": "PIERCE",
@@ -68,15 +68,15 @@
       "ARMORED"
     ],
     "resist": {
-      "KINETIC": 0.6,
+      "KINETIC": 0.55,
       "PIERCE": 1.0,
       "ENERGY": 1.0,
       "FIRE": 0.9,
       "COLD": 1.0,
-      "BIO": 1.0,
+      "BIO": 1.05,
       "EXPLOSIVE": 1.0
     },
-    "desc": "Blindage épais (ARMORED). Résiste aux balles. Se fait démonter par PIERCE et SHRED + focus."
+    "desc": "Armuré. La cadence brute est punie par l'armure. Priorité: PIERCE, SHRED, ou gros coups."
   },
   "MUTANT": {
     "name": "Mutant",
@@ -98,12 +98,12 @@
       "KINETIC": 1.0,
       "PIERCE": 1.0,
       "ENERGY": 1.0,
-      "FIRE": 1.0,
-      "COLD": 0.85,
-      "BIO": 0.55,
+      "FIRE": 1.1,
+      "COLD": 0.9,
+      "BIO": 0.95,
       "EXPLOSIVE": 1.0
     },
-    "desc": "Régénération massive. Le FIRE (BURN) réduit sa regen : indispensable. Sinon il out-heal."
+    "desc": "Régénère. Le BURN réduit fortement la régénération tant qu'il brûle. Faiblesse: Feu."
   },
   "ELITE": {
     "name": "Elite",
@@ -114,9 +114,9 @@
     ],
     "spd": 0.8,
     "hp": 6.5,
-    "armor": 9,
+    "armor": 7,
     "regen": 6,
-    "shield": 80,
+    "shield": 12,
     "weak": "ENERGY",
     "tags": [
       "ELITE",
@@ -124,10 +124,10 @@
       "SHIELD"
     ],
     "resist": {
-      "KINETIC": 0.55,
-      "PIERCE": 0.75,
+      "KINETIC": 0.6,
+      "PIERCE": 0.82,
       "ENERGY": 1.0,
-      "FIRE": 0.85,
+      "FIRE": 0.9,
       "COLD": 1.0,
       "BIO": 1.0,
       "EXPLOSIVE": 1.0
@@ -135,13 +135,13 @@
     "shield_mult": {
       "ENERGY": 1.35,
       "KINETIC": 0.75,
-      "PIERCE": 0.9,
+      "PIERCE": 0.85,
       "FIRE": 1.0,
       "COLD": 1.0,
-      "BIO": 1.0,
+      "BIO": 1.05,
       "EXPLOSIVE": 1.0
     },
-    "desc": "Armure + bouclier. ENERGY est le meilleur pour vider le shield. Combine SHRED/VULN + burst."
+    "desc": "Bouclier + armure. Il faut casser le shield (ENERGY/Conducteur), puis percer l'armure (PIERCE/SHRED)."
   },
   "BOSS": {
     "name": "Apex Warden",
@@ -154,7 +154,7 @@
     "hp": 18.0,
     "armor": 16,
     "regen": 18,
-    "shield": 260,
+    "shield": 22,
     "weak": "ENERGY",
     "tags": [
       "BOSS",
@@ -163,23 +163,88 @@
       "SHIELD"
     ],
     "resist": {
-      "KINETIC": 0.55,
-      "PIERCE": 0.65,
+      "KINETIC": 0.6,
+      "PIERCE": 0.7,
       "ENERGY": 1.0,
-      "FIRE": 0.82,
-      "COLD": 0.82,
-      "BIO": 0.9,
+      "FIRE": 0.85,
+      "COLD": 0.85,
+      "BIO": 1.0,
       "EXPLOSIVE": 1.0
     },
     "shield_mult": {
       "ENERGY": 1.45,
       "KINETIC": 0.7,
-      "PIERCE": 0.85,
+      "PIERCE": 0.8,
+      "FIRE": 1.0,
+      "COLD": 1.0,
+      "BIO": 1.1,
+      "EXPLOSIVE": 1.0
+    },
+    "desc": "Boss. Phase 1/2 invoque des adds. Brisez le bouclier vite (ENERGY + synergies), puis burst avec VULN/SHRED."
+  },
+  "PYRO": {
+    "name": "Pyromancien",
+    "color": [
+      255,
+      120,
+      70
+    ],
+    "spd": 0.92,
+    "hp": 1.35,
+    "armor": 4,
+    "regen": 0,
+    "shield": 0,
+    "weak": "COLD",
+    "tags": [
+      "ARMORED",
+      "FIREPROOF"
+    ],
+    "resist": {
+      "KINETIC": 0.9,
+      "PIERCE": 1.0,
+      "ENERGY": 1.0,
+      "FIRE": 0.55,
+      "COLD": 1.0,
+      "BIO": 1.0,
+      "EXPLOSIVE": 1.0
+    },
+    "desc": "Résiste au feu. Contre: Cryo (faiblesse) + PIERCE. Évite Flame/Mortar si possible."
+  },
+  "WISP": {
+    "name": "Wisp",
+    "color": [
+      160,
+      220,
+      255
+    ],
+    "spd": 1.22,
+    "hp": 0.7,
+    "armor": 0,
+    "regen": 0,
+    "shield": 14,
+    "weak": "COLD",
+    "tags": [
+      "FAST",
+      "SHIELD"
+    ],
+    "resist": {
+      "KINETIC": 1.0,
+      "PIERCE": 0.95,
+      "ENERGY": 0.95,
       "FIRE": 1.0,
       "COLD": 1.0,
       "BIO": 1.0,
       "EXPLOSIVE": 1.0
     },
-    "desc": "Boss. Très gros bouclier + phases. ENERGY + Conducteur/Rune pour casser le shield, puis burst PIERCE."
+    "shield_mult": {
+      "ENERGY": 1.25,
+      "KINETIC": 0.85,
+      "PIERCE": 0.9,
+      "FIRE": 1.0,
+      "COLD": 1.05,
+      "BIO": 1.05,
+      "EXPLOSIVE": 1.0
+    },
+    "desc": "Rapide et bouclier. Cryo le stoppe (faiblesse) et Tesla casse le bouclier plus vite."
   }
 }

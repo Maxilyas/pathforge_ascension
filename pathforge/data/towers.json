@@ -9,8 +9,8 @@
     ],
     "base": {
       "range": 3.0,
-      "damage": 7,
-      "rate": 10.0,
+      "damage": 4,
+      "rate": 7.5,
       "proj_speed": 11.0,
       "splash": 0.0,
       "pierce": 0
@@ -20,17 +20,22 @@
     "branches": {
       "A": {
         "name": "Brass Rain",
-        "desc": "+35% rate, -10% dmg",
+        "desc": "+30% cadence, -10% dégâts",
         "mods": {
-          "rate_mul": 1.35,
+          "rate_mul": 1.3,
           "damage_mul": 0.9
         }
       },
       "B": {
         "name": "AP Rounds",
-        "desc": "+30% dmg vs armor",
+        "desc": "Applique SHRED léger",
         "mods": {
-          "armor_shred": 3
+          "on_hit": {
+            "SHRED": {
+              "dur": 2.0,
+              "stacks": 1
+            }
+          }
         }
       },
       "C": {
@@ -45,8 +50,8 @@
       "dur": 4.0,
       "cd": 14.0,
       "mods": {
-        "rate_mul": 1.6,
-        "damage_mul": 1.15
+        "rate_mul": 1.55,
+        "damage_mul": 1.08
       }
     }
   },
@@ -59,9 +64,9 @@
       220
     ],
     "base": {
-      "range": 8.0,
-      "damage": 120,
-      "rate": 0.9,
+      "range": 8.2,
+      "damage": 85,
+      "rate": 0.62,
       "proj_speed": 22.0,
       "splash": 0.0,
       "pierce": 0
@@ -71,9 +76,9 @@
     "branches": {
       "A": {
         "name": "Headshot",
-        "desc": "Faiblesse +20%",
+        "desc": "Faiblesse +15%",
         "mods": {
-          "weakness_bonus": 0.2
+          "weakness_bonus": 0.15
         }
       },
       "B": {
@@ -115,8 +120,8 @@
     ],
     "base": {
       "range": 3.6,
-      "damage": 26,
-      "rate": 1.6,
+      "damage": 18,
+      "rate": 1.25,
       "proj_speed": 0.0,
       "splash": 0.0,
       "pierce": 0
@@ -150,8 +155,8 @@
       "dur": 4.0,
       "cd": 18.0,
       "mods": {
-        "damage_mul": 1.35,
-        "rate_mul": 1.2
+        "damage_mul": 1.28,
+        "rate_mul": 1.15
       }
     }
   },
@@ -165,8 +170,8 @@
     ],
     "base": {
       "range": 2.8,
-      "damage": 4,
-      "rate": 3.6,
+      "damage": 2.2,
+      "rate": 2.3,
       "proj_speed": 0.0,
       "splash": 0.0,
       "pierce": 0
@@ -176,9 +181,9 @@
     "branches": {
       "A": {
         "name": "Deep Freeze",
-        "desc": "Slow +20%",
+        "desc": "Slow +12%",
         "mods": {
-          "slow_strength_add": 0.2
+          "slow_strength_add": 0.12
         }
       },
       "B": {
@@ -206,7 +211,7 @@
       "dur": 5.0,
       "cd": 16.0,
       "mods": {
-        "rate_mul": 1.25
+        "rate_mul": 1.18
       }
     }
   },
@@ -220,10 +225,10 @@
     ],
     "base": {
       "range": 6.0,
-      "damage": 55,
-      "rate": 0.75,
+      "damage": 38,
+      "rate": 0.58,
       "proj_speed": 8.0,
-      "splash": 1.6,
+      "splash": 1.55,
       "pierce": 0
     },
     "dmg_type": "FIRE",
@@ -270,10 +275,10 @@
     ],
     "base": {
       "range": 4.2,
-      "damage": 38,
-      "rate": 1.2,
+      "damage": 26,
+      "rate": 0.95,
       "proj_speed": 13.0,
-      "splash": 0.9,
+      "splash": 0.85,
       "pierce": 0
     },
     "dmg_type": "KINETIC",
@@ -333,7 +338,7 @@
         "desc": "+12% rate aura",
         "mods": {
           "aura": {
-            "rate_mul": 1.12
+            "rate_mul": 1.1
           }
         }
       },
@@ -342,7 +347,7 @@
         "desc": "+10% range aura",
         "mods": {
           "aura": {
-            "range_mul": 1.1
+            "range_mul": 1.08
           }
         }
       },
@@ -351,7 +356,7 @@
         "desc": "+10% dmg aura",
         "mods": {
           "aura": {
-            "dmg_mul": 1.1
+            "dmg_mul": 1.08
           }
         }
       }
@@ -373,9 +378,9 @@
       60
     ],
     "base": {
-      "range": 2.4,
-      "damage": 3,
-      "rate": 10.0,
+      "range": 2.5,
+      "damage": 1.8,
+      "rate": 6.0,
       "proj_speed": 0.0,
       "splash": 0.0,
       "pierce": 0
