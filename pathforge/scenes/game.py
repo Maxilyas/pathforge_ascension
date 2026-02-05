@@ -135,6 +135,145 @@ class GameScene(Scene):
         self.tool = "TOWER"
         self.dd_open = False
 
+
+
+    def _wrap_text(self, font, text: str, max_w: int) -> list[str]:
+        words = (text or "").split()
+        if not words:
+            return [""]
+        out = []
+        line = ""
+        for w in words:
+            test = (line + " " + w).strip()
+            if font.size(test)[0] <= max_w:
+                line = test
+            else:
+                if line:
+                    out.append(line)
+                line = w
+        if line:
+            out.append(line)
+        return out
+
+    def _draw_tower_tooltip(self, screen, tower_key: str, menu_rect: pygame.Rect, hover_rect: pygame.Rect):
+        td = self.game.towers_db.get(tower_key)
+        if not td:
+            return
+
+        base = td.get("base", {})
+        dmg = float(base.get("damage", 0))
+        rate = float(base.get("rate", 0))
+        rng = float(base.get("range", 0))
+        dps = dmg * rate
+
+        role = td.get("role", "")
+        dmg_type = td.get("dmg_type", "")
+        cost = int(td.get("cost", 0))
+        ui_col = tuple(td.get("ui_color", [200, 200, 200]))
+
+        # specials
+        specials = []
+        splash = float(base.get("splash", 0.0))
+        pierce = int(base.get("pierce", 0))
+        if splash > 0:
+            specials.append(f"AOE: {splash:.1f} cases")
+        if pierce > 0:
+            specials.append(f"Perce: {pierce}")
+        if tower_key == "TESLA":
+            specials.append("Synergie: chemin conducteur (+chains)")
+        if tower_key == "BEACON":
+            specials.append("Aura: buff tours proches")
+
+        branches = td.get("branches") or {}
+
+        panel_w = 380
+        # dynamic height (estimate)
+        content_lines = 0
+        content_lines += 4  # stat rows
+        content_lines += max(1, min(4, len(specials))) + (1 if specials else 0)
+        content_lines += 1  # branches header
+        for key in ("A","B","C"):
+            b = branches.get(key)
+            if not b:
+                continue
+            # name line + wrapped desc
+            content_lines += 1
+            content_lines += len(self._wrap_text(self.game.fonts.xs, b.get("desc",""), panel_w - 32))
+        panel_h = 64 + 16 + content_lines * 16 + 18
+        panel_h = max(240, min(420, panel_h))
+
+        # placement: right of menu, aligned to hovered item
+        x = menu_rect.right + 14
+        y = hover_rect.top - 10
+        if x + panel_w > self.w - 12:
+            x = menu_rect.left - panel_w - 14
+        # keep inside game area (not into bottom bar)
+        y_min = max(80, self.offset_y + 10)
+        y_max = self.game_h - 12 - panel_h
+        y = max(y_min, min(y, y_max))
+
+        rr = pygame.Rect(int(x), int(y), panel_w, panel_h)
+
+        # shadow + panel
+        sh = pygame.Surface((rr.w + 14, rr.h + 14), pygame.SRCALPHA)
+        pygame.draw.rect(sh, (0, 0, 0, 120), (10, 10, rr.w, rr.h), border_radius=16)
+        screen.blit(sh, (rr.x - 10, rr.y - 10))
+        pygame.draw.rect(screen, (22, 22, 26), rr, border_radius=16)
+        pygame.draw.rect(screen, (90, 90, 105), rr, 2, border_radius=16)
+
+        # header strip
+        head = pygame.Rect(rr.x, rr.y, rr.w, 56)
+        pygame.draw.rect(screen, (28, 30, 36), head, border_radius=16)
+        pygame.draw.rect(screen, ui_col, (rr.x + 14, rr.y + 18, 18, 18), border_radius=6)
+
+        title = self.game.fonts.m.render(f"{td.get('name','?')}  ({role})", True, (245, 245, 245))
+        screen.blit(title, (rr.x + 42, rr.y + 12))
+        sub = self.game.fonts.xs.render(f"{dmg_type}  •  Coût {cost}$", True, (200, 200, 200))
+        screen.blit(sub, (rr.x + 42, rr.y + 34))
+
+        y0 = rr.y + 68
+
+        def stat_row(label, value, yy):
+            lab = self.game.fonts.xs.render(label, True, (200, 200, 200))
+            val = self.game.fonts.xs.render(value, True, (240, 240, 240))
+            screen.blit(lab, (rr.x + 16, yy))
+            screen.blit(val, (rr.x + 170, yy))
+
+        stat_row("Dégâts", f"{int(dmg)}", y0)
+        stat_row("Cadence", f"{rate:.1f}/s", y0 + 18)
+        stat_row("Portée", f"{rng:.1f}", y0 + 36)
+        stat_row("DPS (base)", f"{int(dps)}", y0 + 54)
+
+        yy = y0 + 78
+        if specials:
+            lab = self.game.fonts.xs.render("Spécial", True, (200, 200, 200))
+            screen.blit(lab, (rr.x + 16, yy))
+            yy += 18
+            for ex in specials[:4]:
+                t = self.game.fonts.xs.render("• " + ex, True, (220, 220, 220))
+                screen.blit(t, (rr.x + 16, yy))
+                yy += 16
+            yy += 6
+
+        bt = self.game.fonts.xs.render("Branches (choix A / B / C)", True, (200, 200, 200))
+        screen.blit(bt, (rr.x + 16, yy))
+        yy += 18
+
+        for key in ("A","B","C"):
+            b = branches.get(key)
+            if not b:
+                continue
+            name = b.get("name","")
+            hdr = self.game.fonts.xs.render(f"{key}: {name}", True, (235, 235, 235))
+            screen.blit(hdr, (rr.x + 16, yy))
+            yy += 16
+            desc_lines = self._wrap_text(self.game.fonts.xs, b.get("desc",""), panel_w - 32)
+            for dl in desc_lines[:3]:
+                t = self.game.fonts.xs.render("   " + dl, True, (200, 200, 200))
+                screen.blit(t, (rr.x + 16, yy))
+                yy += 16
+            yy += 6
+
     def _multi(self, d):
         self.wave_multi = max(1, min(5, self.wave_multi + int(d)))
 
@@ -373,9 +512,12 @@ class GameScene(Scene):
 
             # tower panel interaction
             if self.selected_tower:
-                panel = pygame.Rect(self.w-380, self.offset_y+90, 360, 260)
-                upg = pygame.Rect(panel.x+20, panel.y+200, 160, 44)
-                sell = pygame.Rect(panel.x+200, panel.y+200, 140, 44)
+                # IMPORTANT: keep these rects in sync with the draw() panel.
+                panel = pygame.Rect(self.w - 390, self.offset_y + 30, 370, 280)
+                panel.bottom = min(panel.bottom, self.game_h - 12)
+
+                upg = pygame.Rect(panel.x + 20, panel.bottom - 58, 170, 44)
+                sell = pygame.Rect(panel.x + 210, panel.bottom - 58, 140, 44)
 
                 if upg.collidepoint(event.pos):
                     if self.stats.has_flag("flag_lock_upgrades"):
@@ -385,6 +527,8 @@ class GameScene(Scene):
                     if self.stats.gold >= cost:
                         self.stats.gold -= cost
                         self.selected_tower.upgrade()
+                    else:
+                        self.world.fx_text(panel.x+30, panel.y+10, "Or insuffisant!", (255,120,120), 0.9)
                     return
                 if sell.collidepoint(event.pos):
                     self.stats.gold += int(self.selected_tower.spent * float(self.stats.sell_refund))
@@ -394,7 +538,7 @@ class GameScene(Scene):
 
                 if self.selected_tower.can_branch():
                     for i,br in enumerate(["A","B","C"]):
-                        rr = pygame.Rect(panel.x+20, panel.y+60+i*44, 320, 38)
+                        rr = pygame.Rect(panel.x + 20, panel.y + 84 + i * 44, 330, 38)
                         if rr.collidepoint(event.pos):
                             self.selected_tower.apply_branch(br)
                             return
@@ -556,84 +700,134 @@ class GameScene(Scene):
             self.game.request_save = False
             self.game.saves.save_run(self._serialize())
 
+
     def draw(self, screen):
-        tint = tuple(self.game.biomes.get(self.world.gs.biome, {}).get("tint", [24,32,44]))
+        tint = tuple(self.game.biomes.get(self.world.gs.biome, {}).get("tint", [24, 32, 44]))
         self.world.draw_map(screen, self.game.fonts, biome_tint=tint)
 
         self._recalc_plan()
         path_ok = self.world.path_valid()
 
         draw_top_bar(
-            screen, self.game.fonts, self.w, self.top_h, self.stats,
-            self.game.clock.time_scale, self.plan.keywords, path_ok,
-            self.stats.fragments, self.spells.energy, self.spells.energy_max
+            screen,
+            self.game.fonts,
+            self.w,
+            self.top_h,
+            self.stats,
+            self.game.clock.time_scale,
+            self.plan.keywords,
+            path_ok,
+            self.stats.fragments,
+            self.spells.energy,
+            self.spells.energy_max,
+            plan_preview=(('BOSS' if self.plan.boss else '') + (f"Relics+{self.plan.relics_in_path}" if self.plan.relics_in_path else '')),
         )
 
         cost = int(self.game.towers_db[self.selected_tower_key]["cost"] * float(self.stats.tower_cost_mul))
+        tool_extra = ""
+        if self.tool == "PATH":
+            _, nm, c = self.path_variants[self.path_variant_idx]
+            tool_extra = f"{nm} coût {c} | PAVES {int(self.stats.paves)}"
+
         draw_bottom_bar(
-            screen, self.game.fonts, self.w, self.game_h, self.bottom_h,
-            self.mode, self.tool, self.game.towers_db[self.selected_tower_key]["name"], cost,
+            screen,
+            self.game.fonts,
+            self.w,
+            self.game_h,
+            self.bottom_h,
+            self.mode,
+            self.tool,
+            self.game.towers_db[self.selected_tower_key]["name"],
+            cost,
             self.wave_multi,
-            tooltip_line="C chemin | B tours | X gomme | G assaut | TAB ciblage | E overclock | SPACE dash | A choc | 1..4 spells | F vitesse",
-            tool_extra=(f"{self.path_variants[self.path_variant_idx][1]} coût {self.path_variants[self.path_variant_idx][2]} | PAVES {self.stats.paves}" if self.tool=="PATH" else "")
+            tooltip_line="C chemin | B tours | X gomme | G assaut | TAB ciblage | E overclock | SPACE dash | A choc | 1..4 spells | F vitesse | V variante chemin",
+            tool_extra=tool_extra,
         )
 
-        # update speed/tower button visuals
+        # update button visuals
         self.btn_speed.text = f"x{int(self.game.clock.time_scale)}"
         self.btn_tow.text = self.game.towers_db[self.selected_tower_key]["name"]
         self.btn_tow.col = tower_color(self.game.towers_db, self.selected_tower_key)
         self.btn_go.text = f"ASSAUT x{self.wave_multi}" if self.mode == "BUILD" else "EN COURS..."
         self.btn_go.disabled = (self.mode != "BUILD") or (not path_ok)
 
-        # buttons
-        if not self.selected_tower:
-            for b in self.ui_btns:
-                b.draw(screen, self.game.fonts)
+        # --- bottom buttons (always visible) ---
+        for b in self.ui_btns:
+            b.draw(screen, self.game.fonts)
 
+        # --- tower dropdown + tooltip ---
         if self.dd_open:
-            bg = pygame.Rect(self.btn_tow.rect.x, self.btn_tow.rect.y - len(self.dd_btns)*52 - 12, self.btn_tow.rect.w, len(self.dd_btns)*52 + 12)
-            pygame.draw.rect(screen, (22,22,26), bg, border_radius=12)
+            mx, my = pygame.mouse.get_pos()
+            menu_bg = pygame.Rect(
+                self.btn_tow.rect.x,
+                self.btn_tow.rect.y - len(self.dd_btns) * 52 - 12,
+                self.btn_tow.rect.w,
+                len(self.dd_btns) * 52 + 12,
+            )
+
+            # dropdown panel shadow
+            sh = pygame.Surface((menu_bg.w + 12, menu_bg.h + 12), pygame.SRCALPHA)
+            pygame.draw.rect(sh, (0, 0, 0, 110), (8, 8, menu_bg.w, menu_bg.h), border_radius=14)
+            screen.blit(sh, (menu_bg.x - 8, menu_bg.y - 8))
+            pygame.draw.rect(screen, (22, 22, 26), menu_bg, border_radius=14)
+            pygame.draw.rect(screen, (90, 90, 105), menu_bg, 2, border_radius=14)
+
+            hover_key = None
+            hover_rect = None
             for b in self.dd_btns:
                 b.draw(screen, self.game.fonts)
+                if b.rect.collidepoint(mx, my):
+                    hover_key = b.arg
+                    hover_rect = b.rect
+                    pygame.draw.rect(screen, (255, 255, 255), b.rect, 2, border_radius=10)
 
-        # tower panel
+            if hover_key and hover_rect:
+                self._draw_tower_tooltip(screen, hover_key, menu_bg, hover_rect)
+
+        # --- tower inspect / upgrade panel ---
         if self.selected_tower:
             t = self.selected_tower
-            panel = pygame.Rect(self.w-380, self.offset_y+90, 360, 260)
-            pygame.draw.rect(screen, (22,22,26), panel, border_radius=14)
-            pygame.draw.rect(screen, (255,215,0), panel, 2, border_radius=14)
+            panel = pygame.Rect(self.w - 390, self.offset_y + 30, 370, 280)
+            # keep inside the playable area
+            panel.bottom = min(panel.bottom, self.game_h - 12)
+
+            pygame.draw.rect(screen, (22, 22, 26), panel, border_radius=14)
+            pygame.draw.rect(screen, (255, 215, 0), panel, 2, border_radius=14)
 
             lines = [
                 f"{t.defn.name}  Lvl {t.level} [{t.defn.role}]",
                 f"Ciblage: {['FIRST','LAST','STRONGEST','CLOSEST','ARMORED'][t.target_mode_idx]}",
                 f"Branche: {t.branch_choice or '—'}",
-                f"Overclock: {'ACTIF' if t.overclock_time>0 else ('READY' if t.can_overclock() else 'CD')}  ({t.overclock_time:.1f}s)"
+                f"Overclock: {'ACTIF' if t.overclock_time>0 else ('READY' if t.can_overclock() else 'CD')}  ({t.overclock_time:.1f}s)",
             ]
-            y = panel.y+14
+            y = panel.y + 14
             for line in lines:
-                s = self.game.fonts.s.render(line, True, (240,240,240))
-                screen.blit(s, (panel.x+14, y)); y += 22
+                s = self.game.fonts.s.render(line, True, (240, 240, 240))
+                screen.blit(s, (panel.x + 14, y))
+                y += 22
 
             if t.can_branch():
                 br_defs = t.defn.branches
-                for i, br in enumerate(["A","B","C"]):
-                    rr = pygame.Rect(panel.x+20, panel.y+60+i*44, 320, 38)
-                    pygame.draw.rect(screen, (60,70,80), rr, border_radius=10)
-                    pygame.draw.rect(screen, (255,215,0), rr, 1, border_radius=10)
+                for i, br in enumerate(["A", "B", "C"]):
+                    rr = pygame.Rect(panel.x + 20, panel.y + 84 + i * 44, 330, 38)
+                    pygame.draw.rect(screen, (60, 70, 80), rr, border_radius=10)
+                    pygame.draw.rect(screen, (255, 215, 0), rr, 1, border_radius=10)
                     name = br_defs[br]["name"]
                     desc = br_defs[br]["desc"]
-                    txt = self.game.fonts.xs.render(f"{br}: {name} — {desc}", True, (255,215,0))
-                    screen.blit(txt, (rr.x+10, rr.y+11))
+                    txt = self.game.fonts.xs.render(f"{br}: {name} — {desc}", True, (255, 215, 0))
+                    screen.blit(txt, (rr.x + 10, rr.y + 11))
 
-            upg = pygame.Rect(panel.x+20, panel.y+200, 160, 44)
-            sell = pygame.Rect(panel.x+200, panel.y+200, 140, 44)
-            pygame.draw.rect(screen, (70,220,140), upg, border_radius=10)
-            pygame.draw.rect(screen, (220,90,90), sell, border_radius=10)
-            upg_t = self.game.fonts.s.render(f"UPG ${t.upgrade_cost()}", True, (20,20,20))
-            screen.blit(upg_t, (upg.centerx-upg_t.get_width()//2, upg.centery-upg_t.get_height()//2))
-            sell_t = self.game.fonts.s.render(f"SELL ${int(t.spent*float(self.stats.sell_refund))}", True, (20,20,20))
-            screen.blit(sell_t, (sell.centerx-sell_t.get_width()//2, sell.centery-sell_t.get_height()//2))
+            upg = pygame.Rect(panel.x + 20, panel.bottom - 58, 170, 44)
+            sell = pygame.Rect(panel.x + 210, panel.bottom - 58, 140, 44)
+            pygame.draw.rect(screen, (70, 220, 140), upg, border_radius=10)
+            pygame.draw.rect(screen, (220, 90, 90), sell, border_radius=10)
+            upg_t = self.game.fonts.s.render(f"UPG ${t.upgrade_cost()}", True, (20, 20, 20))
+            screen.blit(upg_t, (upg.centerx - upg_t.get_width() // 2, upg.centery - upg_t.get_height() // 2))
+            sell_t = self.game.fonts.s.render(f"SELL ${int(t.spent * float(self.stats.sell_refund))}", True, (20, 20, 20))
+            screen.blit(sell_t, (sell.centerx - sell_t.get_width() // 2, sell.centery - sell_t.get_height() // 2))
 
+        # --- top buttons ---
         self.btn_menu.draw(screen, self.game.fonts)
         self.btn_speed.draw(screen, self.game.fonts)
         self.btn_talents.draw(screen, self.game.fonts)
+

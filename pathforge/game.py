@@ -15,6 +15,7 @@ from .scenes.perk import PerkScene
 from .scenes.settings_scene import SettingsScene
 from .scenes.talent import TalentScene
 
+
 class Game:
     def __init__(self):
         pygame.init()
@@ -33,10 +34,10 @@ class Game:
         self.meta = self.saves.load_meta()
 
         base = Path(__file__).resolve().parent / "data"
-        self.towers_db = json.loads((base/"towers.json").read_text(encoding="utf-8"))
-        self.enemies_db = json.loads((base/"enemies.json").read_text(encoding="utf-8"))
-        self.perks_db = json.loads((base/"perks.json").read_text(encoding="utf-8"))
-        self.biomes = json.loads((base/"biomes.json").read_text(encoding="utf-8"))
+        self.towers_db = json.loads((base / "towers.json").read_text(encoding="utf-8"))
+        self.enemies_db = json.loads((base / "enemies.json").read_text(encoding="utf-8"))
+        self.perks_db = json.loads((base / "perks.json").read_text(encoding="utf-8"))
+        self.biomes = json.loads((base / "biomes.json").read_text(encoding="utf-8"))
 
         self._perk_rng = random.Random()
 
@@ -64,6 +65,7 @@ class Game:
         else:
             self.w, self.h = DEFAULT_W, DEFAULT_H
             self.screen = pygame.display.set_mode((self.w, self.h))
+
         self.fonts = make_fonts(self.w // COLS)
 
         # reset to menu (safe)
@@ -72,18 +74,18 @@ class Game:
         self.scene = self.scenes["MENU"]
         self.scene.enter(None)
 
-
     def roll_perks(self, n: int = 3, rarity_bias: float = 0.0) -> list[dict]:
         """Roll n perk options with rarity bias (0..0.6). No duplicates in a single roll."""
         weights = {"C": 66.0, "R": 22.0, "E": 9.0, "L": 2.0, "SS+": 0.8, "SS++": 0.2}
         b = max(0.0, min(0.60, float(rarity_bias)))
+
         # shift probability mass upward
-        weights["C"] *= (1.0 - 0.70*b)
-        weights["R"] *= (1.0 - 0.40*b)
-        weights["E"] *= (1.0 + 0.70*b)
-        weights["L"] *= (1.0 + 1.40*b)
-        weights["SS+"] *= (1.0 + 2.00*b)
-        weights["SS++"] *= (1.0 + 2.60*b)
+        weights["C"] *= (1.0 - 0.70 * b)
+        weights["R"] *= (1.0 - 0.40 * b)
+        weights["E"] *= (1.0 + 0.70 * b)
+        weights["L"] *= (1.0 + 1.40 * b)
+        weights["SS+"] *= (1.0 + 2.00 * b)
+        weights["SS++"] *= (1.0 + 2.60 * b)
 
         pool = list(self.perks_db)
         picks: list[dict] = []
@@ -116,7 +118,7 @@ class Game:
 
             res = self.scene.consume_result()
             if res.next_scene:
-                overlays = {"PAUSE","PERK","TALENT"}
+                overlays = {"PAUSE", "PERK", "TALENT"}
                 if res.next_scene == "BACK":
                     if self.scene_stack:
                         self.scene.exit()
@@ -139,6 +141,7 @@ class Game:
             pygame.display.flip()
 
         pygame.quit()
+
 
 def run():
     Game().loop()

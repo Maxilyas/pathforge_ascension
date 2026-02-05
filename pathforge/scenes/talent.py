@@ -59,30 +59,68 @@ class TalentScene(Scene):
                         if "perk_rerolls_add" in mods:
                             self.stats.perk_rerolls += int(mods["perk_rerolls_add"])
 
+
     def draw(self, screen):
+        # draw the previous scene as background (if present)
         if self.game.scene_stack:
             self.game.scene_stack[-1].draw(screen)
-        s = pygame.Surface((self.game.w, self.game.h), pygame.SRCALPHA)
-        s.fill((0,0,0,210))
-        screen.blit(s,(0,0))
+
+        dim = pygame.Surface((self.game.w, self.game.h), pygame.SRCALPHA)
+        dim.fill((0, 0, 0, 210))
+        screen.blit(dim, (0, 0))
 
         self.btn_close.draw(screen, self.game.fonts)
-        title = self.game.fonts.l.render(f"ARBRE DE TALENTS (Pts: {self.stats.talent_pts})", True, (255,215,0))
-        screen.blit(title, (self.game.w//2-title.get_width()//2, 60))
+        title = self.game.fonts.l.render(f"ARBRE DE TALENTS (Pts: {self.stats.talent_pts})", True, (255, 215, 0))
+        screen.blit(title, (self.game.w // 2 - title.get_width() // 2, 60))
 
-        base_x, base_y = 140, 140
-        cell_x, cell_y = 150, 120
-        self.nodes_rects = {}
+        # --- Layout (auto-fit with safe margins) ---
+        cell_x, cell_y = 170, 125
+        node_w, node_h = 150, 74
+        pad = 32
+
+        # Build logical rects
+        logical = {}
         for nid, gx, gy in LAYOUT:
-            x = base_x + gx*cell_x
-            y = base_y + gy*cell_y
-            self.nodes_rects[nid] = pygame.Rect(x, y, 130, 70)
+            x = gx * cell_x
+            y = gy * cell_y
+            logical[nid] = pygame.Rect(x, y, node_w, node_h)
+
+        minx = min(r.x for r in logical.values())
+        miny = min(r.y for r in logical.values())
+        maxx = max(r.right for r in logical.values())
+        maxy = max(r.bottom for r in logical.values())
+        bbox_w = max(1, (maxx - minx) + pad * 2)
+        bbox_h = max(1, (maxy - miny) + pad * 2)
+
+        # Keep a safe view that never touches screen edges
+        view = pygame.Rect(80, 130, self.game.w - 160, self.game.h - 280)
+        scale = min(1.0, view.w / bbox_w, view.h / bbox_h) * 0.95
+
+        draw_w = bbox_w * scale
+        draw_h = bbox_h * scale
+        ox = view.x + (view.w - draw_w) / 2
+        oy = view.y + (view.h - draw_h) / 2
+
+        # Compute screen-space rects
+        self.nodes_rects = {}
+        for nid, rr in logical.items():
+            sx = ox + ((rr.x - minx) + pad) * scale
+            sy = oy + ((rr.y - miny) + pad) * scale
+            sw = rr.w * scale
+            sh = rr.h * scale
+            self.nodes_rects[nid] = pygame.Rect(int(sx), int(sy), int(sw), int(sh))
 
         # links
         for nid, info in TALENTS.items():
             for pre in info.get("prereq", []):
-                if pre in self.nodes_rects:
-                    pygame.draw.line(screen, (120,120,140), self.nodes_rects[pre].center, self.nodes_rects[nid].center, 3)
+                if pre in self.nodes_rects and nid in self.nodes_rects:
+                    pygame.draw.line(
+                        screen,
+                        (90, 90, 105),
+                        self.nodes_rects[pre].center,
+                        self.nodes_rects[nid].center,
+                        max(2, int(3 * scale)),
+                    )
 
         # nodes
         for nid, rr in self.nodes_rects.items():
@@ -91,29 +129,32 @@ class TalentScene(Scene):
             prereq_ok = all(p in self.stats.talent_nodes for p in info.get("prereq", []))
             blocked = any(e in self.stats.talent_nodes for e in info.get("exclusive", []))
             can_buy = (not owned) and prereq_ok and (not blocked) and self.stats.talent_pts > 0
-            col = (70,70,70)
-            if owned: col = (70,220,140)
-            elif can_buy: col = (255,215,0)
-            elif blocked: col = (160,70,70)
-            pygame.draw.rect(screen, (26,28,34), rr, border_radius=12)
-            pygame.draw.rect(screen, col, rr, 3, border_radius=12)
-            name = self.game.fonts.xs.render(info["name"], True, (240,240,240))
-            desc = self.game.fonts.xs.render(info["desc"], True, (200,200,200))
-            screen.blit(name, (rr.x+10, rr.y+14))
-            screen.blit(desc, (rr.x+10, rr.y+40))
 
-        if self.hover:
-            info = TALENTS[self.hover]
-            mx,my = pygame.mouse.get_pos()
-            lines = [info["name"], info["desc"], "Prereq: "+(", ".join(info.get("prereq",[])) or "—")]
-            pad=10
-            rend=[self.game.fonts.xs.render(l, True, (240,240,240)) for l in lines]
-            w = max(r.get_width() for r in rend)+pad*2
-            h = sum(r.get_height() for r in rend)+pad*2
-            rect = pygame.Rect(mx+12, my+12, w, h)
-            pygame.draw.rect(screen, (20,20,24), rect, border_radius=10)
-            pygame.draw.rect(screen, (255,215,0), rect, 1, border_radius=10)
-            y = rect.y+pad
-            for r in rend:
-                screen.blit(r, (rect.x+pad, y))
-                y += r.get_height()
+            border = (70, 70, 70)
+            if owned:
+                border = (70, 220, 140)
+            elif can_buy:
+                border = (255, 215, 0)
+            elif blocked:
+                border = (160, 70, 70)
+
+            # shadow
+            shad = pygame.Surface((rr.w + 8, rr.h + 8), pygame.SRCALPHA)
+            pygame.draw.rect(shad, (0, 0, 0, 90), (6, 6, rr.w, rr.h), border_radius=max(10, int(12 * scale)))
+            screen.blit(shad, (rr.x - 6, rr.y - 6))
+
+            pygame.draw.rect(screen, (26, 28, 34), rr, border_radius=max(10, int(12 * scale)))
+            pygame.draw.rect(screen, border, rr, max(2, int(3 * scale)), border_radius=max(10, int(12 * scale)))
+
+            # hover highlight
+            if self.hover == nid:
+                pygame.draw.rect(screen, (255, 255, 255), rr, 1, border_radius=max(10, int(12 * scale)))
+
+            # text
+            fn_name = self.game.fonts.s if scale >= 0.92 else self.game.fonts.xs
+            fn_desc = self.game.fonts.xs
+            name = fn_name.render(info["name"], True, (240, 240, 240))
+            desc = fn_desc.render(info["desc"], True, (200, 200, 200))
+            screen.blit(name, (rr.x + 10, rr.y + int(10 * scale)))
+            screen.blit(desc, (rr.x + 10, rr.y + int(40 * scale)))
+
