@@ -29,12 +29,14 @@ class Hero:
         self.state.x += nx * 180
         self.state.y += ny * 180
         self.state.dash_cd = 1.8
-        world.fx_ring(self.state.x, self.state.y, world.tile_size*1.2, (255,255,255), 0.18)
+        ts = getattr(world, 'tile_size', getattr(world, 'tile', 32))
+        world.fx_ring(self.state.x, self.state.y, ts*1.2, (255,255,255), 0.18)
 
     def shock(self, world):
         if self.state.shock_cd > 0:
             return
-        r = world.tile_size * 2.2
+        ts = getattr(world, 'tile_size', getattr(world, 'tile', 32))
+        r = ts * 2.2
         hits = world.query_radius(self.state.x, self.state.y, r)
         if not hits:
             world.fx_text(self.state.x, self.state.y-20, "NO TARGET", (180,180,180), 0.6)

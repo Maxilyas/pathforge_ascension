@@ -328,7 +328,7 @@ class GameScene(Scene):
                 self.world.fx_text(80, self.offset_y + 18, f"Chemin: {nm} (coût {cost})", (255,215,0), 0.8)
 
             # hero skills
-            if event.key == pygame.K_LSHIFT:
+            if event.key == pygame.K_SPACE:
                 mx,my = pygame.mouse.get_pos()
                 self.world.hero.dash(mx-self.world.hero.state.x, my-self.world.hero.state.y, self.world)
             if event.key == pygame.K_a:
@@ -573,7 +573,7 @@ class GameScene(Scene):
             screen, self.game.fonts, self.w, self.game_h, self.bottom_h,
             self.mode, self.tool, self.game.towers_db[self.selected_tower_key]["name"], cost,
             self.wave_multi,
-            tooltip_line="C chemin | B tours | X gomme | G assaut | TAB ciblage | E overclock | SHIFT dash | A choc | 1..4 spells | F vitesse",
+            tooltip_line="C chemin | B tours | X gomme | G assaut | TAB ciblage | E overclock | SPACE dash | A choc | 1..4 spells | F vitesse",
             tool_extra=(f"{self.path_variants[self.path_variant_idx][1]} coût {self.path_variants[self.path_variant_idx][2]} | PAVES {self.stats.paves}" if self.tool=="PATH" else "")
         )
 

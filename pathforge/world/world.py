@@ -64,6 +64,7 @@ class World:
     def __init__(self, gs: GridState, tile_size: int, offset_y: int, w: int, h: int, towers_db: dict, enemies_db: dict, rng: random.Random):
         self.gs = gs
         self.tile = tile_size
+        self.tile_size = tile_size  # alias for hero/spells/vfx
         self.offset_y = offset_y
         self.w = w
         self.h = h
