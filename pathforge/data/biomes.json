@@ -1,0 +1,29 @@
+{
+  "HIGHLANDS": {
+    "name": "Highlands",
+    "tint": [
+      24,
+      32,
+      44
+    ],
+    "rocks": 0.2
+  },
+  "ASHLAND": {
+    "name": "Ashland",
+    "tint": [
+      34,
+      28,
+      26
+    ],
+    "rocks": 0.24
+  },
+  "FROST": {
+    "name": "Frost",
+    "tint": [
+      22,
+      34,
+      40
+    ],
+    "rocks": 0.18
+  }
+}

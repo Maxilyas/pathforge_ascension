@@ -1,0 +1,107 @@
+{
+  "SOLDIER": {
+    "name": "Soldat",
+    "color": [
+      200,
+      50,
+      50
+    ],
+    "spd": 0.95,
+    "hp": 1.0,
+    "armor": 0,
+    "regen": 0,
+    "shield": 0,
+    "weak": null,
+    "tags": []
+  },
+  "SCOUT": {
+    "name": "Scout",
+    "color": [
+      50,
+      200,
+      60
+    ],
+    "spd": 1.45,
+    "hp": 0.65,
+    "armor": 0,
+    "regen": 0,
+    "shield": 0,
+    "weak": "KINETIC",
+    "tags": [
+      "FAST"
+    ]
+  },
+  "TANK": {
+    "name": "Tank",
+    "color": [
+      140,
+      140,
+      150
+    ],
+    "spd": 0.65,
+    "hp": 3.8,
+    "armor": 7,
+    "regen": 2,
+    "shield": 0,
+    "weak": "PIERCE",
+    "tags": [
+      "ARMORED"
+    ]
+  },
+  "MUTANT": {
+    "name": "Mutant",
+    "color": [
+      100,
+      200,
+      120
+    ],
+    "spd": 0.85,
+    "hp": 2.1,
+    "armor": 2,
+    "regen": 12,
+    "shield": 0,
+    "weak": "FIRE",
+    "tags": [
+      "REGEN"
+    ]
+  },
+  "ELITE": {
+    "name": "Elite",
+    "color": [
+      150,
+      0,
+      150
+    ],
+    "spd": 0.8,
+    "hp": 6.5,
+    "armor": 9,
+    "regen": 6,
+    "shield": 80,
+    "weak": "ENERGY",
+    "tags": [
+      "ELITE",
+      "ARMORED",
+      "SHIELD"
+    ]
+  },
+  "BOSS": {
+    "name": "Apex Warden",
+    "color": [
+      255,
+      110,
+      60
+    ],
+    "spd": 0.7,
+    "hp": 18.0,
+    "armor": 16,
+    "regen": 18,
+    "shield": 260,
+    "weak": "ENERGY",
+    "tags": [
+      "BOSS",
+      "ELITE",
+      "ARMORED",
+      "SHIELD"
+    ]
+  }
+}

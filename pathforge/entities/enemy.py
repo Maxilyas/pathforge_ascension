@@ -1,0 +1,270 @@
+from __future__ import annotations
+from dataclasses import dataclass, field
+from typing import Dict, Any, List, Tuple, Optional
+import math
+
+from .status import Status
+from ..settings import (
+    T_EMPTY, T_END,
+    T_PATH_FAST, T_PATH_MUD, T_PATH_CONDUCT, T_PATH_CRYO, T_PATH_MAGMA, T_PATH_RUNE,
+)
+
+@dataclass
+class EnemyArch:
+    key: str
+    name: str
+    color: Tuple[int,int,int]
+    spd: float
+    hp: float
+    armor: float
+    regen: float
+    shield: float
+    weak: str|None
+    tags: List[str]
+
+@dataclass
+class Enemy:
+    arch: EnemyArch
+    path: List[Tuple[int,int]]  # kept for spawn compatibility / legacy
+    tile: int
+    offset_y: int
+    wave: int
+    weakness_mul: float
+    speed_mul: float
+    gold_bonus: int = 0
+
+    # movement (branch-capable)
+    cell: Tuple[int,int] = (0,0)
+    prev_cell: Optional[Tuple[int,int]] = None
+    next_cell: Optional[Tuple[int,int]] = None
+
+    idx: int = 0  # used for targeting modes (FIRST/LAST); higher = closer to end
+    x: float = 0.0
+    y: float = 0.0
+
+    hp: float = 1.0
+    max_hp: float = 1.0
+    shield: float = 0.0
+    armor: float = 0.0
+    base_speed: float = 1.0
+
+    alive: bool = True
+    finished: bool = False
+
+    statuses: Dict[str, Status] = field(default_factory=dict)
+
+    boss_phase: int = 0
+    spawn_signals: List[str] = field(default_factory=list)
+
+    reward_gold: int = 5
+    tile_gold_bonus: int = 0
+    tile_v: int = T_EMPTY
+
+    _sapper_t: float = 0.0
+
+    def __post_init__(self):
+        self.x, self.y = self._pos(self.path[0])
+        self.cell = self.path[0]
+        tier = 1.0 + 0.23 * (self.wave-1)
+        self.max_hp = 30.0 * float(self.arch.hp) * tier
+        self.hp = self.max_hp
+        self.armor = float(self.arch.armor)
+        self.shield = float(self.arch.shield) * 12.0 * tier
+        self.base_speed = float(self.arch.spd) * float(self.tile) * float(self.speed_mul)
+        self.reward_gold = int(5 + self.wave * 1.6) + int(self.gold_bonus)
+        self.tile_gold_bonus = 0
+        self.tile_v = T_EMPTY
+
+    def _pos(self, c: Tuple[int,int]):
+        return c[0] * self.tile + self.tile/2, c[1] * self.tile + self.tile/2 + self.offset_y
+
+    def is_elite(self) -> bool:
+        return "ELITE" in self.arch.tags
+
+    def take_damage(self, amt: float, dmg_type: str):
+        if not self.alive:
+            return False
+
+        # terrain interactions (minimal but meaningful)
+        if dmg_type == "FIRE" and self.tile_v == T_PATH_CRYO:
+            amt *= 0.80
+
+        crit = False
+        # shield first
+        if self.shield > 0:
+            sh = min(self.shield, amt)
+            self.shield -= sh
+            amt -= sh
+            if amt <= 0:
+                return crit
+
+        # armor vs kinetic/pierce
+        if dmg_type in ("KINETIC","PIERCE","EXPLOSIVE"):
+            red = self.armor
+            if dmg_type == "PIERCE":
+                red *= 0.5
+            amt = max(1.0, amt - red)
+
+        if self.arch.weak and dmg_type == self.arch.weak:
+            amt *= float(self.weakness_mul)
+            crit = True
+
+        self.hp -= amt
+        if self.hp <= 0 and self.alive:
+            self.alive = False
+        return crit
+
+    def add_status(self, k: str, dur: float, stacks: int, strength: float):
+        s = self.statuses.get(k)
+        if not s:
+            self.statuses[k] = Status(kind=k, dur=dur, stacks=stacks, strength=strength)
+        else:
+            s.dur = max(s.dur, dur)
+            s.stacks = min(10, s.stacks + stacks)
+            s.strength = max(s.strength, strength)
+
+    def _apply_tile_effects(self, world, rng):
+        # compute tile under current position
+        self.tile_v = world.tile_value_at(self.x, self.y) if world else T_EMPTY
+
+        # gold bonus if killed on FAST tiles (risk/reward)
+        self.tile_gold_bonus = 2 if self.tile_v == T_PATH_FAST else 0
+
+        # magma applies light burn
+        if self.tile_v == T_PATH_MAGMA:
+            # soft burn, stacks slowly
+            if rng and rng.random() < 0.25:
+                self.add_status("BURN", 1.8, 1, 0.0)
+
+        # cryo tiles strengthen slows a bit
+        if self.tile_v == T_PATH_CRYO:
+            s = self.statuses.get("SLOW")
+            if s:
+                s.dur = max(0.0, s.dur) + 0.05
+
+        # rune tiles: enemies feel a faint vulnerability (optional)
+        if self.tile_v == T_PATH_RUNE:
+            if rng and rng.random() < 0.10:
+                self.add_status("VULN", 0.7, 1, 0.0)
+
+        # sapper corruption
+        if world and "SAPPER" in self.arch.tags:
+            self._sapper_t += 1/60.0  # approximate; refined in update()
+            # exact dt handled in update; keep for safety
+
+    def update(self, dt: float, world=None, rng=None):
+        if not self.alive or self.finished:
+            return
+
+        if rng is None and world is not None:
+            rng = getattr(world, "rng", None)
+
+        # status timers
+        slow = 0.0
+        stunned = 0.0
+        shred = 0.0
+        vuln = 0.0
+        burn_dps = 0.0
+        poison_dps = 0.0
+        shock = False
+
+        for k in list(self.statuses.keys()):
+            s = self.statuses[k]
+            s.dur -= dt
+            if s.dur <= 0:
+                del self.statuses[k]
+                continue
+            if k == "SLOW":
+                slow = max(slow, 0.25 + s.stacks*0.05 + s.strength)
+            elif k == "STUN":
+                stunned = max(stunned, 0.1)
+            elif k == "SHRED":
+                shred = max(shred, 0.8 * s.stacks)
+            elif k == "VULN":
+                vuln = max(vuln, 0.12 * s.stacks)
+            elif k == "BURN":
+                burn_dps += (3.0 + 2.0*s.stacks)
+            elif k == "POISON":
+                poison_dps += (2.0 + 1.2*s.stacks)
+            elif k == "SHOCK":
+                shock = True
+
+        # regen
+        if self.arch.regen > 0 and self.hp < self.max_hp:
+            self.hp = min(self.max_hp, self.hp + float(self.arch.regen) * dt)
+
+        # apply DoTs
+        if burn_dps > 0:
+            self.take_damage(burn_dps*dt, "FIRE")
+        if poison_dps > 0:
+            self.take_damage(poison_dps*dt, "BIO")
+
+        # boss phases signals
+        if "BOSS" in self.arch.tags:
+            frac = self.hp / max(1.0, self.max_hp)
+            if self.boss_phase == 0 and frac < 0.66:
+                self.boss_phase = 1
+                self.spawn_signals.append("PHASE1")
+            if self.boss_phase == 1 and frac < 0.33:
+                self.boss_phase = 2
+                self.spawn_signals.append("PHASE2")
+
+        if stunned > 0:
+            return
+
+        # tile effects
+        if world:
+            self._apply_tile_effects(world, rng or getattr(world, "rng", None))
+
+        # movement speed + terrain speed modifiers
+        spd = self.base_speed * (1.0 - slow)
+        if shock:
+            spd *= 0.86
+
+        if world:
+            # terrain speed mul
+            spd *= float(world.path_speed_mul(self.tile_v))
+
+        # branch-capable movement
+        if world and self.next_cell is not None:
+            tx, ty = self._pos(self.next_cell)
+        else:
+            # legacy fixed path fallback
+            if self.idx >= len(self.path)-1:
+                self.finished = True
+                return
+            tx, ty = self._pos(self.path[self.idx+1])
+
+        dx, dy = tx-self.x, ty-self.y
+        dist = math.hypot(dx,dy) or 1.0
+        step = spd * dt
+        if dist <= step:
+            self.x, self.y = tx, ty
+
+            if world and self.next_cell is not None:
+                self.prev_cell = self.cell
+                self.cell = self.next_cell
+
+                # update idx as "progress" using distmap (higher = closer to end)
+                dmap = world.get_distmap()
+                self.idx = -int(dmap.get(self.cell, 9999))
+
+                # reached the end?
+                if self.cell == world.gs.end or dmap.get(self.cell, 9999) == 0:
+                    self.finished = True
+                    return
+
+                self.next_cell = world.next_cell(self.cell, self.prev_cell, rng or world.rng)
+
+                # sapper corruption tick (real dt)
+                if "SAPPER" in self.arch.tags:
+                    self._sapper_t += dt
+                    if self._sapper_t >= 2.4:
+                        self._sapper_t = 0.0
+                        world.corrupt_near(self.cell, rng or world.rng)
+
+            else:
+                self.idx += 1
+        else:
+            self.x += (dx/dist)*step
+            self.y += (dy/dist)*step

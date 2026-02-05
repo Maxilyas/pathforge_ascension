@@ -1,0 +1,216 @@
+[
+  {
+    "id": "dmg_all",
+    "name": "Dégâts +10%",
+    "rarity": "C",
+    "tags": [
+      "POWER"
+    ],
+    "mods": {
+      "dmg_mul": 1.1
+    }
+  },
+  {
+    "id": "rng_all",
+    "name": "Portée +10%",
+    "rarity": "C",
+    "tags": [
+      "UTILITY"
+    ],
+    "mods": {
+      "range_mul": 1.1
+    }
+  },
+  {
+    "id": "rate_all",
+    "name": "Cadence +10%",
+    "rarity": "C",
+    "tags": [
+      "POWER"
+    ],
+    "mods": {
+      "rate_mul": 1.1
+    }
+  },
+  {
+    "id": "gold_kill",
+    "name": "Or/Kill +1",
+    "rarity": "C",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "gold_per_kill": 1
+    }
+  },
+  {
+    "id": "start_gold",
+    "name": "Or immédiat +150",
+    "rarity": "C",
+    "tags": [
+      "ECON"
+    ],
+    "grant": {
+      "gold": 150
+    }
+  },
+  {
+    "id": "core_shield",
+    "name": "Noyau: +8 bouclier",
+    "rarity": "C",
+    "tags": [
+      "DEF"
+    ],
+    "grant": {
+      "core_shield": 8
+    }
+  },
+  {
+    "id": "spell_regen",
+    "name": "Énergie: régénération +20%",
+    "rarity": "C",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_energy_regen_mul": 1.2
+    }
+  },
+  {
+    "id": "path_tax",
+    "name": "Chemin rentable (+12 or / relic traversée)",
+    "rarity": "R",
+    "tags": [
+      "ECON",
+      "PATH"
+    ],
+    "mods": {
+      "flag_path_gold": true
+    }
+  },
+  {
+    "id": "interest_up",
+    "name": "Intérêt +2%",
+    "rarity": "R",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "interest_add": 0.02
+    }
+  },
+  {
+    "id": "overclock_mastery",
+    "name": "Overclock: durée +50%",
+    "rarity": "E",
+    "tags": [
+      "TECH"
+    ],
+    "mods": {
+      "overclock_dur_mul": 1.5
+    }
+  },
+  {
+    "id": "double_cast",
+    "name": "Spells: 20% chance de doubler",
+    "rarity": "E",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_double_chance": 0.2
+    }
+  },
+  {
+    "id": "salvage",
+    "name": "Revente tours: 85%",
+    "rarity": "E",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "sell_refund": 0.85
+    }
+  },
+  {
+    "id": "build_on_rocks",
+    "name": "Ingénierie: construire sur rochers",
+    "rarity": "L",
+    "tags": [
+      "BUILD"
+    ],
+    "mods": {
+      "flag_build_on_rocks": true
+    }
+  },
+  {
+    "id": "chain_reaction",
+    "name": "Réaction en chaîne: explosions + mini-explosion",
+    "rarity": "L",
+    "tags": [
+      "AOE"
+    ],
+    "mods": {
+      "flag_chain_reaction": true
+    }
+  },
+  {
+    "id": "time_dilation",
+    "name": "Dilatation: Spells -30% CD",
+    "rarity": "L",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_cd_mul": 0.7
+    }
+  },
+  {
+    "id": "boss_bounty",
+    "name": "Boss: butin doublé",
+    "rarity": "L",
+    "tags": [
+      "BOSS"
+    ],
+    "mods": {
+      "flag_boss_bounty": true
+    }
+  },
+  {
+    "id": "ascended_forge",
+    "name": "SS+: +60% dmg, ennemis +25% vitesse",
+    "rarity": "SS+",
+    "tags": [
+      "GOD",
+      "RISK"
+    ],
+    "mods": {
+      "dmg_mul": 1.6,
+      "enemy_speed_mul": 1.25
+    }
+  },
+  {
+    "id": "sspp_paradox",
+    "name": "SS++: Spells gratuits, upgrades bloqués",
+    "rarity": "SS++",
+    "tags": [
+      "MYTHIC",
+      "RISK"
+    ],
+    "mods": {
+      "flag_spells_free": true,
+      "flag_lock_upgrades": true
+    }
+  },
+  {
+    "id": "reroll_plus",
+    "name": "Reroll +1 (Perks)",
+    "rarity": "R",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "perk_rerolls_add": 1
+    }
+  }
+]

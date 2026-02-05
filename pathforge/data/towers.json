@@ -1,0 +1,422 @@
+{
+  "GATLING": {
+    "name": "Gatling",
+    "cost": 60,
+    "ui_color": [
+      255,
+      170,
+      0
+    ],
+    "base": {
+      "range": 3.0,
+      "damage": 7,
+      "rate": 10.0,
+      "proj_speed": 11.0,
+      "splash": 0.0,
+      "pierce": 0
+    },
+    "dmg_type": "KINETIC",
+    "role": "DPS",
+    "branches": {
+      "A": {
+        "name": "Brass Rain",
+        "desc": "+35% rate, -10% dmg",
+        "mods": {
+          "rate_mul": 1.35,
+          "damage_mul": 0.9
+        }
+      },
+      "B": {
+        "name": "AP Rounds",
+        "desc": "+30% dmg vs armor",
+        "mods": {
+          "armor_shred": 3
+        }
+      },
+      "C": {
+        "name": "Twin Feed",
+        "desc": "+1 projectile (spread)",
+        "mods": {
+          "multishot": 1
+        }
+      }
+    },
+    "overclock": {
+      "dur": 4.0,
+      "cd": 14.0,
+      "mods": {
+        "rate_mul": 1.6,
+        "damage_mul": 1.15
+      }
+    }
+  },
+  "SNIPER": {
+    "name": "Sniper",
+    "cost": 180,
+    "ui_color": [
+      210,
+      80,
+      220
+    ],
+    "base": {
+      "range": 8.0,
+      "damage": 120,
+      "rate": 0.9,
+      "proj_speed": 22.0,
+      "splash": 0.0,
+      "pierce": 0
+    },
+    "dmg_type": "PIERCE",
+    "role": "BURST",
+    "branches": {
+      "A": {
+        "name": "Headshot",
+        "desc": "Faiblesse +20%",
+        "mods": {
+          "weakness_bonus": 0.2
+        }
+      },
+      "B": {
+        "name": "Shatter",
+        "desc": "Applique VULN",
+        "mods": {
+          "on_hit": {
+            "VULN": {
+              "dur": 2.5,
+              "stacks": 1
+            }
+          }
+        }
+      },
+      "C": {
+        "name": "Rail",
+        "desc": "Pierce +2",
+        "mods": {
+          "pierce_add": 2
+        }
+      }
+    },
+    "overclock": {
+      "dur": 3.0,
+      "cd": 16.0,
+      "mods": {
+        "rate_mul": 1.5,
+        "damage_mul": 1.1
+      }
+    }
+  },
+  "TESLA": {
+    "name": "Tesla",
+    "cost": 200,
+    "ui_color": [
+      80,
+      140,
+      255
+    ],
+    "base": {
+      "range": 3.6,
+      "damage": 26,
+      "rate": 1.6,
+      "proj_speed": 0.0,
+      "splash": 0.0,
+      "pierce": 0
+    },
+    "dmg_type": "ENERGY",
+    "role": "CHAIN",
+    "branches": {
+      "A": {
+        "name": "Arc+",
+        "desc": "+2 chains",
+        "mods": {
+          "chains_add": 2
+        }
+      },
+      "B": {
+        "name": "Capacitor",
+        "desc": "+35% dmg",
+        "mods": {
+          "damage_mul": 1.35
+        }
+      },
+      "C": {
+        "name": "Overload",
+        "desc": "Shock +0.8s",
+        "mods": {
+          "shock_dur_add": 0.8
+        }
+      }
+    },
+    "overclock": {
+      "dur": 4.0,
+      "cd": 18.0,
+      "mods": {
+        "damage_mul": 1.35,
+        "rate_mul": 1.2
+      }
+    }
+  },
+  "CRYO": {
+    "name": "Cryo",
+    "cost": 120,
+    "ui_color": [
+      0,
+      255,
+      255
+    ],
+    "base": {
+      "range": 2.8,
+      "damage": 4,
+      "rate": 3.6,
+      "proj_speed": 0.0,
+      "splash": 0.0,
+      "pierce": 0
+    },
+    "dmg_type": "COLD",
+    "role": "CONTROL",
+    "branches": {
+      "A": {
+        "name": "Deep Freeze",
+        "desc": "Slow +20%",
+        "mods": {
+          "slow_strength_add": 0.2
+        }
+      },
+      "B": {
+        "name": "Fracture",
+        "desc": "Applique SHRED",
+        "mods": {
+          "on_hit": {
+            "SHRED": {
+              "dur": 3.0,
+              "stacks": 1
+            }
+          }
+        }
+      },
+      "C": {
+        "name": "Cold Snap",
+        "desc": "Stun 0.25s",
+        "mods": {
+          "stun_chance": 0.12,
+          "stun_dur": 0.25
+        }
+      }
+    },
+    "overclock": {
+      "dur": 5.0,
+      "cd": 16.0,
+      "mods": {
+        "rate_mul": 1.25
+      }
+    }
+  },
+  "MORTAR": {
+    "name": "Mortar",
+    "cost": 220,
+    "ui_color": [
+      255,
+      120,
+      60
+    ],
+    "base": {
+      "range": 6.0,
+      "damage": 55,
+      "rate": 0.75,
+      "proj_speed": 8.0,
+      "splash": 1.6,
+      "pierce": 0
+    },
+    "dmg_type": "FIRE",
+    "role": "AOE",
+    "branches": {
+      "A": {
+        "name": "Cluster",
+        "desc": "Mini-bombs",
+        "mods": {
+          "cluster": 3
+        }
+      },
+      "B": {
+        "name": "Napalm",
+        "desc": "BURN zone",
+        "mods": {
+          "burn_zone": true
+        }
+      },
+      "C": {
+        "name": "Long Fuse",
+        "desc": "+25% range",
+        "mods": {
+          "range_mul": 1.25
+        }
+      }
+    },
+    "overclock": {
+      "dur": 3.5,
+      "cd": 20.0,
+      "mods": {
+        "rate_mul": 1.45,
+        "damage_mul": 1.2
+      }
+    }
+  },
+  "CANNON": {
+    "name": "Cannon",
+    "cost": 190,
+    "ui_color": [
+      200,
+      210,
+      220
+    ],
+    "base": {
+      "range": 4.2,
+      "damage": 38,
+      "rate": 1.2,
+      "proj_speed": 13.0,
+      "splash": 0.9,
+      "pierce": 0
+    },
+    "dmg_type": "KINETIC",
+    "role": "AOE",
+    "branches": {
+      "A": {
+        "name": "Shrapnel",
+        "desc": "+0.6 splash",
+        "mods": {
+          "splash_add": 0.6
+        }
+      },
+      "B": {
+        "name": "Piercer",
+        "desc": "Pierce +1",
+        "mods": {
+          "pierce_add": 1
+        }
+      },
+      "C": {
+        "name": "Rapid Loader",
+        "desc": "+25% rate",
+        "mods": {
+          "rate_mul": 1.25
+        }
+      }
+    },
+    "overclock": {
+      "dur": 4.0,
+      "cd": 18.0,
+      "mods": {
+        "rate_mul": 1.4
+      }
+    }
+  },
+  "BEACON": {
+    "name": "Beacon",
+    "cost": 160,
+    "ui_color": [
+      255,
+      215,
+      0
+    ],
+    "base": {
+      "range": 3.6,
+      "damage": 0,
+      "rate": 0.0,
+      "proj_speed": 0.0,
+      "splash": 0.0,
+      "pierce": 0
+    },
+    "dmg_type": "NONE",
+    "role": "SUPPORT",
+    "branches": {
+      "A": {
+        "name": "War Drums",
+        "desc": "+12% rate aura",
+        "mods": {
+          "aura": {
+            "rate_mul": 1.12
+          }
+        }
+      },
+      "B": {
+        "name": "Scope Relay",
+        "desc": "+10% range aura",
+        "mods": {
+          "aura": {
+            "range_mul": 1.1
+          }
+        }
+      },
+      "C": {
+        "name": "Power Grid",
+        "desc": "+10% dmg aura",
+        "mods": {
+          "aura": {
+            "dmg_mul": 1.1
+          }
+        }
+      }
+    },
+    "overclock": {
+      "dur": 5.0,
+      "cd": 22.0,
+      "mods": {
+        "aura_overclock": true
+      }
+    }
+  },
+  "FLAME": {
+    "name": "Flame",
+    "cost": 140,
+    "ui_color": [
+      255,
+      80,
+      60
+    ],
+    "base": {
+      "range": 2.4,
+      "damage": 3,
+      "rate": 10.0,
+      "proj_speed": 0.0,
+      "splash": 0.0,
+      "pierce": 0
+    },
+    "dmg_type": "FIRE",
+    "role": "DOT",
+    "branches": {
+      "A": {
+        "name": "Incinerate",
+        "desc": "BURN stacks +1",
+        "mods": {
+          "burn_stacks_add": 1
+        }
+      },
+      "B": {
+        "name": "Wider Cone",
+        "desc": "+30% range",
+        "mods": {
+          "range_mul": 1.3
+        }
+      },
+      "C": {
+        "name": "Hot Air",
+        "desc": "Applique SLOW 10%",
+        "mods": {
+          "on_hit": {
+            "SLOW": {
+              "dur": 1.5,
+              "stacks": 1
+            }
+          }
+        }
+      }
+    },
+    "overclock": {
+      "dur": 4.0,
+      "cd": 16.0,
+      "mods": {
+        "damage_mul": 1.25,
+        "rate_mul": 1.2
+      }
+    }
+  }
+}

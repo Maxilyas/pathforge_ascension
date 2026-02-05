@@ -1,0 +1,638 @@
+from __future__ import annotations
+import pygame, random
+from typing import Optional
+
+from ..core.scene import Scene
+from ..settings import COLS, TOP_BAR_FRAC, BOTTOM_BAR_FRAC, T_EMPTY, T_ROCK, T_PATH, T_PATH_FAST, T_PATH_MUD, T_PATH_CONDUCT, T_PATH_CRYO, T_PATH_MAGMA, T_TOWER, T_START, T_END, T_RELIC
+from ..stats import CombatStats
+from ..world.grid import generate_grid, tile
+from ..world.world import World
+from ..systems.wave_director import WaveDirector
+from ..ui.widgets import Button
+from ..ui.hud import draw_top_bar, draw_bottom_bar
+from ..spells import Spellbook
+
+TOWER_KEYS = ["GATLING","SNIPER","TESLA","CRYO","MORTAR","CANNON","BEACON","FLAME"]
+
+RARITY_WEIGHT = {"C": 66, "R": 22, "E": 9, "L": 2, "SS+": 0.8, "SS++": 0.2}
+
+def tower_color(db, key: str):
+    return tuple(db[key].get("ui_color",[200,200,200]))
+
+class GameScene(Scene):
+    name="GAME"
+    def enter(self, payload=None):
+        self.stats = CombatStats()
+        self.spells = Spellbook()
+
+        # load run if continue
+        run = None
+        if payload and not payload.get("new", True):
+            run = self.game.saves.load_run()
+
+        self.w, self.h = self.game.w, self.game.h
+        self.top_h = int(self.h * TOP_BAR_FRAC)
+        self.bottom_h = int(self.h * BOTTOM_BAR_FRAC)
+        self.game_h = self.h - self.bottom_h
+        self.offset_y = self.top_h
+
+        self.cols = COLS
+        self.tile = self.w // self.cols
+        self.rows = max(10, (self.game_h - self.offset_y) // self.tile)
+
+        # world seed/biome
+        seed = random.randrange(1,2_000_000_000)
+        biome = "HIGHLANDS"
+        if run:
+            seed = int(run.get("seed", seed))
+            biome = run.get("biome", biome)
+        brate = float(self.game.biomes.get(biome,{}).get("rocks", 0.20))
+        gs = generate_grid(self.cols, self.rows, biome=biome, seed=seed, rock_rate=brate)
+
+        self.rng = random.Random(seed)
+        self.world = World(gs, tile_size=self.tile, offset_y=self.offset_y, w=self.w, h=self.game_h,
+                           towers_db=self.game.towers_db, enemies_db=self.game.enemies_db, rng=self.rng)
+
+        self.director = WaveDirector(self.rng)
+
+        self.mode = "BUILD"
+        self.tool = "PATH"
+        self.selected_tower_key = "GATLING"
+        self.dd_open = False
+        self.selected_tower = None
+
+        # path variants (cycle with V) + pave costs
+        self.path_variants = [
+            (T_PATH, "Standard", 1),
+            (T_PATH_FAST, "Route", 2),
+            (T_PATH_MUD, "Boue", 2),
+            (T_PATH_CONDUCT, "Conducteur", 2),
+            (T_PATH_CRYO, "Cryo", 2),
+            (T_PATH_MAGMA, "Magma", 2),
+        ]
+        self.path_variant_idx = 0
+        self.path_tile = self.path_variants[self.path_variant_idx][0]
+
+        # multi wave = difficulty multiplier (doesn't skip wave numbers)
+        self.wave_multi = 1
+
+        # UI
+        bw = self.w // 5
+        bh = self.bottom_h//2 - 12
+        by = self.game_h + 12 + bh
+
+        self.btn_menu = Button(pygame.Rect(12,12,54,54), "", (30,35,40), cb=self._pause, icon="MENU")
+        self.btn_speed = Button(pygame.Rect(self.w-178, 16, 106, 34), "x1", (70,80,90), cb=self._speed)
+        self.btn_talents = Button(pygame.Rect(self.w-58, 12, 46, 46), "", (30,35,40), cb=self._talents, icon="STAR")
+
+        self.btn_path = Button(pygame.Rect(12, by, bw, bh), "CHEMIN", (70,80,90), cb=self._set_tool, arg="PATH")
+        self.btn_tow  = Button(pygame.Rect(24+bw, by, bw, bh), "TOUR", tower_color(self.game.towers_db, self.selected_tower_key), cb=self._toggle_dd)
+        self.btn_ers  = Button(pygame.Rect(36+bw*2, by, bw, bh), "GOMME", (150,60,60), cb=self._set_tool, arg="ERASE")
+
+        bx_as = 48+bw*3
+        self.btn_m_minus = Button(pygame.Rect(bx_as, by, bh, bh), "-", (70,80,90), cb=self._multi, arg=-1)
+        self.btn_go = Button(pygame.Rect(bx_as+bh+6, by, bw-bh*2-12, bh), "ASSAUT", (70,220,140), cb=self._start_wave)
+        self.btn_m_plus = Button(pygame.Rect(bx_as+bw-bh, by, bh, bh), "+", (70,80,90), cb=self._multi, arg=1)
+
+        self.ui_btns = [self.btn_path,self.btn_tow,self.btn_ers,self.btn_m_minus,self.btn_go,self.btn_m_plus]
+
+        self.dd_btns = []
+        for i,k in enumerate(TOWER_KEYS):
+            td = self.game.towers_db[k]
+            rr = pygame.Rect(self.btn_tow.rect.x, self.btn_tow.rect.y-(i+1)*52-6, bw, 52)
+            self.dd_btns.append(Button(rr, f"{td['name']} ${int(td['cost'])}", tuple(td.get("ui_color",[200,200,200])), cb=self._pick_tower, arg=k))
+
+        # wave state
+        self.wave_queue = []
+        self.spawn_timer = 0.0
+
+        # load run content
+        if run:
+            self._load(run)
+
+        self._recalc_plan()
+
+    def _pause(self):
+        self.request("PAUSE", None)
+
+    def _talents(self):
+        self.request("TALENT", {"stats": self.stats})
+
+    def _speed(self):
+        self.game.clock.cycle_speed()
+        self.btn_speed.text = f"x{int(self.game.clock.time_scale)}"
+
+    def _set_tool(self, t):
+        self.tool = t
+        self.dd_open = False
+        self.selected_tower = None
+
+    def _toggle_dd(self):
+        self.dd_open = not self.dd_open
+
+    def _pick_tower(self, k):
+        self.selected_tower_key = k
+        self.tool = "TOWER"
+        self.dd_open = False
+
+    def _multi(self, d):
+        self.wave_multi = max(1, min(5, self.wave_multi + int(d)))
+
+    def _recalc_plan(self):
+        p = self.world.get_path()
+        relics = 0
+        if p:
+            s = set(p)
+            relics = sum(1 for r in self.world.gs.relics if r in s)
+        self.plan = self.director.plan(self.stats.wave, relics_in_path=relics, ascension=self.game.meta.ascension)
+
+    def _perk_bias(self) -> float:
+        # more waves at once => higher rarity
+        return 0.12 * (self.wave_multi - 1)
+
+    def _roll_perks(self, n: int) -> list[dict]:
+        # weights with bias
+        b = self._perk_bias()
+        w = dict(RARITY_WEIGHT)
+        w["C"] *= (1.0 - 0.65*b)
+        w["R"] *= (1.0 - 0.35*b)
+        w["E"] *= (1.0 + 0.60*b)
+        w["L"] *= (1.0 + 1.25*b)
+        w["SS+"] *= (1.0 + 2.00*b)
+        w["SS++"] *= (1.0 + 2.50*b)
+
+        pool = []
+        for p in self.game.perks_db:
+            rar = p.get("rarity","C")
+            k = max(1, int(w.get(rar,1.0)*10))
+            pool.extend([p]*k)
+
+        out=[]
+        for _ in range(n):
+            out.append(self.rng.choice(pool))
+        return out
+
+    def _start_wave(self):
+        if self.mode != "BUILD":
+            return
+        if not self.world.path_valid():
+            self.world.fx_text(80, self.offset_y+10, "Chemin invalide!", (255,120,120), 0.8)
+            return
+        self.mode = "WAVE"
+        self.wave_queue.clear()
+        self.spawn_timer = 0.0
+        self.world.enemies.clear()
+        self.world.projectiles.clear()
+
+        base_list = self.director.spawn_list(self.plan)
+        mult = 1.0 + 0.65*(self.wave_multi-1)
+        count = max(1, int(len(base_list)*mult))
+        for _ in range(count):
+            self.wave_queue.append(self.rng.choice(base_list))
+        if self.plan.boss and "BOSS" not in self.wave_queue:
+            self.wave_queue.insert(0,"BOSS")
+        self.rng.shuffle(self.wave_queue)
+
+    def _end_wave(self):
+        base = 85 + int(self.stats.wave*7)
+        relic_bonus = 1 + int(0.20*(self.plan.relics_in_path))
+        multi_bonus = 1 + int(0.25*(self.wave_multi-1))
+        reward = int(base * relic_bonus * multi_bonus)
+        if self.plan.boss and self.stats.has_flag("flag_boss_bounty"):
+            reward *= 2
+        self.stats.gold += reward
+        self.stats.end_wave_income(self.plan.relics_in_path)
+        # pave regeneration (forge essence): makes path placement a real resource
+        self.stats.paves = min(140, int(self.stats.paves + 4 + min(4, self.plan.relics_in_path) + (2 if self.plan.boss else 0)))
+
+        # boss => +1 talent point
+        if self.plan.boss:
+            self.stats.talent_pts += 1
+
+        # save
+        self.game.request_save = True
+
+        # perk selection
+        options = self._roll_perks(3)
+        self.request("PERK", {"options": options, "stats": self.stats, "rng": self.rng})
+
+        # wave increments by 1 ONLY (no skipping bosses)
+        self.stats.wave += 1
+        self.mode = "BUILD"
+        self._recalc_plan()
+
+    def _serialize(self) -> dict:
+        gs = self.world.gs
+        flat=[]
+        for y in range(gs.rows):
+            for x in range(gs.cols):
+                flat.append(gs.grid[x][y])
+        tw=[]
+        for t in self.world.towers:
+            tw.append({
+                "gx":t.gx,"gy":t.gy,"key":t.defn.key,
+                "level":t.level,"spent":t.spent,
+                "branch":t.branch_choice,
+                "target":t.target_mode_idx,
+                "oc_cd":t.overclock_cd,"oc_t":t.overclock_time
+            })
+        return {
+            "seed": gs.seed,
+            "biome": gs.biome,
+            "grid":{"cols":gs.cols,"rows":gs.rows,"flat":flat,"start":list(gs.start),"end":list(gs.end),"relics":[list(r) for r in gs.relics]},
+            "towers": tw,
+            "hero":{"x":self.world.hero.state.x,"y":self.world.hero.state.y,"dash_cd":self.world.hero.state.dash_cd,"shock_cd":self.world.hero.state.shock_cd},
+            "stats": {
+                "gold": self.stats.gold, "fragments": self.stats.fragments, "paves": self.stats.paves, "lives": self.stats.lives, "core_shield": self.stats.core_shield,
+                "wave": self.stats.wave, "talent_pts": self.stats.talent_pts, "talent_nodes": list(self.stats.talent_nodes),
+                "perk_rerolls": self.stats.perk_rerolls,
+                "dmg_mul": self.stats.dmg_mul, "rate_mul": self.stats.rate_mul, "range_mul": self.stats.range_mul,
+                "gold_per_kill": self.stats.gold_per_kill, "frag_chance": self.stats.frag_chance, "interest": self.stats.interest,
+                "weakness_mul": self.stats.weakness_mul, "enemy_speed_mul": self.stats.enemy_speed_mul,
+                "tower_cost_mul": self.stats.tower_cost_mul, "sell_refund": self.stats.sell_refund,
+                "overclock_dur_mul": self.stats.overclock_dur_mul,
+                "spell_cd_mul": self.stats.spell_cd_mul, "spell_energy_regen_mul": self.stats.spell_energy_regen_mul, "spell_double_chance": self.stats.spell_double_chance,
+                "flags": self.stats.flags, "tower_bonus": self.stats.tower_bonus, "spell_bonus": self.stats.spell_bonus
+            }
+        }
+
+    def _load(self, run: dict):
+        # stats
+        s = run.get("stats") or {}
+        for k,v in s.items():
+            if hasattr(self.stats, k):
+                setattr(self.stats, k, v)
+        # migrate / sanitize types from JSON
+        self.stats._ensure_talent_nodes_set()
+        try:
+            self.stats.gold = int(self.stats.gold)
+            self.stats.fragments = int(self.stats.fragments)
+            self.stats.paves = int(getattr(self.stats,'paves',0))
+            self.stats.lives = int(self.stats.lives)
+            self.stats.core_shield = int(self.stats.core_shield)
+            self.stats.wave = int(self.stats.wave)
+            self.stats.talent_pts = int(self.stats.talent_pts)
+        except:
+            pass
+        # grid
+        g = run.get("grid") or {}
+        flat = g.get("flat") or []
+        if len(flat) == self.cols*self.rows:
+            for y in range(self.rows):
+                for x in range(self.cols):
+                    self.world.gs.grid[x][y] = int(flat[y*self.cols+x])
+        self.world.gs.relics = [tuple(r) for r in g.get("relics",[])]
+        self.world.invalidate_path()
+
+        # towers
+        self.world.towers.clear()
+        for td in (run.get("towers") or []):
+            gx,gy = int(td["gx"]), int(td["gy"])
+            key = td["key"]
+            # allow placing into already T_TOWER cells
+            self.world.gs.grid[gx][gy] = T_EMPTY
+            t = self.world.add_tower(gx,gy,key, allow_on_rock=True)
+            if not t: 
+                continue
+            t.level = int(td.get("level",1))
+            t.spent = int(td.get("spent", t.spent))
+            t.target_mode_idx = int(td.get("target",0))
+            br = td.get("branch")
+            if br:
+                t.apply_branch(br)
+            t.overclock_cd = float(td.get("oc_cd",0.0))
+            t.overclock_time = float(td.get("oc_t",0.0))
+
+        # hero
+        h = run.get("hero") or {}
+        self.world.hero.state.x = float(h.get("x", self.world.hero.state.x))
+        self.world.hero.state.y = float(h.get("y", self.world.hero.state.y))
+        self.world.hero.state.dash_cd = float(h.get("dash_cd",0.0))
+        self.world.hero.state.shock_cd = float(h.get("shock_cd",0.0))
+
+    def handle_event(self, event):
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE: self._pause()
+            if event.key == pygame.K_f: self._speed()
+
+            # build tool hotkeys
+            if event.key == pygame.K_c: self._set_tool("PATH")
+            if event.key == pygame.K_b: self._set_tool("TOWER")
+            if event.key == pygame.K_x: self._set_tool("ERASE")
+            if event.key == pygame.K_g: self._start_wave()
+
+            if event.key == pygame.K_v and self.tool == "PATH":
+                self.path_variant_idx = (self.path_variant_idx + 1) % len(self.path_variants)
+                self.path_tile = self.path_variants[self.path_variant_idx][0]
+                _, nm, cost = self.path_variants[self.path_variant_idx]
+                self.world.fx_text(80, self.offset_y + 18, f"Chemin: {nm} (coût {cost})", (255,215,0), 0.8)
+
+            # hero skills
+            if event.key == pygame.K_LSHIFT:
+                mx,my = pygame.mouse.get_pos()
+                self.world.hero.dash(mx-self.world.hero.state.x, my-self.world.hero.state.y, self.world)
+            if event.key == pygame.K_a:
+                self.world.rebuild_spatial()
+                self.world.hero.shock(self.world)
+
+            # tower targeting/overclock
+            if self.selected_tower and event.key == pygame.K_TAB:
+                self.selected_tower.cycle_target_mode()
+            if self.selected_tower and event.key == pygame.K_e:
+                if self.selected_tower.can_overclock():
+                    self.selected_tower.trigger_overclock()
+                    self.selected_tower.overclock_time *= float(self.stats.overclock_dur_mul)
+                    self.world.fx_text(self.selected_tower.gx*self.tile, self.selected_tower.gy*self.tile+self.offset_y, "OVERCLOCK", (255,215,0), 0.7)
+
+            # spells
+            if event.key in (pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4):
+                key = {pygame.K_1:"METEOR", pygame.K_2:"FREEZE", pygame.K_3:"REPAIR", pygame.K_4:"DRONE"}[event.key]
+                mx,my = pygame.mouse.get_pos()
+                self.world.rebuild_spatial()
+                self.spells.cast(key, self.world, self.stats, (mx,my))
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mx,my = event.pos
+            if event.button == 3:
+                self.world.hero.set_target(mx,my)
+                return
+
+            if self.btn_menu.click(event.pos): return
+            if self.btn_speed.click(event.pos): return
+            if self.btn_talents.click(event.pos): return
+
+            if self.dd_open:
+                hit=False
+                for b in self.dd_btns:
+                    if b.click(event.pos):
+                        hit=True
+                if not hit:
+                    self.dd_open = False
+                return
+
+            # tower panel interaction
+            if self.selected_tower:
+                panel = pygame.Rect(self.w-380, self.offset_y+90, 360, 260)
+                upg = pygame.Rect(panel.x+20, panel.y+200, 160, 44)
+                sell = pygame.Rect(panel.x+200, panel.y+200, 140, 44)
+
+                if upg.collidepoint(event.pos):
+                    if self.stats.has_flag("flag_lock_upgrades"):
+                        self.world.fx_text(panel.x+30, panel.y+10, "Upgrades bloqués!", (255,120,120), 0.9)
+                        return
+                    cost = self.selected_tower.upgrade_cost()
+                    if self.stats.gold >= cost:
+                        self.stats.gold -= cost
+                        self.selected_tower.upgrade()
+                    return
+                if sell.collidepoint(event.pos):
+                    self.stats.gold += int(self.selected_tower.spent * float(self.stats.sell_refund))
+                    self.world.remove_tower(self.selected_tower)
+                    self.selected_tower = None
+                    return
+
+                if self.selected_tower.can_branch():
+                    for i,br in enumerate(["A","B","C"]):
+                        rr = pygame.Rect(panel.x+20, panel.y+60+i*44, 320, 38)
+                        if rr.collidepoint(event.pos):
+                            self.selected_tower.apply_branch(br)
+                            return
+
+                tc = self.world.tile_at_pixel(mx,my)
+                if tc:
+                    t = self.world.tower_at(*tc)
+                    self.selected_tower = t
+                else:
+                    self.selected_tower = None
+                return
+
+            for b in self.ui_btns:
+                if b.click(event.pos):
+                    return
+
+            # map interaction
+            tc = self.world.tile_at_pixel(mx,my)
+            if not tc or self.mode != "BUILD":
+                return
+            gx,gy = tc
+            v = self.world.gs.grid[gx][gy]
+            tow = self.world.tower_at(gx,gy)
+            if tow:
+                self.selected_tower = tow
+                self.tool = "NONE"
+                return
+
+            if self.tool == "TOWER":
+                cost = int(self.game.towers_db[self.selected_tower_key]["cost"] * float(self.stats.tower_cost_mul))
+                allow_rock = self.stats.has_flag("flag_build_on_rocks")
+                can_build = (v == T_EMPTY) or (allow_rock and v == T_ROCK)
+                if can_build and self.stats.gold >= cost:
+                    # if building on rock, temporarily set empty for placement
+                    if allow_rock and v == T_ROCK:
+                        self.world.gs.grid[gx][gy] = T_EMPTY
+                    t = self.world.add_tower(gx,gy,self.selected_tower_key, allow_on_rock=allow_rock)
+                    if t:
+                        self.stats.gold -= cost
+                    else:
+                        # restore if failed
+                        if allow_rock and v == T_ROCK:
+                            self.world.gs.grid[gx][gy] = T_ROCK
+
+            elif self.tool == "PATH":
+                tile_val, nm, cost = self.path_variants[self.path_variant_idx]
+                if self.stats.paves < cost:
+                    self.world.fx_text(80, self.offset_y+18, "Plus de pavés!", (255,80,80), 0.7)
+                else:
+                    if self.world.build_path_tile(gx,gy, tile_value=tile_val):
+                        self.stats.paves -= cost
+            elif self.tool == "ERASE":
+                self.world.erase_tile(gx,gy)
+
+        if event.type == pygame.MOUSEMOTION:
+            if pygame.mouse.get_pressed()[0] and self.tool == "PATH" and self.mode == "BUILD" and not self.dd_open and not self.selected_tower:
+                tc = self.world.tile_at_pixel(*event.pos)
+                if tc:
+                    tile_val, nm, cost = self.path_variants[self.path_variant_idx]
+                    if self.stats.paves >= cost:
+                        if self.world.build_path_tile(*tc, tile_value=tile_val):
+                            self.stats.paves -= cost
+
+    def update(self, dt: float):
+        dt = self.game.clock.scaled_dt(dt)
+
+        # set world multipliers/flags
+        self.world.weakness_mul = self.stats.weakness_mul
+        self.world.enemy_speed_mul = self.stats.enemy_speed_mul
+        self.world.flag_all_projectiles_splash = self.stats.has_flag("flag_all_projectiles_splash")
+        self.world.flag_chain_reaction = self.stats.has_flag("flag_chain_reaction")
+
+        # spell regen
+        self.spells.tick(dt, self.stats.spell_energy_regen_mul)
+
+        # hero
+        keys = pygame.key.get_pressed()
+        self.world.hero.update(dt, keys, self.world)
+
+        # build spatial
+        self.world.rebuild_spatial()
+
+        if self.mode == "WAVE":
+            self.spawn_timer += dt
+            spawn_gap = max(0.14, 0.34 - 0.03*(self.wave_multi-1))
+            if self.wave_queue and self.spawn_timer >= spawn_gap:
+                self.spawn_timer = 0.0
+                key = self.wave_queue.pop(0)
+                self.world.spawn_enemy(key, wave=self.stats.wave, gold_bonus=self.stats.gold_per_kill)
+
+            # update enemies
+            for e in list(self.world.enemies):
+                e.update(dt)
+                # boss phases spawn adds
+                while e.spawn_signals:
+                    sig = e.spawn_signals.pop(0)
+                    if sig == "PHASE1":
+                        self.world.fx_text(self.w//2-60, self.offset_y+40, "BOSS PHASE 1", (255,215,0), 0.9)
+                        for _ in range(4 + self.wave_multi):
+                            ne = self.world.spawn_enemy("SCOUT", wave=self.stats.wave, gold_bonus=self.stats.gold_per_kill)
+                            if ne:
+                                ne.x, ne.y = e.x, e.y
+                                ne.idx = max(0, e.idx-1)
+                    if sig == "PHASE2":
+                        self.world.fx_text(self.w//2-60, self.offset_y+40, "BOSS PHASE 2", (255,120,80), 0.9)
+                        for _ in range(2 + self.wave_multi):
+                            ne = self.world.spawn_enemy("ELITE", wave=self.stats.wave, gold_bonus=self.stats.gold_per_kill)
+                            if ne:
+                                ne.x, ne.y = e.x, e.y
+                                ne.idx = max(0, e.idx-1)
+
+                if e.finished:
+                    if self.stats.core_shield > 0:
+                        self.stats.core_shield -= 1
+                    else:
+                        self.stats.lives -= 1
+                    self.world.enemies.remove(e)
+                    if self.stats.lives <= 0:
+                        self.request("MENU", None)
+                elif not e.alive:
+                    gold = e.reward_gold
+                    if self.plan.boss and self.stats.has_flag("flag_boss_bounty") and "BOSS" in e.arch.tags:
+                        gold *= 2
+                    self.stats.gold += gold
+                    if self.rng.random() < self.stats.frag_chance + (0.12 if e.is_elite() else 0.0):
+                        self.stats.fragments += 1 + (1 if e.is_elite() else 0)
+                    self.world.enemies.remove(e)
+
+            # towers
+            buffs = {"dmg_mul":1.0,"rate_mul":1.0,"range_mul":1.0}
+            # beacon aura stacks
+            for t in self.world.towers:
+                a = t.aura()
+                if a:
+                    buffs["dmg_mul"] *= float(a.get("dmg_mul", 1.0))
+                    buffs["rate_mul"] *= float(a.get("rate_mul", 1.0))
+                    buffs["range_mul"] *= float(a.get("range_mul", 1.0))
+
+            for t in self.world.towers:
+                # global poison perk
+                if self.stats.has_flag("flag_global_poison_on_hit"):
+                    t.mods.setdefault("on_hit", {}).setdefault("POISON", {"dur":2.0,"stacks":1})
+                t.update(dt, self.world, self.rng, self.stats, buffs)
+
+            self.world.update_projectiles(dt)
+            self.world.update_fx(dt)
+
+            if not self.wave_queue and not any(e.alive and not e.finished for e in self.world.enemies):
+                self._end_wave()
+
+        else:
+            # build mode: just fx/projectiles
+            self.world.update_projectiles(dt)
+            self.world.update_fx(dt)
+            self._recalc_plan()
+
+        # autosave
+        if self.game.request_save:
+            self.game.request_save = False
+            self.game.saves.save_run(self._serialize())
+
+    def draw(self, screen):
+        tint = tuple(self.game.biomes.get(self.world.gs.biome, {}).get("tint", [24,32,44]))
+        self.world.draw_map(screen, self.game.fonts, biome_tint=tint)
+
+        self._recalc_plan()
+        path_ok = self.world.path_valid()
+
+        draw_top_bar(
+            screen, self.game.fonts, self.w, self.top_h, self.stats,
+            self.game.clock.time_scale, self.plan.keywords, path_ok,
+            self.stats.fragments, self.spells.energy, self.spells.energy_max
+        )
+
+        cost = int(self.game.towers_db[self.selected_tower_key]["cost"] * float(self.stats.tower_cost_mul))
+        draw_bottom_bar(
+            screen, self.game.fonts, self.w, self.game_h, self.bottom_h,
+            self.mode, self.tool, self.game.towers_db[self.selected_tower_key]["name"], cost,
+            self.wave_multi,
+            tooltip_line="C chemin | B tours | X gomme | G assaut | TAB ciblage | E overclock | SHIFT dash | A choc | 1..4 spells | F vitesse",
+            tool_extra=(f"{self.path_variants[self.path_variant_idx][1]} coût {self.path_variants[self.path_variant_idx][2]} | PAVES {self.stats.paves}" if self.tool=="PATH" else "")
+        )
+
+        # update speed/tower button visuals
+        self.btn_speed.text = f"x{int(self.game.clock.time_scale)}"
+        self.btn_tow.text = self.game.towers_db[self.selected_tower_key]["name"]
+        self.btn_tow.col = tower_color(self.game.towers_db, self.selected_tower_key)
+        self.btn_go.text = f"ASSAUT x{self.wave_multi}" if self.mode == "BUILD" else "EN COURS..."
+        self.btn_go.disabled = (self.mode != "BUILD") or (not path_ok)
+
+        # buttons
+        if not self.selected_tower:
+            for b in self.ui_btns:
+                b.draw(screen, self.game.fonts)
+
+        if self.dd_open:
+            bg = pygame.Rect(self.btn_tow.rect.x, self.btn_tow.rect.y - len(self.dd_btns)*52 - 12, self.btn_tow.rect.w, len(self.dd_btns)*52 + 12)
+            pygame.draw.rect(screen, (22,22,26), bg, border_radius=12)
+            for b in self.dd_btns:
+                b.draw(screen, self.game.fonts)
+
+        # tower panel
+        if self.selected_tower:
+            t = self.selected_tower
+            panel = pygame.Rect(self.w-380, self.offset_y+90, 360, 260)
+            pygame.draw.rect(screen, (22,22,26), panel, border_radius=14)
+            pygame.draw.rect(screen, (255,215,0), panel, 2, border_radius=14)
+
+            lines = [
+                f"{t.defn.name}  Lvl {t.level} [{t.defn.role}]",
+                f"Ciblage: {['FIRST','LAST','STRONGEST','CLOSEST','ARMORED'][t.target_mode_idx]}",
+                f"Branche: {t.branch_choice or '—'}",
+                f"Overclock: {'ACTIF' if t.overclock_time>0 else ('READY' if t.can_overclock() else 'CD')}  ({t.overclock_time:.1f}s)"
+            ]
+            y = panel.y+14
+            for line in lines:
+                s = self.game.fonts.s.render(line, True, (240,240,240))
+                screen.blit(s, (panel.x+14, y)); y += 22
+
+            if t.can_branch():
+                br_defs = t.defn.branches
+                for i, br in enumerate(["A","B","C"]):
+                    rr = pygame.Rect(panel.x+20, panel.y+60+i*44, 320, 38)
+                    pygame.draw.rect(screen, (60,70,80), rr, border_radius=10)
+                    pygame.draw.rect(screen, (255,215,0), rr, 1, border_radius=10)
+                    name = br_defs[br]["name"]
+                    desc = br_defs[br]["desc"]
+                    txt = self.game.fonts.xs.render(f"{br}: {name} — {desc}", True, (255,215,0))
+                    screen.blit(txt, (rr.x+10, rr.y+11))
+
+            upg = pygame.Rect(panel.x+20, panel.y+200, 160, 44)
+            sell = pygame.Rect(panel.x+200, panel.y+200, 140, 44)
+            pygame.draw.rect(screen, (70,220,140), upg, border_radius=10)
+            pygame.draw.rect(screen, (220,90,90), sell, border_radius=10)
+            upg_t = self.game.fonts.s.render(f"UPG ${t.upgrade_cost()}", True, (20,20,20))
+            screen.blit(upg_t, (upg.centerx-upg_t.get_width()//2, upg.centery-upg_t.get_height()//2))
+            sell_t = self.game.fonts.s.render(f"SELL ${int(t.spent*float(self.stats.sell_refund))}", True, (20,20,20))
+            screen.blit(sell_t, (sell.centerx-sell_t.get_width()//2, sell.centery-sell_t.get_height()//2))
+
+        self.btn_menu.draw(screen, self.game.fonts)
+        self.btn_speed.draw(screen, self.game.fonts)
+        self.btn_talents.draw(screen, self.game.fonts)
