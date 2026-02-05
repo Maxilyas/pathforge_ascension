@@ -39,6 +39,7 @@ class Enemy:
     next_cell: Optional[Tuple[int,int]] = None
 
     idx: int = 0  # used for targeting modes (FIRST/LAST); higher = closer to end
+    path_i: int = 0  # legacy fixed-path index (used when branching fails)
     x: float = 0.0
     y: float = 0.0
 
@@ -65,6 +66,7 @@ class Enemy:
     def __post_init__(self):
         self.x, self.y = self._pos(self.path[0])
         self.cell = self.path[0]
+        self.path_i = 0
         tier = 1.0 + 0.23 * (self.wave-1)
         self.max_hp = 30.0 * float(self.arch.hp) * tier
         self.hp = self.max_hp
@@ -225,15 +227,26 @@ class Enemy:
             # terrain speed mul
             spd *= float(world.path_speed_mul(self.tile_v))
 
-        # branch-capable movement
-        if world and self.next_cell is not None:
-            tx, ty = self._pos(self.next_cell)
+        # branch-capable movement (with robust fallback)
+        use_branch = False
+        target_cell = None
+
+        if world:
+            # If we somehow lost next_cell (cache/path edits/edge), try to recover.
+            if self.next_cell is None:
+                self.next_cell = world.next_cell(self.cell, self.prev_cell, rng or world.rng)
+            target_cell = self.next_cell
+
+        if world and target_cell is not None:
+            tx, ty = self._pos(target_cell)
+            use_branch = True
         else:
-            # legacy fixed path fallback
-            if self.idx >= len(self.path)-1:
+            # legacy fixed-path fallback (DO NOT use self.idx as list index; idx is a progress proxy)
+            if self.path_i >= len(self.path) - 1:
+                # if we're already at/after the end, finish
                 self.finished = True
                 return
-            tx, ty = self._pos(self.path[self.idx+1])
+            tx, ty = self._pos(self.path[self.path_i + 1])
 
         dx, dy = tx-self.x, ty-self.y
         dist = math.hypot(dx,dy) or 1.0
@@ -241,11 +254,11 @@ class Enemy:
         if dist <= step:
             self.x, self.y = tx, ty
 
-            if world and self.next_cell is not None:
+            if use_branch and world and target_cell is not None:
+                # advance along branching lane
                 self.prev_cell = self.cell
-                self.cell = self.next_cell
+                self.cell = target_cell
 
-                # update idx as "progress" using distmap (higher = closer to end)
                 dmap = world.get_distmap()
                 self.idx = -int(dmap.get(self.cell, 9999))
 
@@ -256,15 +269,32 @@ class Enemy:
 
                 self.next_cell = world.next_cell(self.cell, self.prev_cell, rng or world.rng)
 
-                # sapper corruption tick (real dt)
-                if "SAPPER" in self.arch.tags:
-                    self._sapper_t += dt
-                    if self._sapper_t >= 2.4:
-                        self._sapper_t = 0.0
-                        world.corrupt_near(self.cell, rng or world.rng)
-
             else:
-                self.idx += 1
+                # advance along fixed path safely
+                self.path_i = min(self.path_i + 1, len(self.path) - 1)
+                self.prev_cell = self.cell
+                self.cell = self.path[self.path_i]
+
+                if world:
+                    dmap = world.get_distmap()
+                    self.idx = -int(dmap.get(self.cell, 9999))
+                    if self.cell == world.gs.end or dmap.get(self.cell, 9999) == 0:
+                        self.finished = True
+                        return
+                    # attempt to re-enter branching logic from here
+                    self.next_cell = world.next_cell(self.cell, self.prev_cell, rng or world.rng)
+                else:
+                    if self.path_i >= len(self.path) - 1:
+                        self.finished = True
+                        return
+
+            # sapper corruption tick (real dt), regardless of movement mode
+            if world and "SAPPER" in self.arch.tags:
+                self._sapper_t += dt
+                if self._sapper_t >= 2.4:
+                    self._sapper_t = 0.0
+                    world.corrupt_near(self.cell, rng or world.rng)
+
         else:
             self.x += (dx/dist)*step
             self.y += (dy/dist)*step

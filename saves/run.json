@@ -95,8 +95,8 @@
       0,
       0,
       0,
-      2,
-      2,
+      0,
+      0,
       1,
       0,
       9,
@@ -248,33 +248,11 @@
   "towers": [
     {
       "gx": 3,
-      "gy": 4,
-      "key": "FLAME",
-      "level": 9,
-      "spent": 2628,
-      "branch": "A",
-      "target": 0,
-      "oc_cd": 0.0,
-      "oc_t": 0.0
-    },
-    {
-      "gx": 3,
       "gy": 6,
       "key": "BEACON",
       "level": 3,
       "spent": 568,
       "branch": "C",
-      "target": 0,
-      "oc_cd": 0.0,
-      "oc_t": 0.0
-    },
-    {
-      "gx": 2,
-      "gy": 4,
-      "key": "GATLING",
-      "level": 6,
-      "spent": 1055,
-      "branch": "B",
       "target": 0,
       "oc_cd": 0.0,
       "oc_t": 0.0
@@ -287,26 +265,28 @@
     "shock_cd": 0.0
   },
   "stats": {
-    "gold": 733,
-    "fragments": 19,
-    "paves": 114,
-    "lives": 21,
-    "core_shield": 19,
-    "wave": 11,
-    "talent_pts": 1,
-    "talent_nodes": [],
+    "gold": 6742,
+    "fragments": 33,
+    "paves": 140,
+    "lives": 10,
+    "core_shield": 0,
+    "wave": 15,
+    "talent_pts": 0,
+    "talent_nodes": [
+      "P1"
+    ],
     "perk_rerolls": 2,
-    "dmg_mul": 1.3310000000000004,
+    "dmg_mul": 1.4907200000000005,
     "rate_mul": 1.0,
     "range_mul": 1.0,
     "gold_per_kill": 0,
     "frag_chance": 0.1,
-    "interest": 0.04,
+    "interest": 0.06,
     "weakness_mul": 1.8,
     "enemy_speed_mul": 1.0,
     "tower_cost_mul": 1.0,
     "sell_refund": 0.7,
-    "overclock_dur_mul": 2.25,
+    "overclock_dur_mul": 3.375,
     "spell_cd_mul": 1.0,
     "spell_energy_regen_mul": 1.0,
     "spell_double_chance": 0.2,
@@ -314,5 +294,5 @@
     "tower_bonus": {},
     "spell_bonus": {}
   },
-  "saved_at": 1770327917.5579822
+  "saved_at": 1770328533.5842178
 }
