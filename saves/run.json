@@ -57,7 +57,7 @@
       9,
       9,
       1,
-      0,
+      2,
       0,
       9,
       0,
@@ -95,7 +95,7 @@
       0,
       0,
       0,
-      0,
+      2,
       0,
       1,
       0,
@@ -256,6 +256,28 @@
       "target": 0,
       "oc_cd": 0.0,
       "oc_t": 0.0
+    },
+    {
+      "gx": 2,
+      "gy": 4,
+      "key": "FLAME",
+      "level": 1,
+      "spent": 140,
+      "branch": null,
+      "target": 0,
+      "oc_cd": 0.0,
+      "oc_t": 0.0
+    },
+    {
+      "gx": 8,
+      "gy": 2,
+      "key": "FLAME",
+      "level": 1,
+      "spent": 140,
+      "branch": null,
+      "target": 0,
+      "oc_cd": 0.0,
+      "oc_t": 0.0
     }
   ],
   "hero": {
@@ -265,17 +287,17 @@
     "shock_cd": 0.0
   },
   "stats": {
-    "gold": 6742,
-    "fragments": 33,
+    "gold": 8034,
+    "fragments": 35,
     "paves": 140,
-    "lives": 10,
+    "lives": 2,
     "core_shield": 0,
-    "wave": 15,
+    "wave": 16,
     "talent_pts": 0,
     "talent_nodes": [
       "P1"
     ],
-    "perk_rerolls": 2,
+    "perk_rerolls": 3,
     "dmg_mul": 1.4907200000000005,
     "rate_mul": 1.0,
     "range_mul": 1.0,
@@ -294,5 +316,5 @@
     "tower_bonus": {},
     "spell_bonus": {}
   },
-  "saved_at": 1770328533.5842178
+  "saved_at": 1770329036.3815327
 }

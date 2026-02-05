@@ -14,6 +14,7 @@ from .scenes.pause import PauseScene
 from .scenes.perk import PerkScene
 from .scenes.settings_scene import SettingsScene
 from .scenes.talent import TalentScene
+from .scenes.bestiary import BestiaryScene
 
 
 class Game:
@@ -52,6 +53,7 @@ class Game:
             "PERK": PerkScene(self),
             "SETTINGS": SettingsScene(self),
             "TALENT": TalentScene(self),
+            "BESTIARY": BestiaryScene(self),
         }
         self.scene = self.scenes["MENU"]
         self.scene.enter(None)
@@ -118,7 +120,7 @@ class Game:
 
             res = self.scene.consume_result()
             if res.next_scene:
-                overlays = {"PAUSE", "PERK", "TALENT"}
+                overlays = {"PAUSE", "PERK", "TALENT", "BESTIARY"}
                 if res.next_scene == "BACK":
                     if self.scene_stack:
                         self.scene.exit()

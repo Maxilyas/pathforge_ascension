@@ -12,7 +12,8 @@ class MenuScene(Scene):
 
         self.btn_new = Button(rc(320,78,-70), "NOUVELLE PARTIE", (70,80,90), cb=self._new)
         self.btn_cont = Button(rc(320,78,30), "CONTINUER", (255,215,0), cb=self._cont)
-        self.btn_settings = Button(rc(320,78,130), "OPTIONS", (70,80,90), cb=self._settings)
+        self.btn_bestiary = Button(rc(320,78,130), "BESTIAIRE", (70,80,90), cb=self._bestiary)
+        self.btn_settings = Button(rc(320,78,230), "OPTIONS", (70,80,90), cb=self._settings)
 
         self.btn_cont.disabled = (self.game.saves.load_run() is None)
 
@@ -23,6 +24,9 @@ class MenuScene(Scene):
     def _cont(self):
         self.request("GAME", {"new": False})
 
+    def _bestiary(self):
+        self.request("BESTIARY", None)
+
     def _settings(self):
         self.request("SETTINGS", None)
 
@@ -30,6 +34,7 @@ class MenuScene(Scene):
         if event.type == pygame.MOUSEBUTTONDOWN:
             self.btn_new.click(event.pos)
             self.btn_cont.click(event.pos)
+            self.btn_bestiary.click(event.pos)
             self.btn_settings.click(event.pos)
 
     def draw(self, screen):
@@ -38,4 +43,5 @@ class MenuScene(Scene):
         screen.blit(t, (self.game.w//2 - t.get_width()//2, 110))
         self.btn_new.draw(screen, self.game.fonts)
         self.btn_cont.draw(screen, self.game.fonts)
+        self.btn_bestiary.draw(screen, self.game.fonts)
         self.btn_settings.draw(screen, self.game.fonts)
