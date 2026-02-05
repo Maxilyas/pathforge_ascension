@@ -12,7 +12,17 @@
     "regen": 0,
     "shield": 0,
     "weak": null,
-    "tags": []
+    "tags": [],
+    "resist": {
+      "KINETIC": 1.0,
+      "PIERCE": 1.0,
+      "ENERGY": 1.0,
+      "FIRE": 1.0,
+      "COLD": 0.9,
+      "BIO": 1.0,
+      "EXPLOSIVE": 1.0
+    },
+    "desc": "Infanterie standard. Facile à abattre mais sert de référence pour le timing."
   },
   "SCOUT": {
     "name": "Scout",
@@ -29,7 +39,17 @@
     "weak": "KINETIC",
     "tags": [
       "FAST"
-    ]
+    ],
+    "resist": {
+      "KINETIC": 1.0,
+      "PIERCE": 0.85,
+      "ENERGY": 1.0,
+      "FIRE": 1.0,
+      "COLD": 1.1,
+      "BIO": 1.0,
+      "EXPLOSIVE": 1.0
+    },
+    "desc": "Très rapide. Difficile à toucher à longue distance. À contrôler tôt (slow) ou rafales KINETIC."
   },
   "TANK": {
     "name": "Tank",
@@ -46,7 +66,17 @@
     "weak": "PIERCE",
     "tags": [
       "ARMORED"
-    ]
+    ],
+    "resist": {
+      "KINETIC": 0.6,
+      "PIERCE": 1.0,
+      "ENERGY": 1.0,
+      "FIRE": 0.9,
+      "COLD": 1.0,
+      "BIO": 1.0,
+      "EXPLOSIVE": 1.0
+    },
+    "desc": "Blindage épais (ARMORED). Résiste aux balles. Se fait démonter par PIERCE et SHRED + focus."
   },
   "MUTANT": {
     "name": "Mutant",
@@ -63,7 +93,17 @@
     "weak": "FIRE",
     "tags": [
       "REGEN"
-    ]
+    ],
+    "resist": {
+      "KINETIC": 1.0,
+      "PIERCE": 1.0,
+      "ENERGY": 1.0,
+      "FIRE": 1.0,
+      "COLD": 0.85,
+      "BIO": 0.55,
+      "EXPLOSIVE": 1.0
+    },
+    "desc": "Régénération massive. Le FIRE (BURN) réduit sa regen : indispensable. Sinon il out-heal."
   },
   "ELITE": {
     "name": "Elite",
@@ -82,7 +122,26 @@
       "ELITE",
       "ARMORED",
       "SHIELD"
-    ]
+    ],
+    "resist": {
+      "KINETIC": 0.55,
+      "PIERCE": 0.75,
+      "ENERGY": 1.0,
+      "FIRE": 0.85,
+      "COLD": 1.0,
+      "BIO": 1.0,
+      "EXPLOSIVE": 1.0
+    },
+    "shield_mult": {
+      "ENERGY": 1.35,
+      "KINETIC": 0.75,
+      "PIERCE": 0.9,
+      "FIRE": 1.0,
+      "COLD": 1.0,
+      "BIO": 1.0,
+      "EXPLOSIVE": 1.0
+    },
+    "desc": "Armure + bouclier. ENERGY est le meilleur pour vider le shield. Combine SHRED/VULN + burst."
   },
   "BOSS": {
     "name": "Apex Warden",
@@ -102,6 +161,25 @@
       "ELITE",
       "ARMORED",
       "SHIELD"
-    ]
+    ],
+    "resist": {
+      "KINETIC": 0.55,
+      "PIERCE": 0.65,
+      "ENERGY": 1.0,
+      "FIRE": 0.82,
+      "COLD": 0.82,
+      "BIO": 0.9,
+      "EXPLOSIVE": 1.0
+    },
+    "shield_mult": {
+      "ENERGY": 1.45,
+      "KINETIC": 0.7,
+      "PIERCE": 0.85,
+      "FIRE": 1.0,
+      "COLD": 1.0,
+      "BIO": 1.0,
+      "EXPLOSIVE": 1.0
+    },
+    "desc": "Boss. Très gros bouclier + phases. ENERGY + Conducteur/Rune pour casser le shield, puis burst PIERCE."
   }
 }

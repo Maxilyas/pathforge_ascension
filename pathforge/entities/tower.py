@@ -84,12 +84,24 @@ class Tower:
     def _stat(self, key: str, base_val: float, stats, buffs) -> float:
         # base scaling
         v = base_val
+        lvl = max(0, self.level - 1)
+
+        # --- progression: mostly linear + caps (avoid exponential runaway) ---
+        # Design goal: towers don't become absurd by leveling alone; synergies (paths/runes/perks/branches) matter.
         if key == "damage":
-            v *= (1.25 ** (self.level-1))
+            # +16% per level up to ~lvl9, then +8% per level (diminishing)
+            m1 = 1.0 + 0.16 * min(lvl, 9)
+            m2 = 1.0 + 0.08 * max(0, lvl - 9)
+            v *= (m1 * m2)
+            v *= 1.0  # kept for readability
+            v = min(v, base_val * 3.0)  # hard cap relative to base
         if key == "range":
-            v *= (1.05 ** (self.level-1))
+            v *= (1.0 + 0.03 * lvl)
+            v = min(v, base_val * 1.45)
         if key == "rate":
-            v *= (1.06 ** (self.level-1))
+            v *= (1.0 + 0.06 * lvl)
+            v = min(v, base_val * 1.85)
+
 
         # global stats
         if key == "damage":

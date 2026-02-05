@@ -21,6 +21,9 @@ class EnemyArch:
     shield: float
     weak: str|None
     tags: List[str]
+    resist: Dict[str, float] = field(default_factory=dict)
+    shield_mult: Dict[str, float] = field(default_factory=dict)
+    desc: str = ""
 
 @dataclass
 class Enemy:
@@ -71,7 +74,12 @@ class Enemy:
         self.max_hp = 30.0 * float(self.arch.hp) * tier
         self.hp = self.max_hp
         self.armor = float(self.arch.armor)
-        self.shield = float(self.arch.shield) * 12.0 * tier
+        self.base_armor = self.armor
+        self.armor_eff = self.armor
+        self.vuln_mult = 1.0
+        self.resist = dict(self.arch.resist or {})
+        self.shield_mult = dict(self.arch.shield_mult or {})
+        self.shield = float(self.arch.shield) * 8.0 * tier  # shield scales slower than HP
         self.base_speed = float(self.arch.spd) * float(self.tile) * float(self.speed_mul)
         self.reward_gold = int(5 + self.wave * 1.6) + int(self.gold_bonus)
         self.tile_gold_bonus = 0
@@ -92,24 +100,38 @@ class Enemy:
             amt *= 0.80
 
         crit = False
-        # shield first
-        if self.shield > 0:
-            sh = min(self.shield, amt)
-            self.shield -= sh
-            amt -= sh
-            if amt <= 0:
-                return crit
 
-        # armor vs kinetic/pierce
+        # vulnerability (VULN status)
+        amt *= float(getattr(self, "vuln_mult", 1.0))
+
+        # shield first (with type effectiveness; ENERGY usually drains shield faster)
+        if self.shield > 0:
+            sm = float((self.shield_mult or {}).get(dmg_type, 1.0))
+            eff = amt * sm
+            if eff <= self.shield:
+                self.shield -= eff
+                return crit
+            # shield breaks; carry remainder to HP space
+            eff_rem = eff - self.shield
+            self.shield = 0.0
+            amt = eff_rem / max(0.01, sm)
+
+        # armor vs kinetic/pierce/explosive (SHRED reduces armor_eff)
+        armor = float(getattr(self, "armor_eff", self.armor))
         if dmg_type in ("KINETIC","PIERCE","EXPLOSIVE"):
-            red = self.armor
+            red = armor
             if dmg_type == "PIERCE":
                 red *= 0.5
             amt = max(1.0, amt - red)
 
+        # weakness
         if self.arch.weak and dmg_type == self.arch.weak:
             amt *= float(self.weakness_mul)
             crit = True
+
+        # resistances (final multipliers)
+        rm = float((self.resist or {}).get(dmg_type, 1.0))
+        amt *= rm
 
         self.hp -= amt
         if self.hp <= 0 and self.alive:
@@ -191,9 +213,16 @@ class Enemy:
             elif k == "SHOCK":
                 shock = True
 
+        # derived defensive modifiers from statuses
+        # SHRED reduces armor, VULN increases damage taken.
+        self.armor_eff = max(0.0, float(getattr(self, "base_armor", self.armor)) - float(shred))
+        self.vuln_mult = 1.0 + float(vuln)
+
+        burn_active = burn_dps > 0.0
+
         # regen
         if self.arch.regen > 0 and self.hp < self.max_hp:
-            self.hp = min(self.max_hp, self.hp + float(self.arch.regen) * dt)
+            self.hp = min(self.max_hp, self.hp + float(self.arch.regen) * dt * (0.4 if burn_active else 1.0))
 
         # apply DoTs
         if burn_dps > 0:

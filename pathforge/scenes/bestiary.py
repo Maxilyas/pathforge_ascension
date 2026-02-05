@@ -124,23 +124,69 @@ class BestiaryScene(Scene):
             self.scroll = y - (list_h - self.row_h)
         self._clamp_scroll()
 
-    def _effectiveness_label(self, enemy_arch: dict, tower: dict) -> tuple[str, tuple[int,int,int]]:
-        weak = enemy_arch.get("weak")
-        armor = float(enemy_arch.get("armor", 0))
-        shield = float(enemy_arch.get("shield", 0))
+    def _tower_score(self, enemy_arch: dict, tower: dict) -> float:
         dt = tower.get("dmg_type", "KINETIC")
+        score = 1.0
 
-        # primary
+        # resistances: lower multiplier => harder to kill
+        resist = enemy_arch.get("resist") or {}
+        try:
+            rm = float(resist.get(dt, 1.0))
+        except Exception:
+            rm = 1.0
+        score *= (1.0 / max(0.25, rm))
+
+        # weakness multiplier (from stats default)
+        weak = enemy_arch.get("weak")
+        try:
+            from ..stats import CombatStats
+            wm = CombatStats().weakness_mul
+        except Exception:
+            wm = 1.8
         if weak and dt == weak:
+            score *= wm
+
+        armor = float(enemy_arch.get("armor", 0))
+        if armor >= 6:
+            if dt == "KINETIC":
+                score *= 0.72
+            elif dt == "PIERCE":
+                score *= 1.12
+
+        shield = float(enemy_arch.get("shield", 0))
+        if shield >= 50:
+            sh_mult = enemy_arch.get("shield_mult") or {}
+            try:
+                sm = float(sh_mult.get(dt, 1.0))
+            except Exception:
+                sm = 1.0
+            score *= sm
+            if dt == "ENERGY":
+                score *= 1.10
+
+        tags = set(enemy_arch.get("tags", []) or [])
+        if "REGEN" in tags and dt == "FIRE":
+            score *= 1.18
+
+        # small heuristics for roles
+        role = tower.get("role", "")
+        if "FAST" in tags and role in ("CONTROL","AOE","CHAIN"):
+            score *= 1.05
+
+        return score
+
+    def _effectiveness_label(self, enemy_arch: dict, tower: dict) -> tuple[str, tuple[int,int,int]]:
+        s = self._tower_score(enemy_arch, tower)
+        if s >= 2.4:
             return "TRÈS EFFICACE", (120, 240, 160)
+        if s >= 1.5:
+            return "EFFICACE", (170, 245, 190)
+        if s >= 0.95:
+            return "OK", (210, 210, 210)
+        if s >= 0.70:
+            return "FAIBLE", (255, 170, 130)
+        return "MAUVAIS", (255, 120, 120)
 
-        # heuristic penalties
-        if armor >= 6 and dt == "KINETIC":
-            return "FAIBLE (armure)", (255, 140, 120)
-        if shield >= 50 and dt == "KINETIC":
-            return "MOYEN (bouclier)", (220, 220, 220)
-
-        return "OK", (210, 210, 210)
 
     def draw(self, screen):
         # If opened as an overlay (e.g., from Pause), draw the base scene behind (avoid recursion).
@@ -254,6 +300,54 @@ class BestiaryScene(Scene):
         else:
             stat_line("Faiblesse", "Aucune")
 
+        # resistances section
+        y += 6
+        t = self.game.fonts.m.render("Résistances", True, (255, 215, 0))
+        screen.blit(t, (left_x, y))
+        y += 26
+
+        resist = (ea.get("resist") or {})
+        # Show only non-neutral multipliers
+        non_neutral = []
+        for k, mult in resist.items():
+            try:
+                m = float(mult)
+            except Exception:
+                continue
+            if abs(m - 1.0) >= 0.06:
+                non_neutral.append((k, m))
+
+        if not non_neutral:
+            screen.blit(self.game.fonts.s.render("—", True, (210,210,210)), (left_x, y))
+            y += 20
+        else:
+            non_neutral.sort(key=lambda kv: kv[1])  # most resistant first
+            for k, m in non_neutral[:8]:
+                # label: -30% / +20%
+                pct = int((m - 1.0) * 100)
+                lab = f"{k}: {pct:+d}%"
+                c = (120,240,160) if m > 1.0 else (255,180,120) if m < 1.0 else (210,210,210)
+                screen.blit(self.game.fonts.s.render(lab, True, c), (left_x, y))
+                y += 20
+
+        # shield interaction section (if any)
+        sh_mult = (ea.get("shield_mult") or {})
+        if sh_mult and float(ea.get("shield", 0)) > 0:
+            y += 6
+            t = self.game.fonts.m.render("Bouclier (efficacité)", True, (255, 215, 0))
+            screen.blit(t, (left_x, y))
+            y += 26
+            # show key types
+            for k in ["ENERGY","KINETIC","PIERCE","FIRE","COLD","BIO"]:
+                if k in sh_mult:
+                    m = float(sh_mult[k])
+                    pct = int((m - 1.0) * 100)
+                    lab = f"{k}: {pct:+d}%"
+                    c = (120,240,160) if m > 1.0 else (255,180,120) if m < 1.0 else (210,210,210)
+                    screen.blit(self.game.fonts.s.render(lab, True, c), (left_x, y))
+                    y += 20
+
+
         # tags section
         tags = ea.get("tags", [])
         y += 12
@@ -271,37 +365,71 @@ class BestiaryScene(Scene):
         screen.blit(t, (left_x, y))
         y += 30
 
-        # prioritized counters
-        # 1) towers matching weakness
+        # score-based counters (strategy-first)
+        scored: list[tuple[float, str, tuple[int,int,int]]] = []
+        for tk, tw in self.game.towers_db.items():
+            if tw.get("role") == "SUPPORT":
+                continue
+            sc = self._tower_score(ea, tw)
+            lab, c = self._effectiveness_label(ea, tw)
+            scored.append((sc, f"{tw['name']} — {lab}", c))
+
+        scored.sort(key=lambda x: x[0], reverse=True)
+
+        if not scored:
+            scored = [(1.0, "Aucun contre spécifique — adaptez votre build.", (210,210,210))]
+
         lines: list[tuple[str, tuple[int,int,int]]] = []
-        if weak and weak in self.towers_by_type:
-            for _, tw in self.towers_by_type[weak]:
-                lab, c = self._effectiveness_label(ea, tw)
-                lines.append((f"{tw['name']} — {lab}", c))
+        lines.append(("Recommandées", (255, 215, 0)))
+        for sc, txt, c in scored[:4]:
+            lines.append((f"• {txt}", c))
 
-        # 2) add a few other notable ones
-        # armor -> pierce
-        if armor >= 6 and "PIERCE" in self.towers_by_type and (not weak or weak != "PIERCE"):
-            for _, tw in self.towers_by_type["PIERCE"]:
-                lab, c = self._effectiveness_label(ea, tw)
-                lines.append((f"{tw['name']} — {lab}", c))
-
-        # shield -> energy (heuristic)
-        if shield >= 50 and "ENERGY" in self.towers_by_type and (not weak or weak != "ENERGY"):
-            for _, tw in self.towers_by_type["ENERGY"]:
-                lab, c = self._effectiveness_label(ea, tw)
-                lines.append((f"{tw['name']} — {lab}", c))
-
-        if not lines:
-            lines.append(("Aucun contre spécifique — adaptez votre build.", (210,210,210)))
+        lines.append(("", (210,210,210)))
+        lines.append(("À éviter", (255, 215, 0)))
+        for sc, txt, c in scored[-2:][::-1]:
+            lines.append((f"• {txt}", c))
 
         # draw lines with wrapping
-        for txt, c in lines[:8]:
+        for txt, c in lines:
+            if txt == "":
+                y += 10
+                continue
             for line in _wrap_lines(txt, self.game.fonts.s, detail_rect.w - 44):
                 screen.blit(self.game.fonts.s.render(line, True, c), (left_x, y))
                 y += 20
             y += 2
 
+        # synergies / counterplay
+        y += 12
+        t = self.game.fonts.m.render("Synergies (forge & build)", True, (255, 215, 0))
+        screen.blit(t, (left_x, y))
+        y += 26
+
+        tips: list[str] = []
+        if ea.get("desc"):
+            tips.append(str(ea.get("desc")))
+
+        tags_set = set(ea.get("tags", []) or [])
+        if "SHIELD" in tags_set:
+            tips.append("• Shield: ENERGY draine plus vite. Chemin Conducteur + Tesla = chaînes + efficaces.")
+        if "ARMORED" in tags_set:
+            tips.append("• Armure: évitez KINETIC pur. Combinez SHRED (Cryo/branch) + PIERCE (Sniper).")
+        if "REGEN" in tags_set:
+            tips.append("• Regen: BURN (Flame/Mortar/Magma) réduit la régénération à ~40% tant qu'il brûle.")
+        if "FAST" in tags_set:
+            tips.append("• Rapide: ralentissements (Cryo, boue) et AOE/CHAIN stabilisent la lane.")
+        if "BOSS" in tags_set:
+            tips.append("• Boss: cassez le shield d'abord (ENERGY + rune/Conducteur), puis burst/DoT + contrôle.")
+
+        if not tips:
+            tips = ["—"]
+
+        for tip in tips[:7]:
+            for line in _wrap_lines(tip, self.game.fonts.s, detail_rect.w - 44):
+                screen.blit(self.game.fonts.s.render(line, True, (210,210,210)), (left_x, y))
+                y += 20
+            y += 2
+
         # footer hints
-        footer = self.game.fonts.xs.render("Astuce: utilisez la Faiblesse pour choisir le type de dégâts (KINETIC/PIERCE/ENERGY/FIRE/COLD/EXPLOSIVE).", True, (130, 140, 150))
+        footer = self.game.fonts.xs.render("Astuce: utilisez la Faiblesse pour choisir le type de dégâts (KINETIC/PIERCE/ENERGY/FIRE/COLD/BIO/EXPLOSIVE).", True, (130, 140, 150))
         screen.blit(footer, (detail_rect.x + 16, detail_rect.bottom - 26))

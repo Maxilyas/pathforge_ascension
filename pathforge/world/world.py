@@ -373,7 +373,10 @@ class World:
             regen=float(d.get("regen",0)),
             shield=float(d.get("shield",0)),
             weak=d.get("weak"),
-            tags=list(d.get("tags",[]))
+            tags=list(d.get("tags",[])),
+            resist=dict(d.get("resist", {}) or {}),
+            shield_mult=dict(d.get("shield_mult", {}) or {}),
+            desc=str(d.get("desc", "") or "")
         )
 
     def spawn_enemy(self, key: str, wave: int, gold_bonus: int = 0):
