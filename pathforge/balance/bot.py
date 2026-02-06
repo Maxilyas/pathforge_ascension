@@ -27,6 +27,76 @@ class AutoBot:
 
     def __init__(self, rng: random.Random):
         self.rng = rng
+        self._comp_cycle: List[str] = []
+        self._comp_cycle_wave: int = 0
+        self._comp_i: int = 0
+
+    # ---------------------------
+    # Composition + killzone
+    # ---------------------------
+    def compute_killzone(self, path: List[Coord]) -> Coord:
+        """Pick a 'killzone' along the path: a dense segment where towers can cover many tiles."""
+        if not path:
+            return (0, 0)
+        best = path[len(path)//2]
+        best_score = -1
+        path_set = set(path)
+        for (x, y) in path:
+            # density within diamond radius 3
+            d = 0
+            for dx in range(-3, 4):
+                for dy in range(-3, 4):
+                    if abs(dx) + abs(dy) > 3:
+                        continue
+                    if (x + dx, y + dy) in path_set:
+                        d += 1
+            if d > best_score:
+                best_score = d
+                best = (x, y)
+        return best
+
+    def choose_composition(self, unlocked_sorted: List[str], wave: int) -> List[str]:
+        """Choose a simple tower composition cycle.
+
+        The goal isn't 'perfect play' but stable, repeatable builds for simulation:
+        - early: cheap DPS + AOE
+        - mid: add anti-shield / control if available
+        - late: keep a mix
+        """
+        unlocked = set(unlocked_sorted)
+
+        def pick(*opts: str) -> str | None:
+            for o in opts:
+                if o in unlocked:
+                    return o
+            return None
+
+        core_dps = pick("GATLING", "SNIPER")
+        aoe = pick("CANNON", "MORTAR")
+        anti_shield = pick("TESLA")
+        control = pick("CRYO", "BEACON")
+        burn = pick("FLAME")
+
+        cycle: List[str] = []
+        if core_dps:
+            cycle += [core_dps, core_dps]
+        if aoe:
+            cycle += [aoe]
+        if wave >= 6 and anti_shield:
+            cycle += [anti_shield]
+        if wave >= 8 and control:
+            cycle += [control]
+        if wave >= 10 and burn:
+            cycle += [burn]
+
+        # fallback to cheapest towers if something went wrong
+        if not cycle:
+            cycle = unlocked_sorted[:2] or ["GATLING"]
+
+        # small shuffle to avoid fixed identical placement order
+        if wave % 2 == 0:
+            self.rng.shuffle(cycle)
+        return cycle
 
     # ---------------------------
     # Path building
@@ -188,16 +258,27 @@ class AutoBot:
     # ---------------------------
     # Tower placement / upgrades
     # ---------------------------
-    def place_towers(self, world, stats, max_towers: int = 12):
+    def place_towers(self, world, stats, wave: int = 1, max_towers: int = 12):
         path = world.get_path()
         if not path:
             return
         path_set = set(path)
 
+        # refresh composition occasionally
+        if self._comp_cycle_wave != int(wave) or not self._comp_cycle:
+            unlocked = list(getattr(stats, "unlocked_towers", [])) or list(world.towers_db.keys())
+            unlocked_sorted = sorted(unlocked, key=lambda k: int(world.towers_db.get(k, {}).get("cost", 999999)))
+            self._comp_cycle = self.choose_composition(unlocked_sorted, int(wave))
+            self._comp_cycle_wave = int(wave)
+            self._comp_i = 0
+
+        killzone = self.compute_killzone(path)
+
         unlocked = list(getattr(stats, "unlocked_towers", [])) or list(world.towers_db.keys())
         unlocked_sorted = sorted(unlocked, key=lambda k: int(world.towers_db.get(k, {}).get("cost", 999999)))
 
-        candidates: List[Tuple[int,int,int]] = []
+        # candidate score = coverage - distance to killzone
+        candidates: List[Tuple[int,int,int,int]] = []  # (score,cov,gx,gy)
         for gx in range(world.gs.cols):
             for gy in range(world.gs.rows):
                 if world.gs.grid[gx][gy] != T_EMPTY:
@@ -210,13 +291,27 @@ class AutoBot:
                         if (gx + dx, gy + dy) in path_set:
                             cov += 1
                 if cov > 0:
-                    candidates.append((cov, gx, gy))
+                    dist_kz = abs(gx - killzone[0]) + abs(gy - killzone[1])
+                    score = cov * 10 - dist_kz * 3
+                    candidates.append((score, cov, gx, gy))
         candidates.sort(reverse=True)
 
-        for cov, gx, gy in candidates:
+        for score, cov, gx, gy in candidates:
             if len(world.towers) >= max_towers:
                 break
-            for key in unlocked_sorted:
+            # pick tower key from composition cycle first
+            key = None
+            if self._comp_cycle:
+                key = self._comp_cycle[self._comp_i % len(self._comp_cycle)]
+                self._comp_i += 1
+
+            # if not available, fall back to cheapest unlocked
+            keys_to_try = [key] if key else []
+            keys_to_try += unlocked_sorted
+
+            for key in keys_to_try:
+                if not key:
+                    continue
                 base_cost = int(world.towers_db.get(key, {}).get("cost", 999999))
                 cost = int(base_cost * float(getattr(stats, "tower_cost_mul", 1.0)))
                 if stats.gold >= cost:

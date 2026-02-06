@@ -9,6 +9,15 @@ from ..settings import (
     T_PATH_FAST, T_PATH_MUD, T_PATH_CONDUCT, T_PATH_CRYO, T_PATH_MAGMA, T_PATH_RUNE,
 )
 
+from ..core.difficulty import (
+    CFG as DIFF_CFG,
+    hp_tier,
+    shield_tier,
+    armor_multiplier,
+    elite_shield_multiplier,
+    shield_cap_pct,
+)
+
 @dataclass
 class EnemyArch:
     key: str
@@ -74,16 +83,23 @@ class Enemy:
         self.x, self.y = self._pos(self.path[0])
         self.cell = self.path[0]
         self.path_i = 0
-        tier = 1.0 + 0.23 * (self.wave-1)
-        self.max_hp = 30.0 * float(self.arch.hp) * tier
+        # v4.7.0: smoother early game (waves 1–5) + stronger post-10 scaling.
+        tier_hp = hp_tier(self.wave)
+        tier_sh = shield_tier(self.wave)
+
+        self.max_hp = 30.0 * float(self.arch.hp) * tier_hp
         self.hp = self.max_hp
-        self.armor = float(self.arch.armor)
+        self.armor = float(self.arch.armor) * float(armor_multiplier(self.wave, self.arch.tags))
         self.base_armor = self.armor
         self.armor_eff = self.armor
         self.vuln_mult = 1.0
         self.resist = dict(self.arch.resist or {})
         self.shield_mult = dict(self.arch.shield_mult or {})
-        self.shield = float(self.arch.shield) * 8.0 * tier  # shield scales slower than HP
+        # Shields: lower base factor + per-wave tier + elite easing + caps.
+        raw_shield = float(self.arch.shield) * float(DIFF_CFG.shield_base_factor) * tier_sh
+        raw_shield *= float(elite_shield_multiplier(self.wave, self.arch.tags))
+        cap = float(self.max_hp) * float(shield_cap_pct(self.arch.tags))
+        self.shield = min(raw_shield, cap)
         self.base_speed = float(self.arch.spd) * float(self.tile) * float(self.speed_mul)
         self.reward_gold = int(5 + self.wave * 1.6) + int(self.gold_bonus)
         self.tile_gold_bonus = 0

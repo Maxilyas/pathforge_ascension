@@ -130,7 +130,7 @@ def run_episode(towers_db: Dict[str,Any], enemies_db: Dict[str,Any], perks_roll_
         world.invalidate_path()
 
     # economy start: place basic towers
-    bot.place_towers(world, stats, max_towers=10)
+    bot.place_towers(world, stats, wave=1, max_towers=10)
 
     waves_cleared = 0
     dt = 1/60.0
@@ -153,7 +153,7 @@ def run_episode(towers_db: Dict[str,Any], enemies_db: Dict[str,Any], perks_roll_
         # periodic upgrades/build
         multi = bot.choose_wave_multi(stats, wave, last_lives_lost)
         bot.upgrade_towers(world, stats, wave=wave)
-        bot.place_towers(world, stats, max_towers=12 + wave//6)
+        bot.place_towers(world, stats, wave=wave, max_towers=12 + wave//6)
 
         # spawn plan (supports assault multi)
         queue: list[tuple[str,int]] = []

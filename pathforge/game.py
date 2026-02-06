@@ -23,7 +23,7 @@ from .scenes.bestiary import BestiaryScene
 class Game:
     def __init__(self):
         pygame.init()
-        pygame.display.set_caption("Pathforge Ascension: V4")
+        pygame.display.set_caption("Pathforge Ascension: V4.7.0")
 
         self.fullscreen = False
         self.w, self.h = DEFAULT_W, DEFAULT_H
@@ -61,7 +61,7 @@ class Game:
         tel_on = tel_env not in ('0','false','no','off')
         self.telemetry = Telemetry(enabled=tel_on)
         try:
-            self.telemetry.start_run(seed=self._perk_rng.randint(0, 10**9), meta={'version':'v4_6_4_0'})
+            self.telemetry.start_run(seed=self._perk_rng.randint(0, 10**9), meta={'version':'v4_7_0'})
         except Exception:
             pass
 
