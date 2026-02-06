@@ -80,16 +80,18 @@ class Game:
 
     def roll_perks(self, n: int = 3, rarity_bias: float = 0.0) -> list[dict]:
         """Roll n perk options with rarity bias (0..0.6). No duplicates in a single roll."""
-        weights = {"C": 66.0, "R": 22.0, "E": 9.0, "L": 2.0, "SS+": 0.8, "SS++": 0.2}
+        weights = {"C": 1.00, "R": 0.35, "E": 0.12, "L": 0.03, "SS+": 0.006, "SS++": 0.0012, "SSS": 0.00005, "Ω": 0.000003}
         b = max(0.0, min(0.60, float(rarity_bias)))
 
         # shift probability mass upward
-        weights["C"] *= (1.0 - 0.70 * b)
-        weights["R"] *= (1.0 - 0.40 * b)
-        weights["E"] *= (1.0 + 0.70 * b)
-        weights["L"] *= (1.0 + 1.40 * b)
+        weights["C"] *= (1.0 - 0.75 * b)
+        weights["R"] *= (1.0 - 0.55 * b)
+        weights["E"] *= (1.0 + 0.45 * b)
+        weights["L"] *= (1.0 + 1.10 * b)
         weights["SS+"] *= (1.0 + 2.00 * b)
         weights["SS++"] *= (1.0 + 2.60 * b)
+        weights["SSS"] *= (1.0 + 3.00 * b)
+        weights["Ω"] *= (1.0 + 3.30 * b)
 
         pool = list(self.perks_db)
         picks: list[dict] = []

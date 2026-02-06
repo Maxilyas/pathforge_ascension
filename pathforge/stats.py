@@ -44,6 +44,9 @@ class CombatStats:
     tower_bonus: Dict[str, Dict[str, Any]] = field(default_factory=dict)
     spell_bonus: Dict[str, Dict[str, Any]] = field(default_factory=dict)
 
+    # perk-driven global effects
+    global_on_hit: Dict[str, Dict[str, Any]] = field(default_factory=dict)
+
     def _ensure_talent_nodes_set(self):
         # Migration safety: older saves or buggy assignments may store a list.
         if isinstance(self.talent_nodes, list):
@@ -83,6 +86,13 @@ class CombatStats:
         for k,v in mods.items():
             if k.startswith("flag_"):
                 self.flags[k] = v
+
+        # global on-hit statuses (applied to all towers/projectiles)
+        goh = mods.get("global_on_hit") or {}
+        if isinstance(goh, dict):
+            for sk, sv in goh.items():
+                if isinstance(sv, dict):
+                    self.global_on_hit[sk] = sv
 
         tb = mods.get("tower_bonus") or {}
         for tk, data in tb.items():

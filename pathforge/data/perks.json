@@ -1,96 +1,3101 @@
 [
   {
-    "id": "dmg_all",
-    "name": "Dégâts +10%",
+    "id": "TUN_0001",
+    "name": "Gatling • Calibrage: Dégâts +3%",
     "rarity": "C",
     "tags": [
+      "TOWER",
+      "GATLING",
       "POWER"
     ],
     "mods": {
-      "dmg_mul": 1.1
+      "tower_bonus": {
+        "GATLING": {
+          "damage_mul": 1.03
+        }
+      }
     }
   },
   {
-    "id": "rng_all",
-    "name": "Portée +10%",
+    "id": "TUN_0002",
+    "name": "Gatling • Calibrage: Cadence +3%",
     "rarity": "C",
     "tags": [
+      "TOWER",
+      "GATLING",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "GATLING": {
+          "rate_mul": 1.03
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0003",
+    "name": "Gatling • Lentille: Portée +5%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "GATLING",
       "UTILITY"
     ],
     "mods": {
-      "range_mul": 1.1
+      "tower_bonus": {
+        "GATLING": {
+          "range_mul": 1.05
+        }
+      }
     }
   },
   {
-    "id": "rate_all",
-    "name": "Cadence +10%",
+    "id": "TUN_0004",
+    "name": "Gatling • Calibrage: Dégâts +4%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "GATLING",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "GATLING": {
+          "damage_mul": 1.04
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0005",
+    "name": "Gatling • Calibrage: Cadence +4%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "GATLING",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "GATLING": {
+          "rate_mul": 1.04
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0006",
+    "name": "Gatling • Lentille: Portée +4%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "GATLING",
+      "UTILITY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "GATLING": {
+          "range_mul": 1.04
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0007",
+    "name": "Gatling • Calibrage: Dégâts +3%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "GATLING",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "GATLING": {
+          "damage_mul": 1.03
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0008",
+    "name": "Gatling • Calibrage: Cadence +3%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "GATLING",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "GATLING": {
+          "rate_mul": 1.03
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0009",
+    "name": "Gatling • Lentille: Portée +6%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "GATLING",
+      "UTILITY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "GATLING": {
+          "range_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0010",
+    "name": "Gatling • Calibrage: Dégâts +3%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "GATLING",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "GATLING": {
+          "damage_mul": 1.03
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0011",
+    "name": "Gatling • Kit de Surcadence (+7% dmg, +5% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "GATLING",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "GATLING": {
+          "damage_mul": 1.07,
+          "rate_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0012",
+    "name": "Gatling • Kit de Surcadence (+8% dmg, +5% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "GATLING",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "GATLING": {
+          "damage_mul": 1.08,
+          "rate_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0013",
+    "name": "Gatling • Kit de Surcadence (+11% dmg, +7% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "GATLING",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "GATLING": {
+          "damage_mul": 1.11,
+          "rate_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0014",
+    "name": "Gatling • Kit de Surcadence (+7% dmg, +7% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "GATLING",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "GATLING": {
+          "damage_mul": 1.07,
+          "rate_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0015",
+    "name": "Gatling • Kit de Surcadence (+8% dmg, +7% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "GATLING",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "GATLING": {
+          "damage_mul": 1.08,
+          "rate_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0016",
+    "name": "Gatling • Kit de Surcadence (+11% dmg, +6% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "GATLING",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "GATLING": {
+          "damage_mul": 1.11,
+          "rate_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "REL_0017",
+    "name": "Gatling • Relique de Forge (+13% dmg, +12% cad.)",
+    "rarity": "E",
+    "tags": [
+      "TOWER",
+      "GATLING",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "GATLING": {
+          "damage_mul": 1.14,
+          "rate_mul": 1.12
+        }
+      }
+    }
+  },
+  {
+    "id": "REL_0018",
+    "name": "Gatling • Relique de Forge (+17% dmg, +12% cad.)",
+    "rarity": "E",
+    "tags": [
+      "TOWER",
+      "GATLING",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "GATLING": {
+          "damage_mul": 1.18,
+          "rate_mul": 1.12
+        }
+      }
+    }
+  },
+  {
+    "id": "REL_0019",
+    "name": "Gatling • Relique de Forge (+13% dmg, +10% cad.)",
+    "rarity": "E",
+    "tags": [
+      "TOWER",
+      "GATLING",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "GATLING": {
+          "damage_mul": 1.14,
+          "rate_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "MW_0020",
+    "name": "Gatling • Chef-d'œuvre (Dmg +25%, Cad. +15%, Portée +10%)",
+    "rarity": "L",
+    "tags": [
+      "TOWER",
+      "GATLING",
+      "LEGEND"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "GATLING": {
+          "damage_mul": 1.25,
+          "rate_mul": 1.15,
+          "range_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0021",
+    "name": "Sniper • Calibrage: Dégâts +6%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "SNIPER",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "SNIPER": {
+          "damage_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0022",
+    "name": "Sniper • Calibrage: Cadence +5%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "SNIPER",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "SNIPER": {
+          "rate_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0023",
+    "name": "Sniper • Lentille: Portée +5%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "SNIPER",
+      "UTILITY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "SNIPER": {
+          "range_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0024",
+    "name": "Sniper • Calibrage: Dégâts +4%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "SNIPER",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "SNIPER": {
+          "damage_mul": 1.04
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0025",
+    "name": "Sniper • Calibrage: Cadence +4%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "SNIPER",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "SNIPER": {
+          "rate_mul": 1.04
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0026",
+    "name": "Sniper • Lentille: Portée +5%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "SNIPER",
+      "UTILITY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "SNIPER": {
+          "range_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0027",
+    "name": "Sniper • Calibrage: Dégâts +3%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "SNIPER",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "SNIPER": {
+          "damage_mul": 1.03
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0028",
+    "name": "Sniper • Calibrage: Cadence +3%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "SNIPER",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "SNIPER": {
+          "rate_mul": 1.03
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0029",
+    "name": "Sniper • Lentille: Portée +6%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "SNIPER",
+      "UTILITY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "SNIPER": {
+          "range_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0030",
+    "name": "Sniper • Calibrage: Dégâts +3%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "SNIPER",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "SNIPER": {
+          "damage_mul": 1.03
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0031",
+    "name": "Sniper • Kit de Surcadence (+9% dmg, +6% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "SNIPER",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "SNIPER": {
+          "damage_mul": 1.09,
+          "rate_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0032",
+    "name": "Sniper • Kit de Surcadence (+11% dmg, +6% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "SNIPER",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "SNIPER": {
+          "damage_mul": 1.11,
+          "rate_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0033",
+    "name": "Sniper • Kit de Surcadence (+7% dmg, +7% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "SNIPER",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "SNIPER": {
+          "damage_mul": 1.07,
+          "rate_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0034",
+    "name": "Sniper • Kit de Surcadence (+10% dmg, +7% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "SNIPER",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "SNIPER": {
+          "damage_mul": 1.1,
+          "rate_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0035",
+    "name": "Sniper • Kit de Surcadence (+7% dmg, +6% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "SNIPER",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "SNIPER": {
+          "damage_mul": 1.07,
+          "rate_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0036",
+    "name": "Sniper • Kit de Surcadence (+7% dmg, +7% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "SNIPER",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "SNIPER": {
+          "damage_mul": 1.07,
+          "rate_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "REL_0037",
+    "name": "Sniper • Relique de Forge (+15% dmg, +12% cad.)",
+    "rarity": "E",
+    "tags": [
+      "TOWER",
+      "SNIPER",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "SNIPER": {
+          "damage_mul": 1.16,
+          "rate_mul": 1.12
+        }
+      }
+    }
+  },
+  {
+    "id": "REL_0038",
+    "name": "Sniper • Relique de Forge (+17% dmg, +10% cad.)",
+    "rarity": "E",
+    "tags": [
+      "TOWER",
+      "SNIPER",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "SNIPER": {
+          "damage_mul": 1.18,
+          "rate_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "REL_0039",
+    "name": "Sniper • Relique de Forge (+17% dmg, +10% cad.)",
+    "rarity": "E",
+    "tags": [
+      "TOWER",
+      "SNIPER",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "SNIPER": {
+          "damage_mul": 1.18,
+          "rate_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "MW_0040",
+    "name": "Sniper • Chef-d'œuvre (Dmg +25%, Cad. +15%, Portée +10%)",
+    "rarity": "L",
+    "tags": [
+      "TOWER",
+      "SNIPER",
+      "LEGEND"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "SNIPER": {
+          "damage_mul": 1.25,
+          "rate_mul": 1.15,
+          "range_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0041",
+    "name": "Tesla • Calibrage: Dégâts +3%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "TESLA",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "damage_mul": 1.03
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0042",
+    "name": "Tesla • Calibrage: Cadence +4%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "TESLA",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "rate_mul": 1.04
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0043",
+    "name": "Tesla • Lentille: Portée +5%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "TESLA",
+      "UTILITY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "range_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0044",
+    "name": "Tesla • Calibrage: Dégâts +3%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "TESLA",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "damage_mul": 1.03
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0045",
+    "name": "Tesla • Calibrage: Cadence +4%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "TESLA",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "rate_mul": 1.04
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0046",
+    "name": "Tesla • Lentille: Portée +3%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "TESLA",
+      "UTILITY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "range_mul": 1.03
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0047",
+    "name": "Tesla • Calibrage: Dégâts +6%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "TESLA",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "damage_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0048",
+    "name": "Tesla • Calibrage: Cadence +5%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "TESLA",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "rate_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0049",
+    "name": "Tesla • Lentille: Portée +6%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "TESLA",
+      "UTILITY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "range_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0050",
+    "name": "Tesla • Calibrage: Dégâts +5%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "TESLA",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "damage_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0051",
+    "name": "Tesla • Kit de Surcadence (+8% dmg, +6% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "TESLA",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "damage_mul": 1.08,
+          "rate_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0052",
+    "name": "Tesla • Kit de Surcadence (+9% dmg, +5% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "TESLA",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "damage_mul": 1.09,
+          "rate_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0053",
+    "name": "Tesla • Kit de Surcadence (+9% dmg, +7% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "TESLA",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "damage_mul": 1.09,
+          "rate_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0054",
+    "name": "Tesla • Kit de Surcadence (+7% dmg, +7% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "TESLA",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "damage_mul": 1.07,
+          "rate_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0055",
+    "name": "Tesla • Kit de Surcadence (+8% dmg, +7% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "TESLA",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "damage_mul": 1.08,
+          "rate_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0056",
+    "name": "Tesla • Kit de Surcadence (+8% dmg, +5% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "TESLA",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "damage_mul": 1.08,
+          "rate_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "REL_0057",
+    "name": "Tesla • Relique de Forge (+15% dmg, +12% cad.)",
+    "rarity": "E",
+    "tags": [
+      "TOWER",
+      "TESLA",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "damage_mul": 1.16,
+          "rate_mul": 1.12
+        }
+      }
+    }
+  },
+  {
+    "id": "REL_0058",
+    "name": "Tesla • Relique de Forge (+15% dmg, +10% cad.)",
+    "rarity": "E",
+    "tags": [
+      "TOWER",
+      "TESLA",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "damage_mul": 1.16,
+          "rate_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "REL_0059",
+    "name": "Tesla • Relique de Forge (+17% dmg, +12% cad.)",
+    "rarity": "E",
+    "tags": [
+      "TOWER",
+      "TESLA",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "damage_mul": 1.18,
+          "rate_mul": 1.12
+        }
+      }
+    }
+  },
+  {
+    "id": "MW_0060",
+    "name": "Tesla • Chef-d'œuvre (Dmg +25%, Cad. +15%, Portée +10%)",
+    "rarity": "L",
+    "tags": [
+      "TOWER",
+      "TESLA",
+      "LEGEND"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "damage_mul": 1.25,
+          "rate_mul": 1.15,
+          "range_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0061",
+    "name": "Cryo • Calibrage: Dégâts +3%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "CRYO",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "damage_mul": 1.03
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0062",
+    "name": "Cryo • Calibrage: Cadence +4%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "CRYO",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "rate_mul": 1.04
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0063",
+    "name": "Cryo • Lentille: Portée +3%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "CRYO",
+      "UTILITY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "range_mul": 1.03
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0064",
+    "name": "Cryo • Calibrage: Dégâts +5%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "CRYO",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "damage_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0065",
+    "name": "Cryo • Calibrage: Cadence +6%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "CRYO",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "rate_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0066",
+    "name": "Cryo • Lentille: Portée +5%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "CRYO",
+      "UTILITY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "range_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0067",
+    "name": "Cryo • Calibrage: Dégâts +3%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "CRYO",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "damage_mul": 1.03
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0068",
+    "name": "Cryo • Calibrage: Cadence +4%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "CRYO",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "rate_mul": 1.04
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0069",
+    "name": "Cryo • Lentille: Portée +5%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "CRYO",
+      "UTILITY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "range_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0070",
+    "name": "Cryo • Calibrage: Dégâts +4%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "CRYO",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "damage_mul": 1.04
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0071",
+    "name": "Cryo • Kit de Surcadence (+10% dmg, +6% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "CRYO",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "damage_mul": 1.1,
+          "rate_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0072",
+    "name": "Cryo • Kit de Surcadence (+10% dmg, +5% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "CRYO",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "damage_mul": 1.1,
+          "rate_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0073",
+    "name": "Cryo • Kit de Surcadence (+9% dmg, +5% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "CRYO",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "damage_mul": 1.09,
+          "rate_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0074",
+    "name": "Cryo • Kit de Surcadence (+8% dmg, +7% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "CRYO",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "damage_mul": 1.08,
+          "rate_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0075",
+    "name": "Cryo • Kit de Surcadence (+11% dmg, +7% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "CRYO",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "damage_mul": 1.11,
+          "rate_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0076",
+    "name": "Cryo • Kit de Surcadence (+9% dmg, +7% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "CRYO",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "damage_mul": 1.09,
+          "rate_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "REL_0077",
+    "name": "Cryo • Relique de Forge (+17% dmg, +12% cad.)",
+    "rarity": "E",
+    "tags": [
+      "TOWER",
+      "CRYO",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "damage_mul": 1.18,
+          "rate_mul": 1.12
+        }
+      }
+    }
+  },
+  {
+    "id": "REL_0078",
+    "name": "Cryo • Relique de Forge (+17% dmg, +12% cad.)",
+    "rarity": "E",
+    "tags": [
+      "TOWER",
+      "CRYO",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "damage_mul": 1.18,
+          "rate_mul": 1.12
+        }
+      }
+    }
+  },
+  {
+    "id": "REL_0079",
+    "name": "Cryo • Relique de Forge (+15% dmg, +10% cad.)",
+    "rarity": "E",
+    "tags": [
+      "TOWER",
+      "CRYO",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "damage_mul": 1.16,
+          "rate_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "MW_0080",
+    "name": "Cryo • Chef-d'œuvre (Dmg +25%, Cad. +15%, Portée +10%)",
+    "rarity": "L",
+    "tags": [
+      "TOWER",
+      "CRYO",
+      "LEGEND"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "damage_mul": 1.25,
+          "rate_mul": 1.15,
+          "range_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0081",
+    "name": "Mortar • Calibrage: Dégâts +4%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "MORTAR",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "MORTAR": {
+          "damage_mul": 1.04
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0082",
+    "name": "Mortar • Calibrage: Cadence +6%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "MORTAR",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "MORTAR": {
+          "rate_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0083",
+    "name": "Mortar • Lentille: Portée +3%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "MORTAR",
+      "UTILITY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "MORTAR": {
+          "range_mul": 1.03
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0084",
+    "name": "Mortar • Calibrage: Dégâts +3%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "MORTAR",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "MORTAR": {
+          "damage_mul": 1.03
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0085",
+    "name": "Mortar • Calibrage: Cadence +3%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "MORTAR",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "MORTAR": {
+          "rate_mul": 1.03
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0086",
+    "name": "Mortar • Lentille: Portée +4%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "MORTAR",
+      "UTILITY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "MORTAR": {
+          "range_mul": 1.04
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0087",
+    "name": "Mortar • Calibrage: Dégâts +4%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "MORTAR",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "MORTAR": {
+          "damage_mul": 1.04
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0088",
+    "name": "Mortar • Calibrage: Cadence +6%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "MORTAR",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "MORTAR": {
+          "rate_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0089",
+    "name": "Mortar • Lentille: Portée +3%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "MORTAR",
+      "UTILITY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "MORTAR": {
+          "range_mul": 1.03
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0090",
+    "name": "Mortar • Calibrage: Dégâts +6%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "MORTAR",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "MORTAR": {
+          "damage_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0091",
+    "name": "Mortar • Kit de Surcadence (+10% dmg, +7% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "MORTAR",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "MORTAR": {
+          "damage_mul": 1.1,
+          "rate_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0092",
+    "name": "Mortar • Kit de Surcadence (+10% dmg, +7% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "MORTAR",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "MORTAR": {
+          "damage_mul": 1.1,
+          "rate_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0093",
+    "name": "Mortar • Kit de Surcadence (+9% dmg, +7% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "MORTAR",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "MORTAR": {
+          "damage_mul": 1.09,
+          "rate_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0094",
+    "name": "Mortar • Kit de Surcadence (+7% dmg, +7% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "MORTAR",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "MORTAR": {
+          "damage_mul": 1.07,
+          "rate_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0095",
+    "name": "Mortar • Kit de Surcadence (+7% dmg, +7% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "MORTAR",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "MORTAR": {
+          "damage_mul": 1.07,
+          "rate_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0096",
+    "name": "Mortar • Kit de Surcadence (+11% dmg, +6% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "MORTAR",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "MORTAR": {
+          "damage_mul": 1.11,
+          "rate_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "REL_0097",
+    "name": "Mortar • Relique de Forge (+17% dmg, +12% cad.)",
+    "rarity": "E",
+    "tags": [
+      "TOWER",
+      "MORTAR",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "MORTAR": {
+          "damage_mul": 1.18,
+          "rate_mul": 1.12
+        }
+      }
+    }
+  },
+  {
+    "id": "REL_0098",
+    "name": "Mortar • Relique de Forge (+13% dmg, +12% cad.)",
+    "rarity": "E",
+    "tags": [
+      "TOWER",
+      "MORTAR",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "MORTAR": {
+          "damage_mul": 1.14,
+          "rate_mul": 1.12
+        }
+      }
+    }
+  },
+  {
+    "id": "REL_0099",
+    "name": "Mortar • Relique de Forge (+15% dmg, +10% cad.)",
+    "rarity": "E",
+    "tags": [
+      "TOWER",
+      "MORTAR",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "MORTAR": {
+          "damage_mul": 1.16,
+          "rate_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "MW_0100",
+    "name": "Mortar • Chef-d'œuvre (Dmg +25%, Cad. +15%, Portée +10%)",
+    "rarity": "L",
+    "tags": [
+      "TOWER",
+      "MORTAR",
+      "LEGEND"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "MORTAR": {
+          "damage_mul": 1.25,
+          "rate_mul": 1.15,
+          "range_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0101",
+    "name": "Cannon • Calibrage: Dégâts +6%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "CANNON",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CANNON": {
+          "damage_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0102",
+    "name": "Cannon • Calibrage: Cadence +3%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "CANNON",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CANNON": {
+          "rate_mul": 1.03
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0103",
+    "name": "Cannon • Lentille: Portée +5%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "CANNON",
+      "UTILITY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CANNON": {
+          "range_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0104",
+    "name": "Cannon • Calibrage: Dégâts +4%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "CANNON",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CANNON": {
+          "damage_mul": 1.04
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0105",
+    "name": "Cannon • Calibrage: Cadence +3%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "CANNON",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CANNON": {
+          "rate_mul": 1.03
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0106",
+    "name": "Cannon • Lentille: Portée +5%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "CANNON",
+      "UTILITY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CANNON": {
+          "range_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0107",
+    "name": "Cannon • Calibrage: Dégâts +4%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "CANNON",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CANNON": {
+          "damage_mul": 1.04
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0108",
+    "name": "Cannon • Calibrage: Cadence +4%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "CANNON",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CANNON": {
+          "rate_mul": 1.04
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0109",
+    "name": "Cannon • Lentille: Portée +5%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "CANNON",
+      "UTILITY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CANNON": {
+          "range_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0110",
+    "name": "Cannon • Calibrage: Dégâts +4%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "CANNON",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CANNON": {
+          "damage_mul": 1.04
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0111",
+    "name": "Cannon • Kit de Surcadence (+11% dmg, +7% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "CANNON",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CANNON": {
+          "damage_mul": 1.11,
+          "rate_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0112",
+    "name": "Cannon • Kit de Surcadence (+7% dmg, +7% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "CANNON",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CANNON": {
+          "damage_mul": 1.07,
+          "rate_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0113",
+    "name": "Cannon • Kit de Surcadence (+9% dmg, +6% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "CANNON",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CANNON": {
+          "damage_mul": 1.09,
+          "rate_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0114",
+    "name": "Cannon • Kit de Surcadence (+7% dmg, +5% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "CANNON",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CANNON": {
+          "damage_mul": 1.07,
+          "rate_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0115",
+    "name": "Cannon • Kit de Surcadence (+9% dmg, +6% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "CANNON",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CANNON": {
+          "damage_mul": 1.09,
+          "rate_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0116",
+    "name": "Cannon • Kit de Surcadence (+8% dmg, +5% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "CANNON",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CANNON": {
+          "damage_mul": 1.08,
+          "rate_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "REL_0117",
+    "name": "Cannon • Relique de Forge (+13% dmg, +10% cad.)",
+    "rarity": "E",
+    "tags": [
+      "TOWER",
+      "CANNON",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CANNON": {
+          "damage_mul": 1.14,
+          "rate_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "REL_0118",
+    "name": "Cannon • Relique de Forge (+13% dmg, +12% cad.)",
+    "rarity": "E",
+    "tags": [
+      "TOWER",
+      "CANNON",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CANNON": {
+          "damage_mul": 1.14,
+          "rate_mul": 1.12
+        }
+      }
+    }
+  },
+  {
+    "id": "REL_0119",
+    "name": "Cannon • Relique de Forge (+13% dmg, +10% cad.)",
+    "rarity": "E",
+    "tags": [
+      "TOWER",
+      "CANNON",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CANNON": {
+          "damage_mul": 1.14,
+          "rate_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "MW_0120",
+    "name": "Cannon • Chef-d'œuvre (Dmg +25%, Cad. +15%, Portée +10%)",
+    "rarity": "L",
+    "tags": [
+      "TOWER",
+      "CANNON",
+      "LEGEND"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CANNON": {
+          "damage_mul": 1.25,
+          "rate_mul": 1.15,
+          "range_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0121",
+    "name": "Beacon • Calibrage: Dégâts +4%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "BEACON",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "BEACON": {
+          "damage_mul": 1.04
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0122",
+    "name": "Beacon • Calibrage: Cadence +6%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "BEACON",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "BEACON": {
+          "rate_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0123",
+    "name": "Beacon • Lentille: Portée +4%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "BEACON",
+      "UTILITY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "BEACON": {
+          "range_mul": 1.04
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0124",
+    "name": "Beacon • Calibrage: Dégâts +5%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "BEACON",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "BEACON": {
+          "damage_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0125",
+    "name": "Beacon • Calibrage: Cadence +6%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "BEACON",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "BEACON": {
+          "rate_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0126",
+    "name": "Beacon • Lentille: Portée +4%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "BEACON",
+      "UTILITY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "BEACON": {
+          "range_mul": 1.04
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0127",
+    "name": "Beacon • Calibrage: Dégâts +4%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "BEACON",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "BEACON": {
+          "damage_mul": 1.04
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0128",
+    "name": "Beacon • Calibrage: Cadence +5%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "BEACON",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "BEACON": {
+          "rate_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0129",
+    "name": "Beacon • Lentille: Portée +6%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "BEACON",
+      "UTILITY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "BEACON": {
+          "range_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0130",
+    "name": "Beacon • Calibrage: Dégâts +5%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "BEACON",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "BEACON": {
+          "damage_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0131",
+    "name": "Beacon • Kit de Surcadence (+10% dmg, +7% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "BEACON",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "BEACON": {
+          "damage_mul": 1.1,
+          "rate_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0132",
+    "name": "Beacon • Kit de Surcadence (+10% dmg, +5% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "BEACON",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "BEACON": {
+          "damage_mul": 1.1,
+          "rate_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0133",
+    "name": "Beacon • Kit de Surcadence (+8% dmg, +5% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "BEACON",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "BEACON": {
+          "damage_mul": 1.08,
+          "rate_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0134",
+    "name": "Beacon • Kit de Surcadence (+7% dmg, +6% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "BEACON",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "BEACON": {
+          "damage_mul": 1.07,
+          "rate_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0135",
+    "name": "Beacon • Kit de Surcadence (+7% dmg, +7% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "BEACON",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "BEACON": {
+          "damage_mul": 1.07,
+          "rate_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0136",
+    "name": "Beacon • Kit de Surcadence (+11% dmg, +5% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "BEACON",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "BEACON": {
+          "damage_mul": 1.11,
+          "rate_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "REL_0137",
+    "name": "Beacon • Relique de Forge (+17% dmg, +10% cad.)",
+    "rarity": "E",
+    "tags": [
+      "TOWER",
+      "BEACON",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "BEACON": {
+          "damage_mul": 1.18,
+          "rate_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "REL_0138",
+    "name": "Beacon • Relique de Forge (+13% dmg, +10% cad.)",
+    "rarity": "E",
+    "tags": [
+      "TOWER",
+      "BEACON",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "BEACON": {
+          "damage_mul": 1.14,
+          "rate_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "REL_0139",
+    "name": "Beacon • Relique de Forge (+17% dmg, +10% cad.)",
+    "rarity": "E",
+    "tags": [
+      "TOWER",
+      "BEACON",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "BEACON": {
+          "damage_mul": 1.18,
+          "rate_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "MW_0140",
+    "name": "Beacon • Chef-d'œuvre (Dmg +25%, Cad. +15%, Portée +10%)",
+    "rarity": "L",
+    "tags": [
+      "TOWER",
+      "BEACON",
+      "LEGEND"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "BEACON": {
+          "damage_mul": 1.25,
+          "rate_mul": 1.15,
+          "range_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0141",
+    "name": "Flame • Calibrage: Dégâts +4%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "FLAME",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "FLAME": {
+          "damage_mul": 1.04
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0142",
+    "name": "Flame • Calibrage: Cadence +3%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "FLAME",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "FLAME": {
+          "rate_mul": 1.03
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0143",
+    "name": "Flame • Lentille: Portée +3%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "FLAME",
+      "UTILITY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "FLAME": {
+          "range_mul": 1.03
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0144",
+    "name": "Flame • Calibrage: Dégâts +5%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "FLAME",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "FLAME": {
+          "damage_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0145",
+    "name": "Flame • Calibrage: Cadence +3%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "FLAME",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "FLAME": {
+          "rate_mul": 1.03
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0146",
+    "name": "Flame • Lentille: Portée +4%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "FLAME",
+      "UTILITY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "FLAME": {
+          "range_mul": 1.04
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0147",
+    "name": "Flame • Calibrage: Dégâts +5%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "FLAME",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "FLAME": {
+          "damage_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0148",
+    "name": "Flame • Calibrage: Cadence +6%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "FLAME",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "FLAME": {
+          "rate_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0149",
+    "name": "Flame • Lentille: Portée +4%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "FLAME",
+      "UTILITY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "FLAME": {
+          "range_mul": 1.04
+        }
+      }
+    }
+  },
+  {
+    "id": "TUN_0150",
+    "name": "Flame • Calibrage: Dégâts +4%",
+    "rarity": "C",
+    "tags": [
+      "TOWER",
+      "FLAME",
+      "POWER"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "FLAME": {
+          "damage_mul": 1.04
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0151",
+    "name": "Flame • Kit de Surcadence (+11% dmg, +7% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "FLAME",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "FLAME": {
+          "damage_mul": 1.11,
+          "rate_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0152",
+    "name": "Flame • Kit de Surcadence (+10% dmg, +5% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "FLAME",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "FLAME": {
+          "damage_mul": 1.1,
+          "rate_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0153",
+    "name": "Flame • Kit de Surcadence (+10% dmg, +6% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "FLAME",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "FLAME": {
+          "damage_mul": 1.1,
+          "rate_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0154",
+    "name": "Flame • Kit de Surcadence (+8% dmg, +5% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "FLAME",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "FLAME": {
+          "damage_mul": 1.08,
+          "rate_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0155",
+    "name": "Flame • Kit de Surcadence (+7% dmg, +7% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "FLAME",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "FLAME": {
+          "damage_mul": 1.07,
+          "rate_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "KIT_0156",
+    "name": "Flame • Kit de Surcadence (+10% dmg, +6% cad.)",
+    "rarity": "R",
+    "tags": [
+      "TOWER",
+      "FLAME",
+      "SYNERGY"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "FLAME": {
+          "damage_mul": 1.1,
+          "rate_mul": 1.06
+        }
+      }
+    }
+  },
+  {
+    "id": "REL_0157",
+    "name": "Flame • Relique de Forge (+15% dmg, +12% cad.)",
+    "rarity": "E",
+    "tags": [
+      "TOWER",
+      "FLAME",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "FLAME": {
+          "damage_mul": 1.16,
+          "rate_mul": 1.12
+        }
+      }
+    }
+  },
+  {
+    "id": "REL_0158",
+    "name": "Flame • Relique de Forge (+15% dmg, +10% cad.)",
+    "rarity": "E",
+    "tags": [
+      "TOWER",
+      "FLAME",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "FLAME": {
+          "damage_mul": 1.16,
+          "rate_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "REL_0159",
+    "name": "Flame • Relique de Forge (+17% dmg, +10% cad.)",
+    "rarity": "E",
+    "tags": [
+      "TOWER",
+      "FLAME",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "FLAME": {
+          "damage_mul": 1.18,
+          "rate_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "MW_0160",
+    "name": "Flame • Chef-d'œuvre (Dmg +25%, Cad. +15%, Portée +10%)",
+    "rarity": "L",
+    "tags": [
+      "TOWER",
+      "FLAME",
+      "LEGEND"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "FLAME": {
+          "damage_mul": 1.25,
+          "rate_mul": 1.15,
+          "range_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "GLB_0161",
+    "name": "Affûtage global • Dégâts +3%",
     "rarity": "C",
     "tags": [
       "POWER"
     ],
     "mods": {
-      "rate_mul": 1.1
+      "dmg_mul": 1.03
     }
   },
   {
-    "id": "gold_kill",
-    "name": "Or/Kill +1",
-    "rarity": "C",
-    "tags": [
-      "ECON"
-    ],
-    "mods": {
-      "gold_per_kill": 1
-    }
-  },
-  {
-    "id": "start_gold",
-    "name": "Or immédiat +150",
-    "rarity": "C",
-    "tags": [
-      "ECON"
-    ],
-    "grant": {
-      "gold": 150
-    }
-  },
-  {
-    "id": "core_shield",
-    "name": "Noyau: +8 bouclier",
-    "rarity": "C",
-    "tags": [
-      "DEF"
-    ],
-    "grant": {
-      "core_shield": 8
-    }
-  },
-  {
-    "id": "spell_regen",
-    "name": "Énergie: régénération +20%",
-    "rarity": "C",
-    "tags": [
-      "SPELL"
-    ],
-    "mods": {
-      "spell_energy_regen_mul": 1.2
-    }
-  },
-  {
-    "id": "path_tax",
-    "name": "Chemin rentable (+12 or / relic traversée)",
+    "id": "GLB_0162",
+    "name": "Optimisation logistique • Coût tours -4%",
     "rarity": "R",
     "tags": [
-      "ECON",
-      "PATH"
+      "ECON"
     ],
     "mods": {
-      "flag_path_gold": true
+      "tower_cost_mul": 0.96
     }
   },
   {
-    "id": "interest_up",
-    "name": "Intérêt +2%",
+    "id": "GLB_0163",
+    "name": "Affûtage global • Dégâts +2%",
+    "rarity": "C",
+    "tags": [
+      "POWER"
+    ],
+    "mods": {
+      "dmg_mul": 1.02
+    }
+  },
+  {
+    "id": "GLB_0164",
+    "name": "Graissage • Cadence +2%",
+    "rarity": "C",
+    "tags": [
+      "POWER"
+    ],
+    "mods": {
+      "rate_mul": 1.02
+    }
+  },
+  {
+    "id": "GLB_0165",
+    "name": "Intérêt composé • +1%",
+    "rarity": "R",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "interest_add": 0.015
+    }
+  },
+  {
+    "id": "GLB_0166",
+    "name": "Graissage • Cadence +3%",
+    "rarity": "C",
+    "tags": [
+      "POWER"
+    ],
+    "mods": {
+      "rate_mul": 1.03
+    }
+  },
+  {
+    "id": "GLB_0167",
+    "name": "Graissage • Cadence +3%",
+    "rarity": "C",
+    "tags": [
+      "POWER"
+    ],
+    "mods": {
+      "rate_mul": 1.03
+    }
+  },
+  {
+    "id": "GLB_0168",
+    "name": "Fragments • Chance +3%",
+    "rarity": "C",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "frag_chance_add": 0.03
+    }
+  },
+  {
+    "id": "GLB_0169",
+    "name": "Affûtage global • Dégâts +3%",
+    "rarity": "C",
+    "tags": [
+      "POWER"
+    ],
+    "mods": {
+      "dmg_mul": 1.03
+    }
+  },
+  {
+    "id": "GLB_0170",
+    "name": "Intérêt composé • +1%",
+    "rarity": "R",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "interest_add": 0.01
+    }
+  },
+  {
+    "id": "GLB_0171",
+    "name": "Affûtage global • Dégâts +4%",
+    "rarity": "C",
+    "tags": [
+      "POWER"
+    ],
+    "mods": {
+      "dmg_mul": 1.04
+    }
+  },
+  {
+    "id": "GLB_0172",
+    "name": "Intérêt composé • +1%",
+    "rarity": "R",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "interest_add": 0.01
+    }
+  },
+  {
+    "id": "GLB_0173",
+    "name": "Affûtage global • Dégâts +2%",
+    "rarity": "C",
+    "tags": [
+      "POWER"
+    ],
+    "mods": {
+      "dmg_mul": 1.02
+    }
+  },
+  {
+    "id": "GLB_0174",
+    "name": "Graissage • Cadence +3%",
+    "rarity": "C",
+    "tags": [
+      "POWER"
+    ],
+    "mods": {
+      "rate_mul": 1.03
+    }
+  },
+  {
+    "id": "GLB_0175",
+    "name": "Fragments • Chance +4%",
+    "rarity": "C",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "frag_chance_add": 0.04
+    }
+  },
+  {
+    "id": "GLB_0176",
+    "name": "Graissage • Cadence +3%",
+    "rarity": "C",
+    "tags": [
+      "POWER"
+    ],
+    "mods": {
+      "rate_mul": 1.03
+    }
+  },
+  {
+    "id": "GLB_0177",
+    "name": "Affûtage global • Dégâts +2%",
+    "rarity": "C",
+    "tags": [
+      "POWER"
+    ],
+    "mods": {
+      "dmg_mul": 1.02
+    }
+  },
+  {
+    "id": "GLB_0178",
+    "name": "Fragments • Chance +3%",
+    "rarity": "C",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "frag_chance_add": 0.03
+    }
+  },
+  {
+    "id": "GLB_0179",
+    "name": "Fragments • Chance +4%",
+    "rarity": "C",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "frag_chance_add": 0.04
+    }
+  },
+  {
+    "id": "GLB_0180",
+    "name": "Fragments • Chance +4%",
+    "rarity": "C",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "frag_chance_add": 0.04
+    }
+  },
+  {
+    "id": "GLB_0181",
+    "name": "Fragments • Chance +5%",
+    "rarity": "C",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "frag_chance_add": 0.05
+    }
+  },
+  {
+    "id": "GLB_0182",
+    "name": "Optimisation logistique • Coût tours -5%",
+    "rarity": "R",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "tower_cost_mul": 0.95
+    }
+  },
+  {
+    "id": "GLB_0183",
+    "name": "Optimisation logistique • Coût tours -5%",
+    "rarity": "R",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "tower_cost_mul": 0.95
+    }
+  },
+  {
+    "id": "GLB_0184",
+    "name": "Fragments • Chance +3%",
+    "rarity": "C",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "frag_chance_add": 0.03
+    }
+  },
+  {
+    "id": "GLB_0185",
+    "name": "Graissage • Cadence +3%",
+    "rarity": "C",
+    "tags": [
+      "POWER"
+    ],
+    "mods": {
+      "rate_mul": 1.03
+    }
+  },
+  {
+    "id": "GLB_0186",
+    "name": "Graissage • Cadence +2%",
+    "rarity": "C",
+    "tags": [
+      "POWER"
+    ],
+    "mods": {
+      "rate_mul": 1.02
+    }
+  },
+  {
+    "id": "GLB_0187",
+    "name": "Intérêt composé • +2%",
     "rarity": "R",
     "tags": [
       "ECON"
@@ -100,31 +3105,3668 @@
     }
   },
   {
-    "id": "overclock_mastery",
-    "name": "Overclock: durée +50%",
-    "rarity": "E",
+    "id": "GLB_0188",
+    "name": "Intérêt composé • +1%",
+    "rarity": "R",
     "tags": [
-      "TECH"
+      "ECON"
     ],
     "mods": {
-      "overclock_dur_mul": 1.5
+      "interest_add": 0.01
     }
   },
   {
-    "id": "double_cast",
-    "name": "Spells: 20% chance de doubler",
+    "id": "GLB_0189",
+    "name": "Optimisation logistique • Coût tours -4%",
+    "rarity": "R",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "tower_cost_mul": 0.96
+    }
+  },
+  {
+    "id": "GLB_0190",
+    "name": "Affûtage global • Dégâts +2%",
+    "rarity": "C",
+    "tags": [
+      "POWER"
+    ],
+    "mods": {
+      "dmg_mul": 1.02
+    }
+  },
+  {
+    "id": "GLB_0191",
+    "name": "Intérêt composé • +1%",
+    "rarity": "R",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "interest_add": 0.015
+    }
+  },
+  {
+    "id": "GLB_0192",
+    "name": "Intérêt composé • +2%",
+    "rarity": "R",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "interest_add": 0.02
+    }
+  },
+  {
+    "id": "GLB_0193",
+    "name": "Graissage • Cadence +2%",
+    "rarity": "C",
+    "tags": [
+      "POWER"
+    ],
+    "mods": {
+      "rate_mul": 1.02
+    }
+  },
+  {
+    "id": "GLB_0194",
+    "name": "Intérêt composé • +1%",
+    "rarity": "R",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "interest_add": 0.01
+    }
+  },
+  {
+    "id": "GLB_0195",
+    "name": "Graissage • Cadence +2%",
+    "rarity": "C",
+    "tags": [
+      "POWER"
+    ],
+    "mods": {
+      "rate_mul": 1.02
+    }
+  },
+  {
+    "id": "GLB_0196",
+    "name": "Intérêt composé • +1%",
+    "rarity": "R",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "interest_add": 0.01
+    }
+  },
+  {
+    "id": "GLB_0197",
+    "name": "Optimisation logistique • Coût tours -3%",
+    "rarity": "R",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "tower_cost_mul": 0.97
+    }
+  },
+  {
+    "id": "GLB_0198",
+    "name": "Fragments • Chance +3%",
+    "rarity": "C",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "frag_chance_add": 0.03
+    }
+  },
+  {
+    "id": "GLB_0199",
+    "name": "Intérêt composé • +1%",
+    "rarity": "R",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "interest_add": 0.01
+    }
+  },
+  {
+    "id": "GLB_0200",
+    "name": "Intérêt composé • +2%",
+    "rarity": "R",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "interest_add": 0.02
+    }
+  },
+  {
+    "id": "GLB_0201",
+    "name": "Affûtage global • Dégâts +4%",
+    "rarity": "C",
+    "tags": [
+      "POWER"
+    ],
+    "mods": {
+      "dmg_mul": 1.04
+    }
+  },
+  {
+    "id": "GLB_0202",
+    "name": "Affûtage global • Dégâts +3%",
+    "rarity": "C",
+    "tags": [
+      "POWER"
+    ],
+    "mods": {
+      "dmg_mul": 1.03
+    }
+  },
+  {
+    "id": "GLB_0203",
+    "name": "Optimisation logistique • Coût tours -5%",
+    "rarity": "R",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "tower_cost_mul": 0.95
+    }
+  },
+  {
+    "id": "GLB_0204",
+    "name": "Intérêt composé • +2%",
+    "rarity": "R",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "interest_add": 0.02
+    }
+  },
+  {
+    "id": "GLB_0205",
+    "name": "Optiques • Portée +4%",
+    "rarity": "C",
+    "tags": [
+      "UTILITY"
+    ],
+    "mods": {
+      "range_mul": 1.04
+    }
+  },
+  {
+    "id": "GLB_0206",
+    "name": "Graissage • Cadence +4%",
+    "rarity": "C",
+    "tags": [
+      "POWER"
+    ],
+    "mods": {
+      "rate_mul": 1.04
+    }
+  },
+  {
+    "id": "GLB_0207",
+    "name": "Optimisation logistique • Coût tours -4%",
+    "rarity": "R",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "tower_cost_mul": 0.96
+    }
+  },
+  {
+    "id": "GLB_0208",
+    "name": "Graissage • Cadence +3%",
+    "rarity": "C",
+    "tags": [
+      "POWER"
+    ],
+    "mods": {
+      "rate_mul": 1.03
+    }
+  },
+  {
+    "id": "GLB_0209",
+    "name": "Fragments • Chance +3%",
+    "rarity": "C",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "frag_chance_add": 0.03
+    }
+  },
+  {
+    "id": "GLB_0210",
+    "name": "Optimisation logistique • Coût tours -5%",
+    "rarity": "R",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "tower_cost_mul": 0.95
+    }
+  },
+  {
+    "id": "GLB_0211",
+    "name": "Optiques • Portée +4%",
+    "rarity": "C",
+    "tags": [
+      "UTILITY"
+    ],
+    "mods": {
+      "range_mul": 1.04
+    }
+  },
+  {
+    "id": "GLB_0212",
+    "name": "Optiques • Portée +3%",
+    "rarity": "C",
+    "tags": [
+      "UTILITY"
+    ],
+    "mods": {
+      "range_mul": 1.03
+    }
+  },
+  {
+    "id": "GLB_0213",
+    "name": "Affûtage global • Dégâts +3%",
+    "rarity": "C",
+    "tags": [
+      "POWER"
+    ],
+    "mods": {
+      "dmg_mul": 1.03
+    }
+  },
+  {
+    "id": "GLB_0214",
+    "name": "Intérêt composé • +2%",
+    "rarity": "R",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "interest_add": 0.02
+    }
+  },
+  {
+    "id": "GLB_0215",
+    "name": "Affûtage global • Dégâts +2%",
+    "rarity": "C",
+    "tags": [
+      "POWER"
+    ],
+    "mods": {
+      "dmg_mul": 1.02
+    }
+  },
+  {
+    "id": "GLB_0216",
+    "name": "Intérêt composé • +1%",
+    "rarity": "R",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "interest_add": 0.01
+    }
+  },
+  {
+    "id": "GLB_0217",
+    "name": "Intérêt composé • +1%",
+    "rarity": "R",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "interest_add": 0.015
+    }
+  },
+  {
+    "id": "GLB_0218",
+    "name": "Graissage • Cadence +3%",
+    "rarity": "C",
+    "tags": [
+      "POWER"
+    ],
+    "mods": {
+      "rate_mul": 1.03
+    }
+  },
+  {
+    "id": "GLB_0219",
+    "name": "Affûtage global • Dégâts +2%",
+    "rarity": "C",
+    "tags": [
+      "POWER"
+    ],
+    "mods": {
+      "dmg_mul": 1.02
+    }
+  },
+  {
+    "id": "GLB_0220",
+    "name": "Optiques • Portée +4%",
+    "rarity": "C",
+    "tags": [
+      "UTILITY"
+    ],
+    "mods": {
+      "range_mul": 1.04
+    }
+  },
+  {
+    "id": "FOR_0221",
+    "name": "Essence de forge • +12 Pavés",
+    "rarity": "R",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 12
+    }
+  },
+  {
+    "id": "FOR_0222",
+    "name": "Essence de forge • +30 Pavés",
+    "rarity": "E",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 30
+    }
+  },
+  {
+    "id": "FOR_0223",
+    "name": "Essence de forge • +16 Pavés",
+    "rarity": "E",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 16
+    }
+  },
+  {
+    "id": "FOR_0224",
+    "name": "Essence de forge • +30 Pavés",
+    "rarity": "C",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 30
+    }
+  },
+  {
+    "id": "FOR_0225",
+    "name": "Essence de forge • +30 Pavés",
+    "rarity": "R",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 30
+    }
+  },
+  {
+    "id": "FOR_0226",
+    "name": "Essence de forge • +8 Pavés",
+    "rarity": "C",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 8
+    }
+  },
+  {
+    "id": "FOR_0227",
+    "name": "Essence de forge • +16 Pavés",
+    "rarity": "C",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 16
+    }
+  },
+  {
+    "id": "FOR_0228",
+    "name": "Essence de forge • +8 Pavés",
+    "rarity": "E",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 8
+    }
+  },
+  {
+    "id": "FOR_0229",
+    "name": "Essence de forge • +30 Pavés",
+    "rarity": "C",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 30
+    }
+  },
+  {
+    "id": "FOR_0230",
+    "name": "Essence de forge • +16 Pavés",
+    "rarity": "R",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 16
+    }
+  },
+  {
+    "id": "FOR_0231",
+    "name": "Essence de forge • +30 Pavés",
+    "rarity": "C",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 30
+    }
+  },
+  {
+    "id": "FOR_0232",
+    "name": "Essence de forge • +16 Pavés",
+    "rarity": "C",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 16
+    }
+  },
+  {
+    "id": "FOR_0233",
+    "name": "Essence de forge • +16 Pavés",
+    "rarity": "E",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 16
+    }
+  },
+  {
+    "id": "FOR_0234",
+    "name": "Essence de forge • +20 Pavés",
+    "rarity": "R",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 20
+    }
+  },
+  {
+    "id": "FOR_0235",
+    "name": "Essence de forge • +8 Pavés",
+    "rarity": "C",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 8
+    }
+  },
+  {
+    "id": "FOR_0236",
+    "name": "Essence de forge • +20 Pavés",
+    "rarity": "R",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 20
+    }
+  },
+  {
+    "id": "FOR_0237",
+    "name": "Essence de forge • +8 Pavés",
+    "rarity": "C",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 8
+    }
+  },
+  {
+    "id": "FOR_0238",
+    "name": "Essence de forge • +16 Pavés",
+    "rarity": "C",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 16
+    }
+  },
+  {
+    "id": "FOR_0239",
+    "name": "Essence de forge • +16 Pavés",
+    "rarity": "C",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 16
+    }
+  },
+  {
+    "id": "FOR_0240",
+    "name": "Essence de forge • +20 Pavés",
+    "rarity": "E",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 20
+    }
+  },
+  {
+    "id": "FOR_0241",
+    "name": "Essence de forge • +20 Pavés",
+    "rarity": "E",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 20
+    }
+  },
+  {
+    "id": "FOR_0242",
+    "name": "Essence de forge • +8 Pavés",
+    "rarity": "C",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 8
+    }
+  },
+  {
+    "id": "FOR_0243",
+    "name": "Essence de forge • +8 Pavés",
+    "rarity": "E",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 8
+    }
+  },
+  {
+    "id": "FOR_0244",
+    "name": "Essence de forge • +12 Pavés",
+    "rarity": "E",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 12
+    }
+  },
+  {
+    "id": "FOR_0245",
+    "name": "Essence de forge • +8 Pavés",
+    "rarity": "R",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 8
+    }
+  },
+  {
+    "id": "FOR_0246",
+    "name": "Essence de forge • +30 Pavés",
+    "rarity": "E",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 30
+    }
+  },
+  {
+    "id": "FOR_0247",
+    "name": "Essence de forge • +12 Pavés",
+    "rarity": "R",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 12
+    }
+  },
+  {
+    "id": "FOR_0248",
+    "name": "Essence de forge • +12 Pavés",
+    "rarity": "C",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 12
+    }
+  },
+  {
+    "id": "FOR_0249",
+    "name": "Essence de forge • +16 Pavés",
+    "rarity": "R",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 16
+    }
+  },
+  {
+    "id": "FOR_0250",
+    "name": "Essence de forge • +8 Pavés",
+    "rarity": "R",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 8
+    }
+  },
+  {
+    "id": "FOR_0251",
+    "name": "Essence de forge • +12 Pavés",
+    "rarity": "E",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 12
+    }
+  },
+  {
+    "id": "FOR_0252",
+    "name": "Essence de forge • +12 Pavés",
+    "rarity": "E",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 12
+    }
+  },
+  {
+    "id": "FOR_0253",
+    "name": "Essence de forge • +8 Pavés",
+    "rarity": "R",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 8
+    }
+  },
+  {
+    "id": "FOR_0254",
+    "name": "Essence de forge • +30 Pavés",
+    "rarity": "R",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 30
+    }
+  },
+  {
+    "id": "FOR_0255",
+    "name": "Essence de forge • +30 Pavés",
+    "rarity": "E",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 30
+    }
+  },
+  {
+    "id": "FOR_0256",
+    "name": "Essence de forge • +12 Pavés",
+    "rarity": "C",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 12
+    }
+  },
+  {
+    "id": "FOR_0257",
+    "name": "Essence de forge • +12 Pavés",
+    "rarity": "C",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 12
+    }
+  },
+  {
+    "id": "FOR_0258",
+    "name": "Essence de forge • +20 Pavés",
+    "rarity": "C",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 20
+    }
+  },
+  {
+    "id": "FOR_0259",
+    "name": "Essence de forge • +12 Pavés",
+    "rarity": "E",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 12
+    }
+  },
+  {
+    "id": "FOR_0260",
+    "name": "Essence de forge • +16 Pavés",
+    "rarity": "R",
+    "tags": [
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 16
+    }
+  },
+  {
+    "id": "FOR_0261",
+    "name": "Rune d'Argent • Or bonus par relique sur la voie",
+    "rarity": "E",
+    "tags": [
+      "FORGE",
+      "ECON"
+    ],
+    "mods": {
+      "flag_path_gold": true
+    }
+  },
+  {
+    "id": "FOR_0262",
+    "name": "Rune d'Argent • Or bonus par relique sur la voie",
+    "rarity": "E",
+    "tags": [
+      "FORGE",
+      "ECON"
+    ],
+    "mods": {
+      "flag_path_gold": true
+    }
+  },
+  {
+    "id": "FOR_0263",
+    "name": "Rune d'Argent • Or bonus par relique sur la voie",
+    "rarity": "E",
+    "tags": [
+      "FORGE",
+      "ECON"
+    ],
+    "mods": {
+      "flag_path_gold": true
+    }
+  },
+  {
+    "id": "FOR_0264",
+    "name": "Rune d'Argent • Or bonus par relique sur la voie",
+    "rarity": "E",
+    "tags": [
+      "FORGE",
+      "ECON"
+    ],
+    "mods": {
+      "flag_path_gold": true
+    }
+  },
+  {
+    "id": "FOR_0265",
+    "name": "Rune d'Argent • Or bonus par relique sur la voie",
+    "rarity": "E",
+    "tags": [
+      "FORGE",
+      "ECON"
+    ],
+    "mods": {
+      "flag_path_gold": true
+    }
+  },
+  {
+    "id": "FOR_0266",
+    "name": "Rune d'Argent • Or bonus par relique sur la voie",
+    "rarity": "E",
+    "tags": [
+      "FORGE",
+      "ECON"
+    ],
+    "mods": {
+      "flag_path_gold": true
+    }
+  },
+  {
+    "id": "FOR_0267",
+    "name": "Rune d'Argent • Or bonus par relique sur la voie",
+    "rarity": "E",
+    "tags": [
+      "FORGE",
+      "ECON"
+    ],
+    "mods": {
+      "flag_path_gold": true
+    }
+  },
+  {
+    "id": "FOR_0268",
+    "name": "Rune d'Argent • Or bonus par relique sur la voie",
+    "rarity": "E",
+    "tags": [
+      "FORGE",
+      "ECON"
+    ],
+    "mods": {
+      "flag_path_gold": true
+    }
+  },
+  {
+    "id": "FOR_0269",
+    "name": "Rune d'Argent • Or bonus par relique sur la voie",
+    "rarity": "E",
+    "tags": [
+      "FORGE",
+      "ECON"
+    ],
+    "mods": {
+      "flag_path_gold": true
+    }
+  },
+  {
+    "id": "FOR_0270",
+    "name": "Rune d'Argent • Or bonus par relique sur la voie",
+    "rarity": "E",
+    "tags": [
+      "FORGE",
+      "ECON"
+    ],
+    "mods": {
+      "flag_path_gold": true
+    }
+  },
+  {
+    "id": "FOR_0271",
+    "name": "Bounty du Boss • Récompense x2 sur les Boss",
+    "rarity": "L",
+    "tags": [
+      "ECON",
+      "BOSS"
+    ],
+    "mods": {
+      "flag_boss_bounty": true
+    }
+  },
+  {
+    "id": "FOR_0272",
+    "name": "Bounty du Boss • Récompense x2 sur les Boss",
+    "rarity": "L",
+    "tags": [
+      "ECON",
+      "BOSS"
+    ],
+    "mods": {
+      "flag_boss_bounty": true
+    }
+  },
+  {
+    "id": "FOR_0273",
+    "name": "Bounty du Boss • Récompense x2 sur les Boss",
+    "rarity": "L",
+    "tags": [
+      "ECON",
+      "BOSS"
+    ],
+    "mods": {
+      "flag_boss_bounty": true
+    }
+  },
+  {
+    "id": "FOR_0274",
+    "name": "Bounty du Boss • Récompense x2 sur les Boss",
+    "rarity": "L",
+    "tags": [
+      "ECON",
+      "BOSS"
+    ],
+    "mods": {
+      "flag_boss_bounty": true
+    }
+  },
+  {
+    "id": "FOR_0275",
+    "name": "Bounty du Boss • Récompense x2 sur les Boss",
+    "rarity": "L",
+    "tags": [
+      "ECON",
+      "BOSS"
+    ],
+    "mods": {
+      "flag_boss_bounty": true
+    }
+  },
+  {
+    "id": "FOR_0276",
+    "name": "Bounty du Boss • Récompense x2 sur les Boss",
+    "rarity": "L",
+    "tags": [
+      "ECON",
+      "BOSS"
+    ],
+    "mods": {
+      "flag_boss_bounty": true
+    }
+  },
+  {
+    "id": "HIT_0277",
+    "name": "Dissolution d'armure • SHRED sur impact (dur 2.16s) (⚠ ennemis +vitesse)",
+    "rarity": "R",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SHRED": {
+          "dur": 2.16,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      },
+      "enemy_speed_mul": 1.06
+    }
+  },
+  {
+    "id": "HIT_0278",
+    "name": "Dissolution d'armure • SHRED sur impact (dur 1.92s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SHRED": {
+          "dur": 1.92,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0279",
+    "name": "Dissolution d'armure • SHRED sur impact (dur 2.64s) (⚠ ennemis +vitesse)",
+    "rarity": "R",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SHRED": {
+          "dur": 2.64,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      },
+      "enemy_speed_mul": 1.05
+    }
+  },
+  {
+    "id": "HIT_0280",
+    "name": "Dissolution d'armure • SHRED sur impact (dur 2.4s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SHRED": {
+          "dur": 2.4,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0281",
+    "name": "Dissolution d'armure • SHRED sur impact (dur 2.16s) (⚠ ennemis +vitesse)",
+    "rarity": "R",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SHRED": {
+          "dur": 2.16,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      },
+      "enemy_speed_mul": 1.03
+    }
+  },
+  {
+    "id": "HIT_0282",
+    "name": "Dissolution d'armure • SHRED sur impact (dur 2.64s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SHRED": {
+          "dur": 2.64,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0283",
+    "name": "Dissolution d'armure • SHRED sur impact (dur 1.92s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SHRED": {
+          "dur": 1.92,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0284",
+    "name": "Dissolution d'armure • SHRED sur impact (dur 2.64s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SHRED": {
+          "dur": 2.64,
+          "stacks": 2,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0285",
+    "name": "Dissolution d'armure • SHRED sur impact (dur 2.4s) (⚠ ennemis +vitesse)",
+    "rarity": "R",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SHRED": {
+          "dur": 2.4,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      },
+      "enemy_speed_mul": 1.05
+    }
+  },
+  {
+    "id": "HIT_0286",
+    "name": "Dissolution d'armure • SHRED sur impact (dur 2.16s)",
+    "rarity": "R",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SHRED": {
+          "dur": 2.16,
+          "stacks": 2,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0287",
+    "name": "Dissolution d'armure • SHRED sur impact (dur 2.4s) (⚠ ennemis +vitesse)",
+    "rarity": "R",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SHRED": {
+          "dur": 2.4,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      },
+      "enemy_speed_mul": 1.05
+    }
+  },
+  {
+    "id": "HIT_0288",
+    "name": "Dissolution d'armure • SHRED sur impact (dur 2.4s)",
+    "rarity": "R",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SHRED": {
+          "dur": 2.4,
+          "stacks": 2,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0289",
+    "name": "Dissolution d'armure • Infusion (stacks 2, dur 3.24s)",
+    "rarity": "E",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SHRED": {
+          "dur": 3.24,
+          "stacks": 2,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0290",
+    "name": "Dissolution d'armure • Sceau majeur (stacks 3, dur 4.32s)",
+    "rarity": "L",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SHRED": {
+          "dur": 4.32,
+          "stacks": 3,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0291",
+    "name": "Marque de faiblesse • VULN sur impact (dur 2.42s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "VULN": {
+          "dur": 2.42,
+          "stacks": 2,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0292",
+    "name": "Marque de faiblesse • VULN sur impact (dur 1.76s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "VULN": {
+          "dur": 1.76,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0293",
+    "name": "Marque de faiblesse • VULN sur impact (dur 1.98s) (⚠ ennemis +vitesse)",
+    "rarity": "R",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "VULN": {
+          "dur": 1.98,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      },
+      "enemy_speed_mul": 1.05
+    }
+  },
+  {
+    "id": "HIT_0294",
+    "name": "Marque de faiblesse • VULN sur impact (dur 1.76s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "VULN": {
+          "dur": 1.76,
+          "stacks": 2,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0295",
+    "name": "Marque de faiblesse • VULN sur impact (dur 1.98s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "VULN": {
+          "dur": 1.98,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0296",
+    "name": "Marque de faiblesse • VULN sur impact (dur 2.2s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "VULN": {
+          "dur": 2.2,
+          "stacks": 2,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0297",
+    "name": "Marque de faiblesse • VULN sur impact (dur 1.76s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "VULN": {
+          "dur": 1.76,
+          "stacks": 2,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0298",
+    "name": "Marque de faiblesse • VULN sur impact (dur 2.2s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "VULN": {
+          "dur": 2.2,
+          "stacks": 2,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0299",
+    "name": "Marque de faiblesse • VULN sur impact (dur 2.42s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "VULN": {
+          "dur": 2.42,
+          "stacks": 2,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0300",
+    "name": "Marque de faiblesse • VULN sur impact (dur 1.98s)",
+    "rarity": "R",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "VULN": {
+          "dur": 1.98,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0301",
+    "name": "Marque de faiblesse • VULN sur impact (dur 2.42s)",
+    "rarity": "R",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "VULN": {
+          "dur": 2.42,
+          "stacks": 2,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0302",
+    "name": "Marque de faiblesse • VULN sur impact (dur 1.98s)",
+    "rarity": "R",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "VULN": {
+          "dur": 1.98,
+          "stacks": 2,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0303",
+    "name": "Marque de faiblesse • Infusion (stacks 2, dur 2.97s)",
+    "rarity": "E",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "VULN": {
+          "dur": 2.97,
+          "stacks": 2,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0304",
+    "name": "Marque de faiblesse • Sceau majeur (stacks 3, dur 3.96s)",
+    "rarity": "L",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "VULN": {
+          "dur": 3.96,
+          "stacks": 3,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0305",
+    "name": "Toxines • POISON sur impact (dur 2.42s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "POISON": {
+          "dur": 2.42,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0306",
+    "name": "Toxines • POISON sur impact (dur 1.76s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "POISON": {
+          "dur": 1.76,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0307",
+    "name": "Toxines • POISON sur impact (dur 1.98s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "POISON": {
+          "dur": 1.98,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0308",
+    "name": "Toxines • POISON sur impact (dur 2.2s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "POISON": {
+          "dur": 2.2,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0309",
+    "name": "Toxines • POISON sur impact (dur 2.42s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "POISON": {
+          "dur": 2.42,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0310",
+    "name": "Toxines • POISON sur impact (dur 2.42s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "POISON": {
+          "dur": 2.42,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0311",
+    "name": "Toxines • POISON sur impact (dur 1.98s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "POISON": {
+          "dur": 1.98,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0312",
+    "name": "Toxines • POISON sur impact (dur 2.2s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "POISON": {
+          "dur": 2.2,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0313",
+    "name": "Toxines • POISON sur impact (dur 2.2s) (⚠ ennemis +vitesse)",
+    "rarity": "R",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "POISON": {
+          "dur": 2.2,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      },
+      "enemy_speed_mul": 1.03
+    }
+  },
+  {
+    "id": "HIT_0314",
+    "name": "Toxines • POISON sur impact (dur 2.2s) (⚠ ennemis +vitesse)",
+    "rarity": "R",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "POISON": {
+          "dur": 2.2,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      },
+      "enemy_speed_mul": 1.03
+    }
+  },
+  {
+    "id": "HIT_0315",
+    "name": "Toxines • POISON sur impact (dur 1.98s) (⚠ ennemis +vitesse)",
+    "rarity": "R",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "POISON": {
+          "dur": 1.98,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      },
+      "enemy_speed_mul": 1.03
+    }
+  },
+  {
+    "id": "HIT_0316",
+    "name": "Toxines • POISON sur impact (dur 2.42s)",
+    "rarity": "R",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "POISON": {
+          "dur": 2.42,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0317",
+    "name": "Toxines • Infusion (stacks 2, dur 2.97s)",
+    "rarity": "E",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "POISON": {
+          "dur": 2.97,
+          "stacks": 2,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0318",
+    "name": "Toxines • Sceau majeur (stacks 3, dur 3.96s)",
+    "rarity": "L",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "POISON": {
+          "dur": 3.96,
+          "stacks": 3,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0319",
+    "name": "Surchauffe • BURN sur impact (dur 1.44s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "BURN": {
+          "dur": 1.44,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0320",
+    "name": "Surchauffe • BURN sur impact (dur 1.62s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "BURN": {
+          "dur": 1.62,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0321",
+    "name": "Surchauffe • BURN sur impact (dur 1.98s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "BURN": {
+          "dur": 1.98,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0322",
+    "name": "Surchauffe • BURN sur impact (dur 1.62s) (⚠ ennemis +vitesse)",
+    "rarity": "R",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "BURN": {
+          "dur": 1.62,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      },
+      "enemy_speed_mul": 1.06
+    }
+  },
+  {
+    "id": "HIT_0323",
+    "name": "Surchauffe • BURN sur impact (dur 1.44s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "BURN": {
+          "dur": 1.44,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0324",
+    "name": "Surchauffe • BURN sur impact (dur 1.44s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "BURN": {
+          "dur": 1.44,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0325",
+    "name": "Surchauffe • BURN sur impact (dur 1.62s) (⚠ ennemis +vitesse)",
+    "rarity": "R",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "BURN": {
+          "dur": 1.62,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      },
+      "enemy_speed_mul": 1.06
+    }
+  },
+  {
+    "id": "HIT_0326",
+    "name": "Surchauffe • BURN sur impact (dur 1.98s) (⚠ ennemis +vitesse)",
+    "rarity": "R",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "BURN": {
+          "dur": 1.98,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      },
+      "enemy_speed_mul": 1.03
+    }
+  },
+  {
+    "id": "HIT_0327",
+    "name": "Surchauffe • BURN sur impact (dur 1.44s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "BURN": {
+          "dur": 1.44,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0328",
+    "name": "Surchauffe • BURN sur impact (dur 1.98s)",
+    "rarity": "R",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "BURN": {
+          "dur": 1.98,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0329",
+    "name": "Surchauffe • BURN sur impact (dur 1.8s)",
+    "rarity": "R",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "BURN": {
+          "dur": 1.8,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0330",
+    "name": "Surchauffe • BURN sur impact (dur 1.98s)",
+    "rarity": "R",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "BURN": {
+          "dur": 1.98,
+          "stacks": 1,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0331",
+    "name": "Surchauffe • Infusion (stacks 2, dur 2.43s)",
+    "rarity": "E",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "BURN": {
+          "dur": 2.43,
+          "stacks": 2,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0332",
+    "name": "Surchauffe • Sceau majeur (stacks 3, dur 3.24s)",
+    "rarity": "L",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "BURN": {
+          "dur": 3.24,
+          "stacks": 3,
+          "strength": 0.0
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0333",
+    "name": "Givre léger • SLOW sur impact (dur 1.76s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SLOW": {
+          "dur": 1.76,
+          "stacks": 1,
+          "strength": 0.18
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0334",
+    "name": "Givre léger • SLOW sur impact (dur 1.76s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SLOW": {
+          "dur": 1.76,
+          "stacks": 1,
+          "strength": 0.18
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0335",
+    "name": "Givre léger • SLOW sur impact (dur 1.76s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SLOW": {
+          "dur": 1.76,
+          "stacks": 1,
+          "strength": 0.18
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0336",
+    "name": "Givre léger • SLOW sur impact (dur 1.44s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SLOW": {
+          "dur": 1.44,
+          "stacks": 1,
+          "strength": 0.18
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0337",
+    "name": "Givre léger • SLOW sur impact (dur 1.6s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SLOW": {
+          "dur": 1.6,
+          "stacks": 1,
+          "strength": 0.18
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0338",
+    "name": "Givre léger • SLOW sur impact (dur 1.76s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SLOW": {
+          "dur": 1.76,
+          "stacks": 1,
+          "strength": 0.18
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0339",
+    "name": "Givre léger • SLOW sur impact (dur 1.6s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SLOW": {
+          "dur": 1.6,
+          "stacks": 1,
+          "strength": 0.18
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0340",
+    "name": "Givre léger • SLOW sur impact (dur 1.6s) (⚠ ennemis +vitesse)",
+    "rarity": "R",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SLOW": {
+          "dur": 1.6,
+          "stacks": 1,
+          "strength": 0.18
+        }
+      },
+      "enemy_speed_mul": 1.05
+    }
+  },
+  {
+    "id": "HIT_0341",
+    "name": "Givre léger • SLOW sur impact (dur 1.6s)",
+    "rarity": "C",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SLOW": {
+          "dur": 1.6,
+          "stacks": 1,
+          "strength": 0.18
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0342",
+    "name": "Givre léger • SLOW sur impact (dur 1.28s) (⚠ ennemis +vitesse)",
+    "rarity": "R",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SLOW": {
+          "dur": 1.28,
+          "stacks": 1,
+          "strength": 0.18
+        }
+      },
+      "enemy_speed_mul": 1.03
+    }
+  },
+  {
+    "id": "HIT_0343",
+    "name": "Givre léger • SLOW sur impact (dur 1.76s)",
+    "rarity": "R",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SLOW": {
+          "dur": 1.76,
+          "stacks": 1,
+          "strength": 0.18
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0344",
+    "name": "Givre léger • SLOW sur impact (dur 1.44s) (⚠ ennemis +vitesse)",
+    "rarity": "R",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SLOW": {
+          "dur": 1.44,
+          "stacks": 1,
+          "strength": 0.18
+        }
+      },
+      "enemy_speed_mul": 1.05
+    }
+  },
+  {
+    "id": "HIT_0345",
+    "name": "Givre léger • Infusion (stacks 2, dur 2.16s)",
+    "rarity": "E",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SLOW": {
+          "dur": 2.16,
+          "stacks": 2,
+          "strength": 0.18
+        }
+      }
+    }
+  },
+  {
+    "id": "HIT_0346",
+    "name": "Givre léger • Sceau majeur (stacks 3, dur 2.88s)",
+    "rarity": "L",
+    "tags": [
+      "SYNERGY",
+      "STATUS"
+    ],
+    "mods": {
+      "global_on_hit": {
+        "SLOW": {
+          "dur": 2.88,
+          "stacks": 3,
+          "strength": 0.18
+        }
+      }
+    }
+  },
+  {
+    "id": "ARC_0347",
+    "name": "Réseau Conducteur • Tesla rebonds +3",
+    "rarity": "R",
+    "tags": [
+      "TESLA",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "chains_add": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "ARC_0348",
+    "name": "Réseau Conducteur • Tesla rebonds +2",
+    "rarity": "R",
+    "tags": [
+      "TESLA",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "chains_add": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "ARC_0349",
+    "name": "Réseau Conducteur • Tesla rebonds +1",
+    "rarity": "C",
+    "tags": [
+      "TESLA",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "chains_add": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "ARC_0350",
+    "name": "Réseau Conducteur • Tesla rebonds +2",
+    "rarity": "R",
+    "tags": [
+      "TESLA",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "chains_add": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "ARC_0351",
+    "name": "Réseau Conducteur • Tesla rebonds +1",
+    "rarity": "E",
+    "tags": [
+      "TESLA",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "chains_add": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "ARC_0352",
+    "name": "Réseau Conducteur • Tesla rebonds +2",
+    "rarity": "E",
+    "tags": [
+      "TESLA",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "chains_add": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "ARC_0353",
+    "name": "Réseau Conducteur • Tesla rebonds +1",
+    "rarity": "R",
+    "tags": [
+      "TESLA",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "chains_add": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "ARC_0354",
+    "name": "Réseau Conducteur • Tesla rebonds +2",
+    "rarity": "R",
+    "tags": [
+      "TESLA",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "chains_add": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "ARC_0355",
+    "name": "Réseau Conducteur • Tesla rebonds +2",
+    "rarity": "R",
+    "tags": [
+      "TESLA",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "chains_add": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "ARC_0356",
+    "name": "Réseau Conducteur • Tesla rebonds +3",
+    "rarity": "E",
+    "tags": [
+      "TESLA",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "chains_add": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "ARC_0357",
+    "name": "Réseau Conducteur • Tesla rebonds +1",
+    "rarity": "E",
+    "tags": [
+      "TESLA",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "chains_add": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "ARC_0358",
+    "name": "Réseau Conducteur • Tesla rebonds +1",
+    "rarity": "R",
+    "tags": [
+      "TESLA",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "chains_add": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "ARC_0359",
+    "name": "Réseau Conducteur • Tesla rebonds +2",
+    "rarity": "R",
+    "tags": [
+      "TESLA",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "chains_add": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "ARC_0360",
+    "name": "Réseau Conducteur • Tesla rebonds +1",
+    "rarity": "R",
+    "tags": [
+      "TESLA",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "chains_add": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "ARC_0361",
+    "name": "Réseau Conducteur • Tesla rebonds +2",
+    "rarity": "R",
+    "tags": [
+      "TESLA",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "chains_add": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "ARC_0362",
+    "name": "Réseau Conducteur • Tesla rebonds +2",
+    "rarity": "E",
+    "tags": [
+      "TESLA",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "chains_add": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "ARC_0363",
+    "name": "Réseau Conducteur • Tesla rebonds +1",
+    "rarity": "E",
+    "tags": [
+      "TESLA",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "chains_add": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "ARC_0364",
+    "name": "Réseau Conducteur • Tesla rebonds +1",
+    "rarity": "R",
+    "tags": [
+      "TESLA",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "chains_add": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "ARC_0365",
+    "name": "Réseau Conducteur • Tesla rebonds +3",
+    "rarity": "E",
+    "tags": [
+      "TESLA",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "chains_add": 3
+        }
+      }
+    }
+  },
+  {
+    "id": "ARC_0366",
+    "name": "Réseau Conducteur • Tesla rebonds +1",
+    "rarity": "C",
+    "tags": [
+      "TESLA",
+      "FORGE"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "TESLA": {
+          "chains_add": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "CRY_0367",
+    "name": "Cristaux Cryo • Slow +11%",
+    "rarity": "E",
+    "tags": [
+      "CRYO",
+      "CONTROL"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "slow_strength_add": 0.112
+        }
+      }
+    }
+  },
+  {
+    "id": "CRY_0368",
+    "name": "Cristaux Cryo • Slow +4%",
+    "rarity": "E",
+    "tags": [
+      "CRYO",
+      "CONTROL"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "slow_strength_add": 0.042
+        }
+      }
+    }
+  },
+  {
+    "id": "CRY_0369",
+    "name": "Cristaux Cryo • Slow +6%",
+    "rarity": "C",
+    "tags": [
+      "CRYO",
+      "CONTROL"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "slow_strength_add": 0.06
+        }
+      }
+    }
+  },
+  {
+    "id": "CRY_0370",
+    "name": "Cristaux Cryo • Slow +6%",
+    "rarity": "C",
+    "tags": [
+      "CRYO",
+      "CONTROL"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "slow_strength_add": 0.06
+        }
+      }
+    }
+  },
+  {
+    "id": "CRY_0371",
+    "name": "Cristaux Cryo • Slow +3%",
+    "rarity": "C",
+    "tags": [
+      "CRYO",
+      "CONTROL"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "slow_strength_add": 0.03
+        }
+      }
+    }
+  },
+  {
+    "id": "CRY_0372",
+    "name": "Cristaux Cryo • Slow +8%",
+    "rarity": "R",
+    "tags": [
+      "CRYO",
+      "CONTROL"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "slow_strength_add": 0.084
+        }
+      }
+    }
+  },
+  {
+    "id": "CRY_0373",
+    "name": "Cristaux Cryo • Slow +5%",
+    "rarity": "R",
+    "tags": [
+      "CRYO",
+      "CONTROL"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "slow_strength_add": 0.056
+        }
+      }
+    }
+  },
+  {
+    "id": "CRY_0374",
+    "name": "Cristaux Cryo • Slow +7%",
+    "rarity": "R",
+    "tags": [
+      "CRYO",
+      "CONTROL"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "slow_strength_add": 0.07
+        }
+      }
+    }
+  },
+  {
+    "id": "CRY_0375",
+    "name": "Cristaux Cryo • Slow +8%",
+    "rarity": "R",
+    "tags": [
+      "CRYO",
+      "CONTROL"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "slow_strength_add": 0.084
+        }
+      }
+    }
+  },
+  {
+    "id": "CRY_0376",
+    "name": "Cristaux Cryo • Slow +8%",
+    "rarity": "R",
+    "tags": [
+      "CRYO",
+      "CONTROL"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "slow_strength_add": 0.084
+        }
+      }
+    }
+  },
+  {
+    "id": "CRY_0377",
+    "name": "Cristaux Cryo • Slow +4%",
+    "rarity": "R",
+    "tags": [
+      "CRYO",
+      "CONTROL"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "slow_strength_add": 0.042
+        }
+      }
+    }
+  },
+  {
+    "id": "CRY_0378",
+    "name": "Cristaux Cryo • Slow +4%",
+    "rarity": "R",
+    "tags": [
+      "CRYO",
+      "CONTROL"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "slow_strength_add": 0.042
+        }
+      }
+    }
+  },
+  {
+    "id": "CRY_0379",
+    "name": "Cristaux Cryo • Slow +11%",
+    "rarity": "E",
+    "tags": [
+      "CRYO",
+      "CONTROL"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "slow_strength_add": 0.112
+        }
+      }
+    }
+  },
+  {
+    "id": "CRY_0380",
+    "name": "Cristaux Cryo • Slow +5%",
+    "rarity": "C",
+    "tags": [
+      "CRYO",
+      "CONTROL"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "slow_strength_add": 0.05
+        }
+      }
+    }
+  },
+  {
+    "id": "CRY_0381",
+    "name": "Cristaux Cryo • Slow +3%",
+    "rarity": "C",
+    "tags": [
+      "CRYO",
+      "CONTROL"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "slow_strength_add": 0.03
+        }
+      }
+    }
+  },
+  {
+    "id": "CRY_0382",
+    "name": "Cristaux Cryo • Slow +4%",
+    "rarity": "E",
+    "tags": [
+      "CRYO",
+      "CONTROL"
+    ],
+    "mods": {
+      "tower_bonus": {
+        "CRYO": {
+          "slow_strength_add": 0.042
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0383",
+    "name": "Grimoire • METEOR dégâts +7%",
+    "rarity": "C",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "METEOR": {
+          "dmg_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0384",
+    "name": "Grimoire • METEOR dégâts +5%",
+    "rarity": "C",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "METEOR": {
+          "dmg_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0385",
+    "name": "Grimoire • METEOR dégâts +23%",
     "rarity": "E",
     "tags": [
       "SPELL"
     ],
     "mods": {
-      "spell_double_chance": 0.2
+      "spell_bonus": {
+        "METEOR": {
+          "dmg_mul": 1.23
+        }
+      }
     }
   },
   {
-    "id": "salvage",
-    "name": "Revente tours: 85%",
+    "id": "SPL_0386",
+    "name": "Grimoire • METEOR dégâts +7%",
+    "rarity": "C",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "METEOR": {
+          "dmg_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0387",
+    "name": "Grimoire • METEOR dégâts +20%",
+    "rarity": "R",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "METEOR": {
+          "dmg_mul": 1.21
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0388",
+    "name": "Grimoire • METEOR dégâts +23%",
     "rarity": "E",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "METEOR": {
+          "dmg_mul": 1.23
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0389",
+    "name": "Grimoire • METEOR dégâts +26%",
+    "rarity": "R",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "METEOR": {
+          "dmg_mul": 1.26
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0390",
+    "name": "Grimoire • METEOR dégâts +23%",
+    "rarity": "R",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "METEOR": {
+          "dmg_mul": 1.23
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0391",
+    "name": "Grimoire • METEOR dégâts +20%",
+    "rarity": "E",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "METEOR": {
+          "dmg_mul": 1.21
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0392",
+    "name": "Grimoire • METEOR dégâts +10%",
+    "rarity": "C",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "METEOR": {
+          "dmg_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0393",
+    "name": "Grimoire • FREEZE dégâts +5%",
+    "rarity": "C",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "FREEZE": {
+          "dmg_mul": 1.05
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0394",
+    "name": "Grimoire • FREEZE dégâts +28%",
+    "rarity": "R",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "FREEZE": {
+          "dmg_mul": 1.29
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0395",
+    "name": "Grimoire • FREEZE dégâts +23%",
+    "rarity": "R",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "FREEZE": {
+          "dmg_mul": 1.23
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0396",
+    "name": "Grimoire • FREEZE dégâts +7%",
+    "rarity": "C",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "FREEZE": {
+          "dmg_mul": 1.07
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0397",
+    "name": "Grimoire • FREEZE dégâts +10%",
+    "rarity": "C",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "FREEZE": {
+          "dmg_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0398",
+    "name": "Grimoire • FREEZE dégâts +20%",
+    "rarity": "E",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "FREEZE": {
+          "dmg_mul": 1.21
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0399",
+    "name": "Grimoire • FREEZE dégâts +20%",
+    "rarity": "E",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "FREEZE": {
+          "dmg_mul": 1.21
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0400",
+    "name": "Grimoire • FREEZE dégâts +28%",
+    "rarity": "R",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "FREEZE": {
+          "dmg_mul": 1.29
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0401",
+    "name": "Grimoire • FREEZE dégâts +26%",
+    "rarity": "E",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "FREEZE": {
+          "dmg_mul": 1.26
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0402",
+    "name": "Grimoire • FREEZE dégâts +10%",
+    "rarity": "C",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "FREEZE": {
+          "dmg_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0403",
+    "name": "Grimoire • REPAIR dégâts +12%",
+    "rarity": "C",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "REPAIR": {
+          "dmg_mul": 1.12
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0404",
+    "name": "Grimoire • REPAIR dégâts +20%",
+    "rarity": "R",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "REPAIR": {
+          "dmg_mul": 1.21
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0405",
+    "name": "Grimoire • REPAIR dégâts +26%",
+    "rarity": "R",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "REPAIR": {
+          "dmg_mul": 1.26
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0406",
+    "name": "Grimoire • REPAIR dégâts +28%",
+    "rarity": "E",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "REPAIR": {
+          "dmg_mul": 1.29
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0407",
+    "name": "Grimoire • REPAIR dégâts +23%",
+    "rarity": "E",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "REPAIR": {
+          "dmg_mul": 1.23
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0408",
+    "name": "Grimoire • REPAIR dégâts +23%",
+    "rarity": "R",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "REPAIR": {
+          "dmg_mul": 1.23
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0409",
+    "name": "Grimoire • REPAIR dégâts +26%",
+    "rarity": "E",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "REPAIR": {
+          "dmg_mul": 1.26
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0410",
+    "name": "Grimoire • REPAIR dégâts +28%",
+    "rarity": "E",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "REPAIR": {
+          "dmg_mul": 1.29
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0411",
+    "name": "Grimoire • REPAIR dégâts +28%",
+    "rarity": "R",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "REPAIR": {
+          "dmg_mul": 1.29
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0412",
+    "name": "Grimoire • REPAIR dégâts +26%",
+    "rarity": "E",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "REPAIR": {
+          "dmg_mul": 1.26
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0413",
+    "name": "Grimoire • DRONE dégâts +23%",
+    "rarity": "R",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "DRONE": {
+          "dmg_mul": 1.23
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0414",
+    "name": "Grimoire • DRONE dégâts +10%",
+    "rarity": "C",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "DRONE": {
+          "dmg_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0415",
+    "name": "Grimoire • DRONE dégâts +23%",
+    "rarity": "R",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "DRONE": {
+          "dmg_mul": 1.23
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0416",
+    "name": "Grimoire • DRONE dégâts +28%",
+    "rarity": "R",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "DRONE": {
+          "dmg_mul": 1.29
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0417",
+    "name": "Grimoire • DRONE dégâts +20%",
+    "rarity": "R",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "DRONE": {
+          "dmg_mul": 1.21
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0418",
+    "name": "Grimoire • DRONE dégâts +26%",
+    "rarity": "R",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "DRONE": {
+          "dmg_mul": 1.26
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0419",
+    "name": "Grimoire • DRONE dégâts +12%",
+    "rarity": "C",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "DRONE": {
+          "dmg_mul": 1.12
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0420",
+    "name": "Grimoire • DRONE dégâts +10%",
+    "rarity": "C",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "DRONE": {
+          "dmg_mul": 1.1
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0421",
+    "name": "Grimoire • DRONE dégâts +26%",
+    "rarity": "R",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "DRONE": {
+          "dmg_mul": 1.26
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0422",
+    "name": "Grimoire • DRONE dégâts +26%",
+    "rarity": "R",
+    "tags": [
+      "SPELL"
+    ],
+    "mods": {
+      "spell_bonus": {
+        "DRONE": {
+          "dmg_mul": 1.26
+        }
+      }
+    }
+  },
+  {
+    "id": "SPL_0423",
+    "name": "Canalisation • CD x0.95 / Regen x1.12",
+    "rarity": "L",
+    "tags": [
+      "SPELL",
+      "UTILITY"
+    ],
+    "mods": {
+      "spell_cd_mul": 0.95,
+      "spell_energy_regen_mul": 1.12
+    }
+  },
+  {
+    "id": "SPL_0424",
+    "name": "Canalisation • CD x0.95 / Regen x1.05",
+    "rarity": "R",
+    "tags": [
+      "SPELL",
+      "UTILITY"
+    ],
+    "mods": {
+      "spell_cd_mul": 0.95,
+      "spell_energy_regen_mul": 1.05
+    }
+  },
+  {
+    "id": "SPL_0425",
+    "name": "Canalisation • CD x0.88 / Regen x1.10",
+    "rarity": "L",
+    "tags": [
+      "SPELL",
+      "UTILITY"
+    ],
+    "mods": {
+      "spell_cd_mul": 0.88,
+      "spell_energy_regen_mul": 1.1
+    }
+  },
+  {
+    "id": "SPL_0426",
+    "name": "Canalisation • CD x0.92 / Regen x1.12",
+    "rarity": "L",
+    "tags": [
+      "SPELL",
+      "UTILITY"
+    ],
+    "mods": {
+      "spell_cd_mul": 0.92,
+      "spell_energy_regen_mul": 1.12
+    }
+  },
+  {
+    "id": "SPL_0427",
+    "name": "Canalisation • CD x0.88 / Regen x1.10",
+    "rarity": "E",
+    "tags": [
+      "SPELL",
+      "UTILITY"
+    ],
+    "mods": {
+      "spell_cd_mul": 0.88,
+      "spell_energy_regen_mul": 1.1
+    }
+  },
+  {
+    "id": "SPL_0428",
+    "name": "Canalisation • CD x0.95 / Regen x1.10",
+    "rarity": "R",
+    "tags": [
+      "SPELL",
+      "UTILITY"
+    ],
+    "mods": {
+      "spell_cd_mul": 0.95,
+      "spell_energy_regen_mul": 1.1
+    }
+  },
+  {
+    "id": "SPL_0429",
+    "name": "Canalisation • CD x0.88 / Regen x1.12",
+    "rarity": "R",
+    "tags": [
+      "SPELL",
+      "UTILITY"
+    ],
+    "mods": {
+      "spell_cd_mul": 0.88,
+      "spell_energy_regen_mul": 1.12
+    }
+  },
+  {
+    "id": "SPL_0430",
+    "name": "Canalisation • CD x0.90 / Regen x1.12",
+    "rarity": "R",
+    "tags": [
+      "SPELL",
+      "UTILITY"
+    ],
+    "mods": {
+      "spell_cd_mul": 0.9,
+      "spell_energy_regen_mul": 1.12
+    }
+  },
+  {
+    "id": "SPL_0431",
+    "name": "Canalisation • CD x0.90 / Regen x1.10",
+    "rarity": "L",
+    "tags": [
+      "SPELL",
+      "UTILITY"
+    ],
+    "mods": {
+      "spell_cd_mul": 0.9,
+      "spell_energy_regen_mul": 1.1
+    }
+  },
+  {
+    "id": "SPL_0432",
+    "name": "Canalisation • CD x0.90 / Regen x1.10",
+    "rarity": "L",
+    "tags": [
+      "SPELL",
+      "UTILITY"
+    ],
+    "mods": {
+      "spell_cd_mul": 0.9,
+      "spell_energy_regen_mul": 1.1
+    }
+  },
+  {
+    "id": "SPL_0433",
+    "name": "Canalisation • CD x0.90 / Regen x1.10",
+    "rarity": "L",
+    "tags": [
+      "SPELL",
+      "UTILITY"
+    ],
+    "mods": {
+      "spell_cd_mul": 0.9,
+      "spell_energy_regen_mul": 1.1
+    }
+  },
+  {
+    "id": "SPL_0434",
+    "name": "Canalisation • CD x0.88 / Regen x1.10",
+    "rarity": "L",
+    "tags": [
+      "SPELL",
+      "UTILITY"
+    ],
+    "mods": {
+      "spell_cd_mul": 0.88,
+      "spell_energy_regen_mul": 1.1
+    }
+  },
+  {
+    "id": "SPL_0435",
+    "name": "Pacte Arcanique • Sorts gratuits (⚠ ennemis +10% vitesse)",
+    "rarity": "SS+",
+    "tags": [
+      "SPELL",
+      "BROKEN"
+    ],
+    "mods": {
+      "flag_spells_free": true,
+      "enemy_speed_mul": 1.1
+    }
+  },
+  {
+    "id": "FLG_0436",
+    "name": "Réaction en Chaîne • explosions secondaires",
+    "rarity": "SS+",
+    "tags": [
+      "SYNERGY"
+    ],
+    "mods": {
+      "flag_chain_reaction": true
+    }
+  },
+  {
+    "id": "FLG_0437",
+    "name": "Munitions HE universelles • tous projectiles splash",
+    "rarity": "SS+",
+    "tags": [
+      "SYNERGY"
+    ],
+    "mods": {
+      "flag_all_projectiles_splash": true
+    }
+  },
+  {
+    "id": "FLG_0438",
+    "name": "Venin universel • tout hit applique POISON",
+    "rarity": "SS+",
+    "tags": [
+      "SYNERGY"
+    ],
+    "mods": {
+      "flag_global_poison_on_hit": true
+    }
+  },
+  {
+    "id": "FLG_0439",
+    "name": "Ingénierie radicale • +3 rerolls",
+    "rarity": "E",
+    "tags": [
+      "ECON"
+    ],
+    "mods": {
+      "perk_rerolls_add": 3
+    }
+  },
+  {
+    "id": "FLG_0440",
+    "name": "Revente premium • remboursement 85%",
+    "rarity": "L",
     "tags": [
       "ECON"
     ],
@@ -133,84 +6775,109 @@
     }
   },
   {
-    "id": "build_on_rocks",
-    "name": "Ingénierie: construire sur rochers",
-    "rarity": "L",
-    "tags": [
-      "BUILD"
-    ],
-    "mods": {
-      "flag_build_on_rocks": true
-    }
-  },
-  {
-    "id": "chain_reaction",
-    "name": "Réaction en chaîne: explosions + mini-explosion",
-    "rarity": "L",
-    "tags": [
-      "AOE"
-    ],
-    "mods": {
-      "flag_chain_reaction": true
-    }
-  },
-  {
-    "id": "time_dilation",
-    "name": "Dilatation: Spells -30% CD",
-    "rarity": "L",
-    "tags": [
-      "SPELL"
-    ],
-    "mods": {
-      "spell_cd_mul": 0.7
-    }
-  },
-  {
-    "id": "boss_bounty",
-    "name": "Boss: butin doublé",
-    "rarity": "L",
-    "tags": [
-      "BOSS"
-    ],
-    "mods": {
-      "flag_boss_bounty": true
-    }
-  },
-  {
-    "id": "ascended_forge",
-    "name": "SS+: +60% dmg, ennemis +25% vitesse",
-    "rarity": "SS+",
-    "tags": [
-      "GOD",
-      "RISK"
-    ],
-    "mods": {
-      "dmg_mul": 1.6,
-      "enemy_speed_mul": 1.25
-    }
-  },
-  {
-    "id": "sspp_paradox",
-    "name": "SS++: Spells gratuits, upgrades bloqués",
-    "rarity": "SS++",
-    "tags": [
-      "MYTHIC",
-      "RISK"
-    ],
-    "mods": {
-      "flag_spells_free": true,
-      "flag_lock_upgrades": true
-    }
-  },
-  {
-    "id": "reroll_plus",
-    "name": "Reroll +1 (Perks)",
+    "id": "FLG_0441",
+    "name": "Overclock prolongé • durée x1.35",
     "rarity": "R",
     "tags": [
-      "ECON"
+      "UTILITY"
     ],
     "mods": {
-      "perk_rerolls_add": 1
+      "overclock_dur_mul": 1.35
+    }
+  },
+  {
+    "id": "ULT_0442",
+    "name": "Réécriture de Forge • Dégâts x1.35, Cadence x1.20, Portée x1.15 (⚠ ennemis x1.08)",
+    "rarity": "SS++",
+    "tags": [
+      "SS++"
+    ],
+    "mods": {
+      "dmg_mul": 1.35,
+      "rate_mul": 1.2,
+      "range_mul": 1.15,
+      "enemy_speed_mul": 1.08
+    }
+  },
+  {
+    "id": "ULT_0443",
+    "name": "Banque Abyssale • Intérêt +8% et +2 Or/Kill",
+    "rarity": "SS++",
+    "tags": [
+      "ECON",
+      "SS++"
+    ],
+    "mods": {
+      "interest_add": 0.08,
+      "gold_per_kill": 2
+    }
+  },
+  {
+    "id": "ULT_0444",
+    "name": "Éclats inexorables • Chance fragments +25% et +50 fragments",
+    "rarity": "SS++",
+    "tags": [
+      "ECON",
+      "SS++"
+    ],
+    "mods": {
+      "frag_chance_add": 0.25
+    },
+    "grant": {
+      "fragments": 50
+    }
+  },
+  {
+    "id": "ULT_0445",
+    "name": "Sceau de Réparation • Bouclier du core +25 et +5 vies",
+    "rarity": "SS++",
+    "tags": [
+      "DEF",
+      "SS++"
+    ],
+    "grant": {
+      "core_shield": 25,
+      "lives": 5
+    }
+  },
+  {
+    "id": "SSS_0446",
+    "name": "SSS • Architecte de Lanes: +120 Pavés, Or +300",
+    "rarity": "SSS",
+    "tags": [
+      "SSS",
+      "FORGE"
+    ],
+    "grant": {
+      "paves": 120,
+      "gold": 300
+    }
+  },
+  {
+    "id": "SSS_0447",
+    "name": "SSS • Anathème: Weakness x2.2 (faiblesses punissent fort)",
+    "rarity": "SSS",
+    "tags": [
+      "SSS",
+      "POWER"
+    ],
+    "mods": {
+      "weakness_mul": 2.2
+    }
+  },
+  {
+    "id": "OMG_0448",
+    "name": "Ω • La Forge a Choisi: Dmg x1.80, Cad. x1.35, Portée x1.30, Rerolls +9",
+    "rarity": "Ω",
+    "tags": [
+      "Ω",
+      "GODLIKE"
+    ],
+    "mods": {
+      "dmg_mul": 1.8,
+      "rate_mul": 1.35,
+      "range_mul": 1.3,
+      "perk_rerolls_add": 9
     }
   }
 ]

@@ -7,7 +7,7 @@
       50
     ],
     "spd": 0.95,
-    "hp": 1.0,
+    "hp": 10.0,
     "armor": 0,
     "regen": 0,
     "shield": 0,
@@ -32,7 +32,7 @@
       60
     ],
     "spd": 1.45,
-    "hp": 0.65,
+    "hp": 6.5,
     "armor": 0,
     "regen": 0,
     "shield": 0,
@@ -59,9 +59,9 @@
       150
     ],
     "spd": 0.65,
-    "hp": 3.8,
-    "armor": 9,
-    "regen": 2,
+    "hp": 38.0,
+    "armor": 90,
+    "regen": 20,
     "shield": 0,
     "weak": "PIERCE",
     "tags": [
@@ -86,9 +86,9 @@
       120
     ],
     "spd": 0.85,
-    "hp": 2.1,
-    "armor": 2,
-    "regen": 12,
+    "hp": 21.0,
+    "armor": 20,
+    "regen": 120,
     "shield": 0,
     "weak": "FIRE",
     "tags": [
@@ -113,10 +113,10 @@
       150
     ],
     "spd": 0.8,
-    "hp": 6.5,
-    "armor": 7,
-    "regen": 6,
-    "shield": 12,
+    "hp": 65.0,
+    "armor": 70,
+    "regen": 60,
+    "shield": 120,
     "weak": "ENERGY",
     "tags": [
       "ELITE",
@@ -151,10 +151,10 @@
       60
     ],
     "spd": 0.7,
-    "hp": 18.0,
-    "armor": 16,
-    "regen": 18,
-    "shield": 22,
+    "hp": 180.0,
+    "armor": 160,
+    "regen": 180,
+    "shield": 220,
     "weak": "ENERGY",
     "tags": [
       "BOSS",
@@ -190,8 +190,8 @@
       70
     ],
     "spd": 0.92,
-    "hp": 1.35,
-    "armor": 4,
+    "hp": 13.5,
+    "armor": 40,
     "regen": 0,
     "shield": 0,
     "weak": "COLD",
@@ -218,10 +218,10 @@
       255
     ],
     "spd": 1.22,
-    "hp": 0.7,
+    "hp": 7.0,
     "armor": 0,
     "regen": 0,
-    "shield": 14,
+    "shield": 140,
     "weak": "COLD",
     "tags": [
       "FAST",

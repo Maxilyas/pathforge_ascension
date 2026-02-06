@@ -2,7 +2,7 @@ from __future__ import annotations
 import pygame
 from ..core.scene import Scene
 
-RAR_COL = {"C":(200,200,200),"R":(120,200,255),"E":(210,120,255),"L":(255,215,0),"SS+":(255,120,80),"SS++":(255,80,200)}
+RAR_COL = {"C":(200,200,200),"R":(120,200,255),"E":(210,120,255),"L":(255,215,0),"SS+":(255,120,80),"SS++":(255,80,200),"SSS":(120,255,160),"Ω":(255,255,255)}
 
 class PerkScene(Scene):
     name="PERK"

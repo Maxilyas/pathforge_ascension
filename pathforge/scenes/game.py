@@ -680,7 +680,12 @@ class GameScene(Scene):
                     buffs["range_mul"] *= float(a.get("range_mul", 1.0))
 
             for t in self.world.towers:
-                # global poison perk
+                # global on-hit statuses from perks
+                if self.stats.global_on_hit:
+                    oh = t.mods.setdefault("on_hit", {})
+                    for sk, sv in self.stats.global_on_hit.items():
+                        oh[sk] = dict(sv)
+                # legacy flag: global poison
                 if self.stats.has_flag("flag_global_poison_on_hit"):
                     t.mods.setdefault("on_hit", {}).setdefault("POISON", {"dur":2.0,"stacks":1})
                 t.update(dt, self.world, self.rng, self.stats, buffs)

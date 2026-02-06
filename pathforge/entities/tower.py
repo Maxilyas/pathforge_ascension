@@ -308,11 +308,14 @@ class Tower:
             svx = vx*math.cos(spread) - vy*math.sin(spread)
             svy = vx*math.sin(spread) + vy*math.cos(spread)
 
+            oh = dict(bm.get("on_hit") or {})
+            oh.update(self.mods.get("on_hit") or {})
+
             p = Projectile(
                 x=cx, y=cy, vx=svx, vy=svy,
                 dmg=dmg, dmg_type=self.defn.dmg_type,
                 splash=splash, pierce=pierce, ttl=2.6,
-                on_hit=(bm.get("on_hit") or {}),
+                on_hit=oh,
                 style=style
             )
             world.projectiles.append(p)
