@@ -203,9 +203,18 @@ class Tower:
                 bm = self._branch_mods()
                 if bm.get("stun_chance") and rng.random() < float(bm["stun_chance"]):
                     e.add_status("STUN", float(bm.get("stun_dur", 0.25)), 1, 0.0)
-                # on-hit extras
-                for k,v in (bm.get("on_hit", {}) or {}).items():
-                    e.add_status(k, float(v.get("dur",1.0)), int(v.get("stacks",1)), float(v.get("strength",0.0)))
+                # on-hit extras (branch + global mods), with optional chance
+                on_hit = {}
+                on_hit.update(bm.get("on_hit") or {})
+                on_hit.update(self.mods.get("on_hit") or {})
+                for k, v in on_hit.items():
+                    try:
+                        chance = float(v.get("chance", 1.0))
+                    except Exception:
+                        chance = 1.0
+                    if chance < 1.0 and rng.random() > chance:
+                        continue
+                    e.add_status(k, float(v.get("dur", 1.0)), int(v.get("stacks", 1)), float(v.get("strength", 0.0)))
             world.fx_ring(cx, cy, rng_px, (0,255,255), 0.18)
             self.cd = cooldown
             return
@@ -214,16 +223,28 @@ class Tower:
             targets = world.query_radius(cx, cy, rng_px)
             if not targets:
                 return
-            burn_stacks = 1 + int(self._branch_mods().get("burn_stacks_add", 0))
+            burn_stacks = 1 + int(self._branch_mods().get("burn_stacks_add", 0)) + int(stats.tower_bonus.get("FLAME", {}).get("burn_stacks_add", 0))
             for e in targets:
                 e.take_damage(dmg, "FIRE")
                 e.add_status("BURN", 2.2, burn_stacks, 0.0)
                 bm = self._branch_mods()
-                for k,v in (bm.get("on_hit", {}) or {}).items():
-                    e.add_status(k, float(v.get("dur",1.0)), int(v.get("stacks",1)), float(v.get("strength",0.0)))
-                # global poison flag from perks can be applied by GameScene setting mods on tower
-                for k,v in (self.mods.get("on_hit", {}) or {}).items():
-                    e.add_status(k, float(v.get("dur",1.0)), int(v.get("stacks",1)), float(v.get("strength",0.0)))
+                for k, v in (bm.get("on_hit") or {}).items():
+                    try:
+                        chance = float(v.get("chance", 1.0))
+                    except Exception:
+                        chance = 1.0
+                    if chance < 1.0 and rng.random() > chance:
+                        continue
+                    e.add_status(k, float(v.get("dur", 1.0)), int(v.get("stacks", 1)), float(v.get("strength", 0.0)))
+                # global on-hit effects (perks/talents)
+                for k, v in (self.mods.get("on_hit") or {}).items():
+                    try:
+                        chance = float(v.get("chance", 1.0))
+                    except Exception:
+                        chance = 1.0
+                    if chance < 1.0 and rng.random() > chance:
+                        continue
+                    e.add_status(k, float(v.get("dur", 1.0)), int(v.get("stacks", 1)), float(v.get("strength", 0.0)))
             # flame particles
             for _ in range(6):
                 ang = rng.random()*math.tau
@@ -240,9 +261,23 @@ class Tower:
             # conductive tiles let Tesla "branch" more aggressively
             if world.adjacent_path_count(self.gx, self.gy, T_PATH_CONDUCT) > 0:
                 chains += 1
-            shock_dur = 1.0 + float(self._branch_mods().get("shock_dur_add", 0.0))
+                if stats.has_flag("flag_conduct_mastery"):
+                    chains += 1
+            shock_dur = 1.0 + float(self._branch_mods().get("shock_dur_add", 0.0)) + float(stats.tower_bonus.get("TESLA", {}).get("shock_dur_add", 0.0))
             first.take_damage(dmg, "ENERGY", weakness_mul=getattr(world, "weakness_mul", 1.8))
             first.add_status("SHOCK", shock_dur, 1, 0.0)
+            # apply any generic on-hit statuses (perks/talents)
+            on_hit = {}
+            on_hit.update(self._branch_mods().get("on_hit") or {})
+            on_hit.update(self.mods.get("on_hit") or {})
+            for sk, sv in on_hit.items():
+                try:
+                    chance = float(sv.get("chance", 1.0))
+                except Exception:
+                    chance = 1.0
+                if chance < 1.0 and rng.random() > chance:
+                    continue
+                first.add_status(sk, float(sv.get("dur", 1.5)), int(sv.get("stacks", 1)), float(sv.get("strength", 0.0)))
             world.fx_arc(cx, cy, first.x, first.y, (100,200,255), 0.14)
             used_ids = {id(first)}
             curr = first

@@ -3,7 +3,7 @@ import pygame, random
 from typing import Optional
 
 from ..core.scene import Scene
-from ..settings import COLS, ROWS, TOP_BAR_FRAC, BOTTOM_BAR_FRAC, T_EMPTY, T_ROCK, T_PATH, T_PATH_FAST, T_PATH_MUD, T_PATH_CONDUCT, T_PATH_CRYO, T_PATH_MAGMA, T_TOWER, T_START, T_END, T_RELIC
+from ..settings import COLS, ROWS, TOP_BAR_FRAC, BOTTOM_BAR_FRAC, T_EMPTY, T_ROCK, T_PATH, T_PATH_FAST, T_PATH_MUD, T_PATH_CONDUCT, T_PATH_CRYO, T_PATH_MAGMA, T_PATH_RUNE, T_TOWER, T_START, T_END, T_RELIC
 from ..stats import CombatStats
 from ..world.grid import generate_grid, tile
 from ..world.world import World
@@ -59,22 +59,27 @@ class GameScene(Scene):
 
         self.mode = "BUILD"
         self.tool = "PATH"
-        self.selected_tower_key = "GATLING"
+        self.selected_tower_key = next(iter(sorted(getattr(self.stats, "unlocked_towers", {"GATLING"}))), "GATLING")
         self.dd_open = False
         self.selected_tower = None
 
         # path variants (cycle with V) + pave costs
-        self.path_variants = [
+        
+        self.all_path_variants = [
             (T_PATH, "Standard", 1),
             (T_PATH_FAST, "Route", 2),
             (T_PATH_MUD, "Boue", 2),
             (T_PATH_CONDUCT, "Conducteur", 2),
             (T_PATH_CRYO, "Cryo", 2),
             (T_PATH_MAGMA, "Magma", 2),
+            (T_PATH_RUNE, "Rune", 4),
         ]
+        self.path_cost_by_tile = {t: c for (t, _n, c) in self.all_path_variants}
+        self.path_tiles_all = set(self.path_cost_by_tile.keys())
         self.path_variant_idx = 0
-        self.path_tile = self.path_variants[self.path_variant_idx][0]
-
+        self.path_variants = []
+        self.path_tile = T_PATH
+        self._rebuild_path_variants()
         # multi wave = difficulty multiplier (doesn't skip wave numbers)
         self.wave_multi = 1
 
@@ -99,10 +104,8 @@ class GameScene(Scene):
         self.ui_btns = [self.btn_path,self.btn_tow,self.btn_ers,self.btn_m_minus,self.btn_go,self.btn_m_plus]
 
         self.dd_btns = []
-        for i,k in enumerate(TOWER_KEYS):
-            td = self.game.towers_db[k]
-            rr = pygame.Rect(self.btn_tow.rect.x, self.btn_tow.rect.y-(i+1)*52-6, bw, 52)
-            self.dd_btns.append(Button(rr, f"{td['name']} ${int(td['cost'])}", tuple(td.get("ui_color",[200,200,200])), cb=self._pick_tower, arg=k))
+        self._dd_keys = []
+        self._rebuild_tower_dropdown()
 
         # wave state
         self.wave_queue = []
@@ -138,6 +141,45 @@ class GameScene(Scene):
         self.dd_open = False
 
 
+
+
+
+
+
+    def _rebuild_path_variants(self):
+        allowed = set(getattr(self.stats, "unlocked_path_tiles", {T_PATH}))
+        allowed.add(T_PATH)
+        self.path_variants = [pv for pv in self.all_path_variants if pv[0] in allowed]
+        if not self.path_variants:
+            self.path_variants = [(T_PATH, "Standard", 1)]
+        self.path_variant_idx = max(0, min(self.path_variant_idx, len(self.path_variants) - 1))
+        self.path_tile = self.path_variants[self.path_variant_idx][0]
+
+    def _rebuild_tower_dropdown(self):
+        allowed = set(getattr(self.stats, "unlocked_towers", set(TOWER_KEYS)))
+        keys = [k for k in TOWER_KEYS if k in allowed]
+        if not keys:
+            keys = ["GATLING"]
+        if self.selected_tower_key not in keys:
+            self.selected_tower_key = keys[0]
+        bw = self.btn_tow.rect.w
+        self.dd_btns = []
+        for i, k in enumerate(keys):
+            td = self.game.towers_db[k]
+            rr = pygame.Rect(self.btn_tow.rect.x, self.btn_tow.rect.y - (i + 1) * 52 - 6, bw, 52)
+            self.dd_btns.append(
+                Button(rr, f"{td['name']} ${int(td['cost'] * self.stats.tower_cost_mul)}", tuple(td.get("ui_color", [200, 200, 200])), cb=self._pick_tower, arg=k)
+            )
+        self._dd_keys = keys
+
+    def _sync_world_from_stats(self):
+        self.world.weakness_mul = float(getattr(self.stats, "weakness_mul", 1.8))
+        self.world.enemy_speed_mul = float(getattr(self.stats, "enemy_speed_mul", 1.0))
+        self.world.rune_vuln_chance = float(getattr(self.stats, "rune_vuln_chance", 0.10))
+        self.world.magma_burn_chance = float(getattr(self.stats, "magma_burn_chance", 0.25))
+        self.world.cryo_tile_slow_extend = float(getattr(self.stats, "cryo_tile_slow_extend", 0.05))
+        self.world.hero_shock_radius_mul = float(getattr(self.stats, "hero_shock_radius_mul", 1.0))
+        self.world.hero_shock_apply_vuln = bool(getattr(self.stats, "hero_shock_apply_vuln", False))
 
     def _wrap_text(self, font, text: str, max_w: int) -> list[str]:
         words = (text or "").split()
@@ -387,6 +429,18 @@ class GameScene(Scene):
             "stats": {
                 "gold": self.stats.gold, "fragments": self.stats.fragments, "paves": self.stats.paves, "lives": self.stats.lives, "core_shield": self.stats.core_shield,
                 "wave": self.stats.wave, "talent_pts": self.stats.talent_pts, "talent_nodes": list(self.stats.talent_nodes),
+                "unlocked_towers": list(getattr(self.stats, "unlocked_towers", [])),
+                "unlocked_path_tiles": list(getattr(self.stats, "unlocked_path_tiles", [])),
+                "perks": list(getattr(self.stats, "perks", [])),
+                "global_on_hit": getattr(self.stats, "global_on_hit", {}),
+                "rune_vuln_chance": getattr(self.stats, "rune_vuln_chance", 0.10),
+                "magma_burn_chance": getattr(self.stats, "magma_burn_chance", 0.25),
+                "cryo_tile_slow_extend": getattr(self.stats, "cryo_tile_slow_extend", 0.05),
+                "rune_aura_dmg_mul": getattr(self.stats, "rune_aura_dmg_mul", 1.06),
+                "rune_aura_range_mul": getattr(self.stats, "rune_aura_range_mul", 1.05),
+                "rune_aura_radius": getattr(self.stats, "rune_aura_radius", 2),
+                "hero_shock_radius_mul": getattr(self.stats, "hero_shock_radius_mul", 1.0),
+                "hero_shock_apply_vuln": getattr(self.stats, "hero_shock_apply_vuln", False),
                 "perk_rerolls": self.stats.perk_rerolls,
                 "dmg_mul": self.stats.dmg_mul, "rate_mul": self.stats.rate_mul, "range_mul": self.stats.range_mul,
                 "gold_per_kill": self.stats.gold_per_kill, "frag_chance": self.stats.frag_chance, "interest": self.stats.interest,
@@ -406,6 +460,7 @@ class GameScene(Scene):
                 setattr(self.stats, k, v)
         # migrate / sanitize types from JSON
         self.stats._ensure_talent_nodes_set()
+        self.stats._ensure_unlock_sets()
         try:
             self.stats.gold = int(self.stats.gold)
             self.stats.fragments = int(self.stats.fragments)
@@ -607,11 +662,17 @@ class GameScene(Scene):
     def update(self, dt: float):
         dt = self.game.clock.scaled_dt(dt)
 
-        # set world multipliers/flags
-        self.world.weakness_mul = self.stats.weakness_mul
-        self.world.enemy_speed_mul = self.stats.enemy_speed_mul
+
+        # world tuning & unlock-driven UI
+        self._sync_world_from_stats()
         self.world.flag_all_projectiles_splash = self.stats.has_flag("flag_all_projectiles_splash")
         self.world.flag_chain_reaction = self.stats.has_flag("flag_chain_reaction")
+
+        sig = (frozenset(getattr(self.stats, "unlocked_towers", set())), frozenset(getattr(self.stats, "unlocked_path_tiles", set())))
+        if getattr(self, "_unlock_sig", None) != sig:
+            self._rebuild_path_variants()
+            self._rebuild_tower_dropdown()
+            self._unlock_sig = sig
 
         # spell regen
         self.spells.tick(dt, self.stats.spell_energy_regen_mul)
@@ -679,6 +740,9 @@ class GameScene(Scene):
                     buffs["rate_mul"] *= float(a.get("rate_mul", 1.0))
                     buffs["range_mul"] *= float(a.get("range_mul", 1.0))
 
+            powered_runes = set(self.world.powered_runes())
+            aura_r = int(getattr(self.stats, "rune_aura_radius", 2))
+
             for t in self.world.towers:
                 # global on-hit statuses from perks
                 if self.stats.global_on_hit:
@@ -688,7 +752,14 @@ class GameScene(Scene):
                 # legacy flag: global poison
                 if self.stats.has_flag("flag_global_poison_on_hit"):
                     t.mods.setdefault("on_hit", {}).setdefault("POISON", {"dur":2.0,"stacks":1})
-                t.update(dt, self.world, self.rng, self.stats, buffs)
+                local_buffs = dict(buffs)
+                if powered_runes:
+                    for rx, ry in powered_runes:
+                        if max(abs(t.gx-rx), abs(t.gy-ry)) <= aura_r:
+                            local_buffs["dmg_mul"] *= float(getattr(self.stats, "rune_aura_dmg_mul", 1.06))
+                            local_buffs["range_mul"] *= float(getattr(self.stats, "rune_aura_range_mul", 1.05))
+                            break
+                t.update(dt, self.world, self.rng, self.stats, local_buffs)
 
             self.world.update_projectiles(dt)
             self.world.update_fx(dt)

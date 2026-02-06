@@ -9,7 +9,7 @@
     "spd": 0.95,
     "hp": 10.0,
     "armor": 0,
-    "regen": 0,
+    "regen": 0.0,
     "shield": 0,
     "weak": null,
     "tags": [],
@@ -34,7 +34,7 @@
     "spd": 1.45,
     "hp": 6.5,
     "armor": 0,
-    "regen": 0,
+    "regen": 0.0,
     "shield": 0,
     "weak": "KINETIC",
     "tags": [
@@ -61,7 +61,7 @@
     "spd": 0.65,
     "hp": 38.0,
     "armor": 90,
-    "regen": 20,
+    "regen": 6.0,
     "shield": 0,
     "weak": "PIERCE",
     "tags": [
@@ -88,7 +88,7 @@
     "spd": 0.85,
     "hp": 21.0,
     "armor": 20,
-    "regen": 120,
+    "regen": 36.0,
     "shield": 0,
     "weak": "FIRE",
     "tags": [
@@ -115,7 +115,7 @@
     "spd": 0.8,
     "hp": 65.0,
     "armor": 70,
-    "regen": 60,
+    "regen": 18.0,
     "shield": 120,
     "weak": "ENERGY",
     "tags": [
@@ -153,7 +153,7 @@
     "spd": 0.7,
     "hp": 180.0,
     "armor": 160,
-    "regen": 180,
+    "regen": 54.0,
     "shield": 220,
     "weak": "ENERGY",
     "tags": [
@@ -192,7 +192,7 @@
     "spd": 0.92,
     "hp": 13.5,
     "armor": 40,
-    "regen": 0,
+    "regen": 0.0,
     "shield": 0,
     "weak": "COLD",
     "tags": [
@@ -220,7 +220,7 @@
     "spd": 1.22,
     "hp": 7.0,
     "armor": 0,
-    "regen": 0,
+    "regen": 0.0,
     "shield": 140,
     "weak": "COLD",
     "tags": [

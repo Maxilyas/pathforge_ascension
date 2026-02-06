@@ -425,6 +425,12 @@ class World:
 
             # statuses from on_hit
             for sk, sv in (p.on_hit or {}).items():
+                try:
+                    chance = float(sv.get("chance", 1.0))
+                except Exception:
+                    chance = 1.0
+                if chance < 1.0 and self.rng.random() > chance:
+                    continue
                 hit.add_status(sk, float(sv.get("dur", 1.5)), int(sv.get("stacks",1)), float(sv.get("strength",0.0)))
 
             # splash

@@ -36,13 +36,16 @@ class Hero:
         if self.state.shock_cd > 0:
             return
         ts = getattr(world, 'tile_size', getattr(world, 'tile', 32))
-        r = ts * 2.2
+        mul = float(getattr(world, 'hero_shock_radius_mul', 1.0))
+        r = ts * 2.2 * mul
         hits = world.query_radius(self.state.x, self.state.y, r)
         if not hits:
             world.fx_text(self.state.x, self.state.y-20, "NO TARGET", (180,180,180), 0.6)
         for e in hits:
             e.take_damage(18, "ENERGY")
             e.add_status("SHOCK", 1.0, 1, 0.0)
+            if bool(getattr(world, "hero_shock_apply_vuln", False)):
+                e.add_status("VULN", 1.0, 1, 0.0)
         world.fx_arc(self.state.x, self.state.y, self.state.x+r*0.4, self.state.y-r*0.2, (120,200,255), 0.12)
         world.fx_ring(self.state.x, self.state.y, r, (120,200,255), 0.18)
         self.state.shock_cd = 6.0
