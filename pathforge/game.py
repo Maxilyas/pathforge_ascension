@@ -8,6 +8,8 @@ from .settings import DEFAULT_W, DEFAULT_H, FPS, COLS, ROWS, TOP_BAR_FRAC, BOTTO
 from .assets import make_fonts
 from .core.time import GameClock
 from .core.storage import SaveManager
+from .core.balance_profile import load_profile, apply_profile
+from .systems.perk_factory import extend_with_procedural, PerkPool
 from .scenes.menu import MenuScene
 from .scenes.game import GameScene
 from .scenes.pause import PauseScene
@@ -39,6 +41,15 @@ class Game:
         self.towers_db = json.loads((base / "towers.json").read_text(encoding="utf-8"))
         self.enemies_db = json.loads((base / "enemies.json").read_text(encoding="utf-8"))
         self.perks_db = json.loads((base / "perks.json").read_text(encoding="utf-8"))
+        # Load optional balance profile (produced by the AutoBalancer)
+        profile = load_profile()
+        if profile:
+            apply_profile(self.towers_db, self.enemies_db, profile)
+
+        # Expand perk pool with thousands of procedural templates
+        self.perks_db = extend_with_procedural(self.perks_db, self.towers_db)
+        self.perk_pool = PerkPool(self.perks_db)
+
         self.biomes = json.loads((base / "biomes.json").read_text(encoding="utf-8"))
 
         self._perk_rng = random.Random()
@@ -79,36 +90,12 @@ class Game:
         self.scene.enter(None)
 
     def roll_perks(self, n: int = 3, rarity_bias: float = 0.0) -> list[dict]:
-        """Roll n perk options with rarity bias (0..0.6). No duplicates in a single roll."""
-        weights = {"C": 1.00, "R": 0.35, "E": 0.12, "L": 0.03, "SS+": 0.006, "SS++": 0.0012, "SSS": 0.00005, "Ω": 0.000003}
-        b = max(0.0, min(0.60, float(rarity_bias)))
-
-        # shift probability mass upward
-        weights["C"] *= (1.0 - 0.75 * b)
-        weights["R"] *= (1.0 - 0.55 * b)
-        weights["E"] *= (1.0 + 0.45 * b)
-        weights["L"] *= (1.0 + 1.10 * b)
-        weights["SS+"] *= (1.0 + 2.00 * b)
-        weights["SS++"] *= (1.0 + 2.60 * b)
-        weights["SSS"] *= (1.0 + 3.00 * b)
-        weights["Ω"] *= (1.0 + 3.30 * b)
-
-        pool = list(self.perks_db)
-        picks: list[dict] = []
-        for _ in range(min(n, len(pool))):
-            total = 0.0
-            for p in pool:
-                total += weights.get(p.get("rarity", "C"), 1.0)
-            r = self._perk_rng.random() * total
-            acc = 0.0
-            chosen_idx = 0
-            for i, p in enumerate(pool):
-                acc += weights.get(p.get("rarity", "C"), 1.0)
-                if acc >= r:
-                    chosen_idx = i
-                    break
-            picks.append(pool.pop(chosen_idx))
-        return picks
+        """Roll n perk options with rarity bias (0..0.6).
+        Uses an indexed perk pool + procedural templates (thousands of possibilities).
+        """
+        if not hasattr(self, "perk_pool"):
+            return list(self.perks_db)[:n]
+        return self.perk_pool.roll(self._perk_rng, n=n, rarity_bias=rarity_bias)
 
     def loop(self):
         while self.running:

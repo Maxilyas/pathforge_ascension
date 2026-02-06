@@ -1,0 +1,27 @@
+{
+  "tower": {
+    "damage_mul": 0.85,
+    "rate_mul": 1.0,
+    "range_mul": 1.0,
+    "cost_mul": 1.0
+  },
+  "enemy": {
+    "hp_mul": 0.1,
+    "armor_add": -10,
+    "speed_mul": 1.0,
+    "regen_mul": 1.0,
+    "shield_mul": 1.0
+  },
+  "meta": {
+    "target": "humain_solide",
+    "episodes": 5,
+    "mean_waves": 25.0,
+    "samples": [
+      25,
+      25,
+      25,
+      25,
+      25
+    ]
+  }
+}

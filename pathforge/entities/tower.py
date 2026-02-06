@@ -106,6 +106,11 @@ class Tower:
         # global stats
         if key == "damage":
             v *= float(stats.dmg_mul) * float(buffs.get("dmg_mul", 1.0))
+            # damage-type specialization (perks/talents)
+            try:
+                v *= float(getattr(stats, "dmg_type_mul", {}).get(self.defn.dmg_type, 1.0))
+            except Exception:
+                pass
         if key == "range":
             v *= float(stats.range_mul) * float(buffs.get("range_mul", 1.0))
         if key == "rate":

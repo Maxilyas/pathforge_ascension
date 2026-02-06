@@ -1,5 +1,5 @@
 {
-  "seed": 94591906,
+  "seed": 1109189437,
   "biome": "HIGHLANDS",
   "grid": {
     "cols": 32,
@@ -250,6 +250,11 @@
       0,
       0,
       0,
+      1,
+      1,
+      1,
+      1,
+      1,
       0,
       0,
       0,
@@ -275,18 +280,13 @@
       0,
       0,
       0,
+      0,
+      0,
+      1,
       2,
       2,
       2,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
+      1,
       0,
       0,
       0,
@@ -304,9 +304,6 @@
       1,
       1,
       1,
-      12,
-      12,
-      12,
       1,
       1,
       1,
@@ -318,6 +315,9 @@
       1,
       1,
       1,
+      2,
+      0,
+      0,
       1,
       1,
       1,
@@ -339,7 +339,7 @@
       0,
       0,
       0,
-      2,
+      0,
       0,
       0,
       0,
@@ -592,98 +592,406 @@
     ],
     "relics": [
       [
-        9,
-        3
+        24,
+        8
       ],
       [
-        13,
+        27,
         6
       ],
       [
-        28,
-        3
+        22,
+        8
       ],
       [
-        26,
-        7
+        24,
+        11
       ]
     ]
   },
   "towers": [
     {
-      "gx": 14,
+      "gx": 23,
       "gy": 8,
-      "key": "GATLING",
-      "level": 1,
-      "spent": 60,
-      "branch": null,
+      "key": "MORTAR",
+      "level": 13,
+      "spent": 5536,
+      "branch": "A",
       "target": 0,
       "oc_cd": 0.0,
       "oc_t": 0.0
     },
     {
-      "gx": 15,
-      "gy": 8,
+      "gx": 22,
+      "gy": 9,
       "key": "GATLING",
-      "level": 1,
-      "spent": 60,
-      "branch": null,
+      "level": 14,
+      "spent": 4727,
+      "branch": "B",
       "target": 0,
       "oc_cd": 0.0,
       "oc_t": 0.0
     },
     {
-      "gx": 16,
+      "gx": 22,
       "gy": 8,
       "key": "GATLING",
-      "level": 1,
-      "spent": 60,
-      "branch": null,
+      "level": 3,
+      "spent": 338,
+      "branch": "B",
       "target": 0,
       "oc_cd": 0.0,
       "oc_t": 0.0
     },
     {
-      "gx": 14,
-      "gy": 10,
-      "key": "GATLING",
-      "level": 1,
-      "spent": 60,
-      "branch": null,
+      "gx": 24,
+      "gy": 8,
+      "key": "SNIPER",
+      "level": 10,
+      "spent": 3393,
+      "branch": "C",
       "target": 0,
       "oc_cd": 0.0,
       "oc_t": 0.0
     }
   ],
   "hero": {
-    "x": 153.6,
-    "y": 439.5,
+    "x": 887.1246526254183,
+    "y": 344.4237764106775,
     "dash_cd": 0.0,
     "shock_cd": 0.0
   },
   "stats": {
-    "gold": 167,
-    "fragments": 0,
-    "paves": 22,
-    "lives": 10,
+    "gold": 925,
+    "fragments": 57,
+    "paves": 19,
+    "lives": 11,
     "core_shield": 0,
-    "wave": 2,
+    "wave": 15,
     "talent_pts": 0,
     "talent_nodes": [
-      "F2",
-      "F1"
+      "A2",
+      "A1",
+      "A4B"
     ],
     "unlocked_towers": [
       "GATLING",
-      "CANNON"
+      "MORTAR",
+      "CANNON",
+      "SNIPER"
     ],
     "unlocked_path_tiles": [
-      1,
-      11,
-      12
+      1
     ],
-    "perks": [],
-    "global_on_hit": {},
+    "perks": [
+      {
+        "id": "T_MORTAR_DMG_C_0",
+        "name": "MORTAR • Dégâts +6%",
+        "rarity": "C",
+        "tags": [
+          "TOWER",
+          "MORTAR",
+          "POWER"
+        ],
+        "roll": {
+          "kind": "tower_bonus_damage",
+          "tower": "MORTAR"
+        },
+        "rid": "T_MORTAR_DMG_C_0-126002",
+        "mods": {
+          "tower_bonus": {
+            "MORTAR": {
+              "damage_mul": 1.0645930382307525
+            }
+          }
+        },
+        "grant": {},
+        "rolled": {
+          "tower": "MORTAR",
+          "damage_mul_add": 0.06459303823075237
+        }
+      },
+      {
+        "id": "DT_KINETIC_E_11",
+        "name": "KINETIC +31%",
+        "rarity": "E",
+        "tags": [
+          "TYPE",
+          "KINETIC",
+          "POWER"
+        ],
+        "mods": {
+          "dmg_type_mul": {
+            "KINETIC": 1.3144078778295232
+          }
+        },
+        "roll": {
+          "kind": "dmg_mul"
+        },
+        "rid": "DT_KINETIC_E_11-737052",
+        "grant": {},
+        "rolled": {
+          "dmg_type_mul_add": 0.31440787782952323,
+          "types": [
+            "KINETIC"
+          ]
+        }
+      },
+      {
+        "id": "GEN_DMG_C_0",
+        "name": "Forge (Dégâts) +11%",
+        "rarity": "C",
+        "tags": [
+          "POWER"
+        ],
+        "roll": {
+          "kind": "dmg_mul"
+        },
+        "rid": "GEN_DMG_C_0-871749",
+        "mods": {
+          "dmg_mul": 1.105163159625934
+        },
+        "grant": {},
+        "rolled": {
+          "dmg_mul_add": 0.10516315962593398
+        }
+      },
+      {
+        "id": "T_GATLING_RATE_R_9",
+        "name": "GATLING • Cadence +16%",
+        "rarity": "R",
+        "tags": [
+          "TOWER",
+          "GATLING",
+          "POWER"
+        ],
+        "roll": {
+          "kind": "tower_bonus_rate",
+          "tower": "GATLING"
+        },
+        "rid": "T_GATLING_RATE_R_9-562800",
+        "mods": {
+          "tower_bonus": {
+            "GATLING": {
+              "rate_mul": 1.1575794554455254
+            }
+          }
+        },
+        "grant": {},
+        "rolled": {
+          "tower": "GATLING",
+          "rate_mul_add": 0.1575794554455255
+        }
+      },
+      {
+        "id": "GEN_DMG_R_5",
+        "name": "Zenith (Dégâts) +20%",
+        "rarity": "R",
+        "tags": [
+          "POWER"
+        ],
+        "roll": {
+          "kind": "dmg_mul"
+        },
+        "rid": "GEN_DMG_R_5-330645",
+        "mods": {
+          "dmg_mul": 1.1996213354666692
+        },
+        "grant": {},
+        "rolled": {
+          "dmg_mul_add": 0.19962133546666905
+        }
+      },
+      {
+        "id": "DT_COLD_SS+_2",
+        "name": "COLD +59%",
+        "rarity": "SS+",
+        "tags": [
+          "TYPE",
+          "COLD",
+          "POWER"
+        ],
+        "mods": {
+          "dmg_type_mul": {
+            "COLD": 1.5887058361458004
+          }
+        },
+        "roll": {
+          "kind": "dmg_mul"
+        },
+        "rid": "DT_COLD_SS+_2-184704",
+        "grant": {},
+        "rolled": {
+          "dmg_type_mul_add": 0.5887058361458004,
+          "types": [
+            "COLD"
+          ]
+        }
+      },
+      {
+        "id": "T_MORTAR_DMG_E_8",
+        "name": "MORTAR • Dégâts +27%",
+        "rarity": "E",
+        "tags": [
+          "TOWER",
+          "MORTAR",
+          "POWER"
+        ],
+        "roll": {
+          "kind": "tower_bonus_damage",
+          "tower": "MORTAR"
+        },
+        "rid": "T_MORTAR_DMG_E_8-430391",
+        "mods": {
+          "tower_bonus": {
+            "MORTAR": {
+              "damage_mul": 1.2670919776896152
+            }
+          }
+        },
+        "grant": {},
+        "rolled": {
+          "tower": "MORTAR",
+          "damage_mul_add": 0.26709197768961523
+        }
+      },
+      {
+        "id": "T_CANNON_DMG_R_0",
+        "name": "CANNON • Dégâts +13%",
+        "rarity": "R",
+        "tags": [
+          "TOWER",
+          "CANNON",
+          "POWER"
+        ],
+        "roll": {
+          "kind": "tower_bonus_damage",
+          "tower": "CANNON"
+        },
+        "rid": "T_CANNON_DMG_R_0-397798",
+        "mods": {
+          "tower_bonus": {
+            "CANNON": {
+              "damage_mul": 1.1259446703038918
+            }
+          }
+        },
+        "grant": {},
+        "rolled": {
+          "tower": "CANNON",
+          "damage_mul_add": 0.12594467030389184
+        }
+      },
+      {
+        "id": "DT_COLD_R_10",
+        "name": "COLD +18%",
+        "rarity": "R",
+        "tags": [
+          "TYPE",
+          "COLD",
+          "POWER"
+        ],
+        "mods": {
+          "dmg_type_mul": {
+            "COLD": 1.1831884632634007
+          }
+        },
+        "roll": {
+          "kind": "dmg_mul"
+        },
+        "rid": "DT_COLD_R_10-914577",
+        "grant": {},
+        "rolled": {
+          "dmg_type_mul_add": 0.1831884632634006,
+          "types": [
+            "COLD"
+          ]
+        }
+      },
+      {
+        "id": "GEN_RATE_C_2",
+        "name": "Discipline (Cadence) +10%",
+        "rarity": "C",
+        "tags": [
+          "POWER"
+        ],
+        "roll": {
+          "kind": "rate_mul"
+        },
+        "rid": "GEN_RATE_C_2-460524",
+        "mods": {
+          "rate_mul": 1.1012811447543256
+        },
+        "grant": {},
+        "rolled": {
+          "rate_mul_add": 0.10128114475432552
+        }
+      },
+      {
+        "id": "T_GATLING_RATE_E_10",
+        "name": "GATLING • Cadence +32%",
+        "rarity": "E",
+        "tags": [
+          "TOWER",
+          "GATLING",
+          "POWER"
+        ],
+        "roll": {
+          "kind": "tower_bonus_rate",
+          "tower": "GATLING"
+        },
+        "rid": "T_GATLING_RATE_E_10-392027",
+        "mods": {
+          "tower_bonus": {
+            "GATLING": {
+              "rate_mul": 1.318991282703484
+            }
+          }
+        },
+        "grant": {},
+        "rolled": {
+          "tower": "GATLING",
+          "rate_mul_add": 0.318991282703484
+        }
+      },
+      {
+        "id": "GOH_SHOCK_C_1",
+        "name": "On-hit • SHOCK (11%)",
+        "rarity": "C",
+        "tags": [
+          "ON_HIT",
+          "ENERGY"
+        ],
+        "roll": {
+          "kind": "global_on_hit",
+          "status": "SHOCK",
+          "dur": 1.2,
+          "stacks": 1
+        },
+        "rid": "GOH_SHOCK_C_1-898641",
+        "mods": {
+          "global_on_hit": {
+            "SHOCK": {
+              "dur": 1.2,
+              "stacks": 1,
+              "chance": 0.11227229535548415
+            }
+          }
+        },
+        "grant": {},
+        "rolled": {
+          "status": "SHOCK",
+          "chance": 0.11227229535548415
+        }
+      }
+    ],
+    "global_on_hit": {
+      "SHOCK": {
+        "dur": 1.2,
+        "stacks": 1,
+        "chance": 0.11227229535548415
+      }
+    },
     "rune_vuln_chance": 0.22,
     "magma_burn_chance": 0.35,
     "cryo_tile_slow_extend": 0.1,
@@ -693,8 +1001,8 @@
     "hero_shock_radius_mul": 1.0,
     "hero_shock_apply_vuln": false,
     "perk_rerolls": 1,
-    "dmg_mul": 1.0,
-    "rate_mul": 1.0,
+    "dmg_mul": 1.3257773054590265,
+    "rate_mul": 1.1012811447543256,
     "range_mul": 1.0,
     "gold_per_kill": 0,
     "frag_chance": 0.1,
@@ -707,9 +1015,21 @@
     "spell_cd_mul": 1.0,
     "spell_energy_regen_mul": 1.0,
     "spell_double_chance": 0.0,
-    "flags": {},
-    "tower_bonus": {},
+    "flags": {
+      "flag_all_projectiles_splash": true
+    },
+    "tower_bonus": {
+      "MORTAR": {
+        "damage_mul": 1.2670919776896152
+      },
+      "GATLING": {
+        "rate_mul": 1.318991282703484
+      },
+      "CANNON": {
+        "damage_mul": 1.1259446703038918
+      }
+    },
     "spell_bonus": {}
   },
-  "saved_at": 1770345745.4770553
+  "saved_at": 1770372450.0191953
 }

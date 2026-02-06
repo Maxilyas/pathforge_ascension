@@ -10,6 +10,7 @@ class CombatStats:
     gold: int = 300
     fragments: int = 0
     paves: int = 120  # Essence de forge: limite de tuiles de chemin par run
+    paves_cap: int = 120  # cap max (peut être augmenté via talents/perks)
     lives: int = 20
     core_shield: int = 0
 
@@ -31,6 +32,10 @@ class CombatStats:
     dmg_mul: float = 1.0
     rate_mul: float = 1.0
     range_mul: float = 1.0
+    dmg_type_mul: Dict[str, float] = field(default_factory=lambda: {
+        'KINETIC': 1.0, 'PIERCE': 1.0, 'ENERGY': 1.0, 'FIRE': 1.0,
+        'COLD': 1.0, 'EXPLOSIVE': 1.0, 'BIO': 1.0,
+    })
     gold_per_kill: int = 0
     frag_chance: float = 0.10
     interest: float = 0.02
@@ -97,12 +102,33 @@ class CombatStats:
         mods = perk.get("mods") or {}
         grant = perk.get("grant") or {}
 
+        # optional unlocks coming from perks
+        self._ensure_unlock_sets()
+        for tk in (perk.get("unlock_towers") or []):
+            if isinstance(tk, str) and tk:
+                self.unlocked_towers.add(tk)
+        for tv in (perk.get("unlock_paths") or []):
+            try:
+                self.unlocked_path_tiles.add(int(tv))
+            except Exception:
+                pass
+
         self.dmg_mul *= float(mods.get("dmg_mul", 1.0))
+        # damage-type specialization
+        dtm = mods.get("dmg_type_mul") or {}
+        if isinstance(dtm, dict):
+            for dt, mul in dtm.items():
+                try:
+                    self.dmg_type_mul[str(dt)] = float(self.dmg_type_mul.get(str(dt), 1.0)) * float(mul)
+                except Exception:
+                    pass
         self.rate_mul *= float(mods.get("rate_mul", 1.0))
         self.range_mul *= float(mods.get("range_mul", 1.0))
         self.gold_per_kill += int(mods.get("gold_per_kill", 0))
         self.frag_chance += float(mods.get("frag_chance_add", 0.0))
         self.interest += float(mods.get("interest_add", 0.0))
+        if "paves_cap" in mods:
+            self.paves_cap += int(mods.get("paves_cap", 0))
 
         if "weakness_mul" in mods:
             self.weakness_mul = float(mods["weakness_mul"])
@@ -158,7 +184,11 @@ class CombatStats:
         self.fragments += int(grant.get("fragments", 0))
         self.core_shield += int(grant.get("core_shield", 0))
         self.paves += int(grant.get("paves", 0))
+        self.paves_cap += int(grant.get("paves_cap", 0))
+        self.talent_pts += int(grant.get("talent_pts", 0))
         self.lives += int(grant.get("lives", 0))
+        if self.paves > self.paves_cap:
+            self.paves = self.paves_cap
 
     def end_wave_income(self, relics_in_path: int = 0):
         self.gold += int(self.gold * self.interest)
@@ -198,9 +228,19 @@ class CombatStats:
         grant = (effect.get("grant") or {})
 
         self.dmg_mul *= float(mods.get("dmg_mul", 1.0))
+        # damage-type specialization
+        dtm = mods.get("dmg_type_mul") or {}
+        if isinstance(dtm, dict):
+            for dt, mul in dtm.items():
+                try:
+                    self.dmg_type_mul[str(dt)] = float(self.dmg_type_mul.get(str(dt), 1.0)) * float(mul)
+                except Exception:
+                    pass
         self.rate_mul *= float(mods.get("rate_mul", 1.0))
         self.range_mul *= float(mods.get("range_mul", 1.0))
         self.interest += float(mods.get("interest_add", 0.0))
+        if "paves_cap" in mods:
+            self.paves_cap += int(mods.get("paves_cap", 0))
         if "weakness_mul" in mods:
             self.weakness_mul = float(mods["weakness_mul"])
         self.overclock_dur_mul *= float(mods.get("overclock_dur_mul", 1.0))
