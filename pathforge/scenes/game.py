@@ -3,7 +3,7 @@ import pygame, random
 from typing import Optional
 
 from ..core.scene import Scene
-from ..settings import COLS, TOP_BAR_FRAC, BOTTOM_BAR_FRAC, T_EMPTY, T_ROCK, T_PATH, T_PATH_FAST, T_PATH_MUD, T_PATH_CONDUCT, T_PATH_CRYO, T_PATH_MAGMA, T_TOWER, T_START, T_END, T_RELIC
+from ..settings import COLS, ROWS, TOP_BAR_FRAC, BOTTOM_BAR_FRAC, T_EMPTY, T_ROCK, T_PATH, T_PATH_FAST, T_PATH_MUD, T_PATH_CONDUCT, T_PATH_CRYO, T_PATH_MAGMA, T_TOWER, T_START, T_END, T_RELIC
 from ..stats import CombatStats
 from ..world.grid import generate_grid, tile
 from ..world.world import World
@@ -37,20 +37,22 @@ class GameScene(Scene):
         self.offset_y = self.top_h
 
         self.cols = COLS
-        self.tile = self.w // self.cols
-        self.rows = max(10, (self.game_h - self.offset_y) // self.tile)
-
+        self.rows = ROWS
+        tile_w = self.w // self.cols
+        tile_h = max(12, (self.game_h - self.offset_y) // self.rows)
+        self.tile = max(12, min(tile_w, tile_h))
+        self.offset_x = max(0, (self.w - self.cols * self.tile) // 2)
         # world seed/biome
         seed = random.randrange(1,2_000_000_000)
         biome = "HIGHLANDS"
         if run:
             seed = int(run.get("seed", seed))
             biome = run.get("biome", biome)
-        brate = float(self.game.biomes.get(biome,{}).get("rocks", 0.20))
+        brate = 0.0  # rocks disabled for labyrinth maps
         gs = generate_grid(self.cols, self.rows, biome=biome, seed=seed, rock_rate=brate)
 
         self.rng = random.Random(seed)
-        self.world = World(gs, tile_size=self.tile, offset_y=self.offset_y, w=self.w, h=self.game_h,
+        self.world = World(gs, tile_size=self.tile, offset_x=self.offset_x, offset_y=self.offset_y, w=self.w, h=self.game_h,
                            towers_db=self.game.towers_db, enemies_db=self.game.enemies_db, rng=self.rng)
 
         self.director = WaveDirector(self.rng)
@@ -482,7 +484,7 @@ class GameScene(Scene):
                 if self.selected_tower.can_overclock():
                     self.selected_tower.trigger_overclock()
                     self.selected_tower.overclock_time *= float(self.stats.overclock_dur_mul)
-                    self.world.fx_text(self.selected_tower.gx*self.tile, self.selected_tower.gy*self.tile+self.offset_y, "OVERCLOCK", (255,215,0), 0.7)
+                    self.world.fx_text(self.offset_x + self.selected_tower.gx*self.tile, self.selected_tower.gy*self.tile+self.offset_y, "OVERCLOCK", (255,215,0), 0.7)
 
             # spells
             if event.key in (pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4):
@@ -830,4 +832,3 @@ class GameScene(Scene):
         self.btn_menu.draw(screen, self.game.fonts)
         self.btn_speed.draw(screen, self.game.fonts)
         self.btn_talents.draw(screen, self.game.fonts)
-

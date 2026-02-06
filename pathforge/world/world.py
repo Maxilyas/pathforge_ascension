@@ -9,7 +9,7 @@ from ..settings import (
     C_BG, C_GRID, C_ROCK, C_PATH, C_PATH_FAST, C_PATH_MUD, C_PATH_CONDUCT, C_PATH_CRYO, C_PATH_MAGMA, C_PATH_RUNE,
     C_START, C_END
 )
-from .pathfinding import bfs_path, distance_map
+from .pathfinding import bfs_path, distance_map, chain_path
 from .grid import GridState, tile
 from ..entities.enemy import Enemy, EnemyArch
 from ..entities.tower import Tower, TowerDef
@@ -61,10 +61,11 @@ def is_path_tile(v: int) -> bool:
 
 
 class World:
-    def __init__(self, gs: GridState, tile_size: int, offset_y: int, w: int, h: int, towers_db: dict, enemies_db: dict, rng: random.Random):
+    def __init__(self, gs: GridState, tile_size: int, offset_x: int, offset_y: int, w: int, h: int, towers_db: dict, enemies_db: dict, rng: random.Random):
         self.gs = gs
         self.tile = tile_size
         self.tile_size = tile_size  # alias for hero/spells/vfx
+        self.offset_x = offset_x
         self.offset_y = offset_y
         self.w = w
         self.h = h
@@ -153,7 +154,7 @@ class World:
 
     def get_path(self) -> Optional[List[Tuple[int,int]]]:
         if self._cached_path is None:
-            self._cached_path = bfs_path(self.gs.grid, self.gs.start, self.gs.end)
+            self._cached_path = chain_path(self.gs.grid, self.gs.start, self.gs.end)
         return self._cached_path
 
     def invalidate_path(self):
@@ -281,7 +282,7 @@ class World:
         else:
             self.gs.grid[nx][ny] = T_PATH_MUD
         self.invalidate_path()
-        self.fx_text(nx*self.tile, ny*self.tile + self.offset_y, "CORRUPTION", (255,160,120), 0.6)
+        self.fx_text(self.offset_x + nx*self.tile, ny*self.tile + self.offset_y, "CORRUPTION", (255,160,120), 0.6)
 
     def build_path_tile(self, gx:int, gy:int, tile_value: int = T_PATH) -> bool:
         v = self.gs.grid[gx][gy]
@@ -316,7 +317,10 @@ class World:
     def tile_at_pixel(self, x: int, y: int) -> Optional[Tuple[int,int]]:
         if y < self.offset_y or y >= self.h:
             return None
-        gx = x // self.tile
+        x2 = x - self.offset_x
+        if x2 < 0 or x2 >= self.gs.cols * self.tile:
+            return None
+        gx = x2 // self.tile
         gy = (y - self.offset_y) // self.tile
         if 0<=gx<self.gs.cols and 0<=gy<self.gs.rows:
             return gx, gy
@@ -385,7 +389,7 @@ class World:
             return None
         arch = self._enemy_arch(key)
         e = Enemy(
-            arch=arch, path=p, tile=self.tile, offset_y=self.offset_y,
+            arch=arch, path=p, tile=self.tile, offset_x=self.offset_x, offset_y=self.offset_y,
             wave=wave, weakness_mul=self.weakness_mul, speed_mul=self.enemy_speed_mul,
             gold_bonus=gold_bonus
         )
@@ -458,7 +462,7 @@ class World:
         # grid
         for x in range(self.gs.cols):
             for y in range(self.gs.rows):
-                rr = pygame.Rect(x*self.tile, y*self.tile+self.offset_y, self.tile, self.tile)
+                rr = pygame.Rect(self.offset_x + x*self.tile, y*self.tile+self.offset_y, self.tile, self.tile)
                 v = self.gs.grid[x][y]
                 if v == T_ROCK:
                     pygame.draw.rect(screen, C_ROCK, rr)
@@ -504,7 +508,7 @@ class World:
 
         # towers
         for t in self.towers:
-            rr = pygame.Rect(t.gx*self.tile+4, t.gy*self.tile+self.offset_y+4, self.tile-8, self.tile-8)
+            rr = pygame.Rect(self.offset_x + t.gx*self.tile+4, t.gy*self.tile+self.offset_y+4, self.tile-8, self.tile-8)
             col = t.defn.ui_color
             pygame.draw.rect(screen, col, rr, border_radius=6)
             # make Beacon visually distinct (glyph + ring)
@@ -517,9 +521,15 @@ class World:
             if t.overclock_time > 0:
                 pygame.draw.circle(screen, (255,240,140), rr.center, int(self.tile*0.55), 2)
                 pygame.draw.circle(screen, (255,240,140), rr.center, int(self.tile*0.70), 1)
-            # pips
-            for i in range(min(6, t.level)):
-                pygame.draw.circle(screen, (255,255,255), (rr.x+8+i*7, rr.bottom-6), 2)
+            # pips (fit within tile, even on small tiles)
+            n = min(6, t.level)
+            if n > 0:
+                pad = 6
+                span = max(1, rr.w - pad*2)
+                step = span / max(1, n)
+                for i in range(n):
+                    px = int(rr.x + pad + step*(i+0.5))
+                    pygame.draw.circle(screen, (255,255,255), (px, rr.bottom-6), 2)
 
         # enemies
         for e in self.enemies:

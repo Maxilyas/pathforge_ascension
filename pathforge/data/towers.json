@@ -9,8 +9,8 @@
     ],
     "base": {
       "range": 3.0,
-      "damage": 4,
-      "rate": 7.5,
+      "damage": 3.0,
+      "rate": 5.8,
       "proj_speed": 11.0,
       "splash": 0.0,
       "pierce": 0
@@ -50,7 +50,7 @@
       "dur": 4.0,
       "cd": 14.0,
       "mods": {
-        "rate_mul": 1.55,
+        "rate_mul": 1.35,
         "damage_mul": 1.08
       }
     }
@@ -65,8 +65,8 @@
     ],
     "base": {
       "range": 8.2,
-      "damage": 85,
-      "rate": 0.62,
+      "damage": 62.0,
+      "rate": 0.5,
       "proj_speed": 22.0,
       "splash": 0.0,
       "pierce": 0
@@ -106,7 +106,7 @@
       "cd": 16.0,
       "mods": {
         "rate_mul": 1.5,
-        "damage_mul": 1.1
+        "damage_mul": 1.12
       }
     }
   },
@@ -120,8 +120,8 @@
     ],
     "base": {
       "range": 3.6,
-      "damage": 18,
-      "rate": 1.25,
+      "damage": 12.0,
+      "rate": 1.0,
       "proj_speed": 0.0,
       "splash": 0.0,
       "pierce": 0
@@ -155,7 +155,7 @@
       "dur": 4.0,
       "cd": 18.0,
       "mods": {
-        "damage_mul": 1.28,
+        "damage_mul": 1.18,
         "rate_mul": 1.15
       }
     }
@@ -170,8 +170,8 @@
     ],
     "base": {
       "range": 2.8,
-      "damage": 2.2,
-      "rate": 2.3,
+      "damage": 1.6,
+      "rate": 2.0,
       "proj_speed": 0.0,
       "splash": 0.0,
       "pierce": 0
@@ -225,10 +225,10 @@
     ],
     "base": {
       "range": 6.0,
-      "damage": 38,
-      "rate": 0.58,
+      "damage": 28.0,
+      "rate": 0.5,
       "proj_speed": 8.0,
-      "splash": 1.55,
+      "splash": 1.4,
       "pierce": 0
     },
     "dmg_type": "FIRE",
@@ -260,7 +260,7 @@
       "dur": 3.5,
       "cd": 20.0,
       "mods": {
-        "rate_mul": 1.45,
+        "rate_mul": 1.25,
         "damage_mul": 1.2
       }
     }
@@ -275,10 +275,10 @@
     ],
     "base": {
       "range": 4.2,
-      "damage": 26,
-      "rate": 0.95,
+      "damage": 20.0,
+      "rate": 0.85,
       "proj_speed": 13.0,
-      "splash": 0.85,
+      "splash": 0.75,
       "pierce": 0
     },
     "dmg_type": "KINETIC",
@@ -310,7 +310,7 @@
       "dur": 4.0,
       "cd": 18.0,
       "mods": {
-        "rate_mul": 1.4
+        "rate_mul": 1.25
       }
     }
   },
@@ -379,8 +379,8 @@
     ],
     "base": {
       "range": 2.5,
-      "damage": 1.8,
-      "rate": 6.0,
+      "damage": 1.4,
+      "rate": 5.0,
       "proj_speed": 0.0,
       "splash": 0.0,
       "pierce": 0
@@ -420,7 +420,7 @@
       "cd": 16.0,
       "mods": {
         "damage_mul": 1.25,
-        "rate_mul": 1.2
+        "rate_mul": 1.12
       }
     }
   }

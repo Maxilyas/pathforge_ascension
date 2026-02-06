@@ -14,7 +14,7 @@ TALENTS = {
     "U2": {"name":"Chrono Sync", "desc":"Spells -10% CD", "prereq":["U1"], "exclusive":[], "effect":{"mods":{"spell_cd_mul":0.90}}},
     "U3A":{"name":"Permafrost", "desc":"Cryo slow +20%", "prereq":["U2"], "exclusive":["U3B"], "effect":{"mods":{"tower_bonus":{"CRYO":{"slow_strength_add":0.20}}}}},
     "U3B":{"name":"Arc Grid", "desc":"Tesla +2 chains", "prereq":["U2"], "exclusive":["U3A"], "effect":{"mods":{"tower_bonus":{"TESLA":{"chains_add":2}}}}},
-    "U4": {"name":"Field Engineer", "desc":"Construire sur rochers", "prereq":["U3B"], "exclusive":[], "effect":{"mods":{"flag_build_on_rocks":True}}},
+    "U4": {"name":"Pave Mastery", "desc":"+30 pavés (cap & planning)", "prereq":["U3B"], "exclusive":[], "effect":{"grant":{"paves":30}}},
 
     "E1": {"name":"Rations", "desc":"+2 vies", "prereq":[], "exclusive":[], "effect":{"grant":{"lives":2}}},
     "E2": {"name":"Compound Interest", "desc":"+2% intérêt", "prereq":["E1"], "exclusive":[], "effect":{"mods":{"interest_add":0.02}}},

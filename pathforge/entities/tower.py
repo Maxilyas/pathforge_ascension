@@ -168,7 +168,7 @@ class Tower:
         self.update_timers(dt)
 
         tile = world.tile
-        cx = self.gx*tile + tile/2
+        cx = world.offset_x + self.gx*tile + tile/2
         cy = self.gy*tile + tile/2 + world.offset_y
 
         # beacon pulses only

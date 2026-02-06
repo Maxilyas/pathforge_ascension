@@ -4,7 +4,7 @@ import random
 from pathlib import Path
 import pygame
 
-from .settings import DEFAULT_W, DEFAULT_H, FPS, COLS
+from .settings import DEFAULT_W, DEFAULT_H, FPS, COLS, ROWS, TOP_BAR_FRAC, BOTTOM_BAR_FRAC
 from .assets import make_fonts
 from .core.time import GameClock
 from .core.storage import SaveManager
@@ -29,7 +29,8 @@ class Game:
         self.clock_pygame = pygame.time.Clock()
         self.clock = GameClock()
 
-        self.fonts = make_fonts(self.w // COLS)
+        ui_tile = max(12, min(self.w // COLS, int(((self.h - int(self.h*BOTTOM_BAR_FRAC)) - int(self.h*TOP_BAR_FRAC)) // ROWS)))
+        self.fonts = make_fonts(ui_tile)
 
         self.saves = SaveManager()
         self.meta = self.saves.load_meta()
@@ -68,7 +69,8 @@ class Game:
             self.w, self.h = DEFAULT_W, DEFAULT_H
             self.screen = pygame.display.set_mode((self.w, self.h))
 
-        self.fonts = make_fonts(self.w // COLS)
+        ui_tile = max(12, min(self.w // COLS, int(((self.h - int(self.h*BOTTOM_BAR_FRAC)) - int(self.h*TOP_BAR_FRAC)) // ROWS)))
+        self.fonts = make_fonts(ui_tile)
 
         # reset to menu (safe)
         self.scene_stack.clear()

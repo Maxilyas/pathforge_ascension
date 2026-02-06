@@ -30,6 +30,7 @@ class Enemy:
     arch: EnemyArch
     path: List[Tuple[int,int]]  # kept for spawn compatibility / legacy
     tile: int
+    offset_x: int
     offset_y: int
     wave: int
     weakness_mul: float
@@ -86,7 +87,7 @@ class Enemy:
         self.tile_v = T_EMPTY
 
     def _pos(self, c: Tuple[int,int]):
-        return c[0] * self.tile + self.tile/2, c[1] * self.tile + self.tile/2 + self.offset_y
+        return c[0] * self.tile + self.tile/2 + self.offset_x, c[1] * self.tile + self.tile/2 + self.offset_y
 
     def is_elite(self) -> bool:
         return "ELITE" in self.arch.tags
@@ -204,8 +205,8 @@ class Enemy:
                 continue
             if k == "SLOW":
                 # strength is the primary slow factor; stacking is capped to avoid immobilization
-                cap = 0.45 if ("BOSS" in self.arch.tags) else 0.60
-                slow = max(slow, min(cap, float(s.strength) + 0.06*max(0, s.stacks-1)))
+                cap = 0.40 if ("BOSS" in self.arch.tags) else 0.50
+                slow = max(slow, min(cap, float(s.strength) + 0.04*max(0, s.stacks-1)))
             elif k == "STUN":
                 stunned = max(stunned, 0.1)
             elif k == "SHRED":
@@ -262,6 +263,11 @@ class Enemy:
         if world:
             # terrain speed mul
             spd *= float(world.path_speed_mul(self.tile_v))
+
+        # Momentum: long labyrinths shouldn't allow infinite stalling.
+        # Enemies gain speed as they progress along the lane (capped; bosses gain less).
+        cap = 0.25 if ("BOSS" in self.arch.tags) else 0.40
+        spd *= (1.0 + min(cap, 0.004 * float(self.path_i)))
 
         # branch-capable movement (with robust fallback)
         use_branch = False

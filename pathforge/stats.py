@@ -6,7 +6,7 @@ from typing import Dict, Any, List, Set
 class CombatStats:
     gold: int = 300
     fragments: int = 0
-    paves: int = 45  # Essence de forge: limite de tuiles de chemin par run
+    paves: int = 120  # Essence de forge: limite de tuiles de chemin par run
     lives: int = 20
     core_shield: int = 0
 
@@ -100,6 +100,7 @@ class CombatStats:
         self.gold += int(grant.get("gold", 0))
         self.fragments += int(grant.get("fragments", 0))
         self.core_shield += int(grant.get("core_shield", 0))
+        self.paves += int(grant.get("paves", 0))
         self.lives += int(grant.get("lives", 0))
 
     def end_wave_income(self, relics_in_path: int = 0):
@@ -109,7 +110,7 @@ class CombatStats:
             self.gold += 12 * relics_in_path
 
         # forge resource: recover some paves each cleared wave
-        self.paves += 4 + min(4, relics_in_path)
+        self.paves += 8 + min(8, relics_in_path*2)
 
     # talents
     def can_buy_node(self, node_id: str, prereq: list[str], exclusive: list[str]) -> bool:
@@ -141,3 +142,4 @@ class CombatStats:
             self.tower_bonus.setdefault(tk, {}).update(data)
         self.lives += int(grant.get("lives", 0))
         self.core_shield += int(grant.get("core_shield", 0))
+        self.paves += int(grant.get("paves", 0))

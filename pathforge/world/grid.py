@@ -22,21 +22,14 @@ class GridState:
     biome: str = "HIGHLANDS"
 
 
-def generate_grid(cols: int, rows: int, biome: str, seed: int, rock_rate: float = 0.20) -> GridState:
+def generate_grid(cols: int, rows: int, biome: str, seed: int, rock_rate: float = 0.0) -> GridState:
     rng = random.Random(seed)
     grid = [[T_EMPTY for _ in range(rows)] for _ in range(cols)]
     start = (1, rows // 2)
     end = (cols - 2, rows // 2)
     grid[start[0]][start[1]] = T_START
     grid[end[0]][end[1]] = T_END
-
-    # rocks
-    for x in range(cols):
-        for y in range(rows):
-            if (x, y) in (start, end):
-                continue
-            if rng.random() < rock_rate:
-                grid[x][y] = T_ROCK
+    # rocks disabled (maze-building is the point; no random blockers)
 
     # clear around start/end to keep early planning readable
     def clear(cx: int, cy: int, rx: int, ry: int):
