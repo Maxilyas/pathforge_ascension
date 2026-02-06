@@ -47,7 +47,7 @@ PATH_COST = {
 PATH_SPEED_MUL = {
     T_PATH: 1.00,
     T_PATH_FAST: 1.55,
-    T_PATH_MUD: 0.55,
+    T_PATH_MUD: 0.35,
     T_PATH_CONDUCT: 1.00,
     T_PATH_CRYO: 0.85,
     T_PATH_MAGMA: 0.95,

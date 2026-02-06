@@ -1,5 +1,5 @@
 {
-  "seed": 117388137,
+  "seed": 94591906,
   "biome": "HIGHLANDS",
   "grid": {
     "cols": 32,
@@ -275,8 +275,8 @@
       0,
       0,
       0,
-      0,
-      0,
+      2,
+      2,
       2,
       0,
       0,
@@ -304,10 +304,10 @@
       1,
       1,
       1,
+      12,
+      12,
+      12,
       1,
-      12,
-      12,
-      12,
       1,
       1,
       1,
@@ -339,7 +339,7 @@
       0,
       0,
       0,
-      0,
+      2,
       0,
       0,
       0,
@@ -592,31 +592,64 @@
     ],
     "relics": [
       [
-        20,
-        4
-      ],
-      [
-        22,
+        9,
         3
       ],
       [
-        16,
-        8
+        13,
+        6
       ],
       [
-        14,
+        28,
         3
+      ],
+      [
+        26,
+        7
       ]
     ]
   },
   "towers": [
     {
+      "gx": 14,
+      "gy": 8,
+      "key": "GATLING",
+      "level": 1,
+      "spent": 60,
+      "branch": null,
+      "target": 0,
+      "oc_cd": 0.0,
+      "oc_t": 0.0
+    },
+    {
+      "gx": 15,
+      "gy": 8,
+      "key": "GATLING",
+      "level": 1,
+      "spent": 60,
+      "branch": null,
+      "target": 0,
+      "oc_cd": 0.0,
+      "oc_t": 0.0
+    },
+    {
       "gx": 16,
       "gy": 8,
       "key": "GATLING",
-      "level": 3,
-      "spent": 338,
-      "branch": "C",
+      "level": 1,
+      "spent": 60,
+      "branch": null,
+      "target": 0,
+      "oc_cd": 0.0,
+      "oc_t": 0.0
+    },
+    {
+      "gx": 14,
+      "gy": 10,
+      "key": "GATLING",
+      "level": 1,
+      "spent": 60,
+      "branch": null,
       "target": 0,
       "oc_cd": 0.0,
       "oc_t": 0.0
@@ -629,10 +662,10 @@
     "shock_cd": 0.0
   },
   "stats": {
-    "gold": 142,
+    "gold": 167,
     "fragments": 0,
-    "paves": 19,
-    "lives": 9,
+    "paves": 22,
+    "lives": 10,
     "core_shield": 0,
     "wave": 2,
     "talent_pts": 0,
@@ -641,8 +674,8 @@
       "F1"
     ],
     "unlocked_towers": [
-      "CANNON",
-      "GATLING"
+      "GATLING",
+      "CANNON"
     ],
     "unlocked_path_tiles": [
       1,
@@ -678,5 +711,5 @@
     "tower_bonus": {},
     "spell_bonus": {}
   },
-  "saved_at": 1770344954.7248397
+  "saved_at": 1770345745.4770553
 }
