@@ -413,6 +413,14 @@ class GameScene(Scene):
         # save
         self.game.request_save = True
 
+        # telemetry
+        try:
+            if getattr(self.game,'telemetry',None):
+                self.game.telemetry.wave_end(self.stats)
+                self.game.telemetry.flush_waves()
+        except Exception:
+            pass
+
         # perk selection
         bias = self._perk_bias()
         options = self.game.roll_perks(3, rarity_bias=bias)
@@ -681,6 +689,12 @@ class GameScene(Scene):
                     if self.world.build_path_tile(gx,gy, tile_value=tile_val):
                         self.stats.paves -= cost
             elif self.tool == "ERASE":
+                # refund pavés when removing a standard path tile (prevents softlock)
+                try:
+                    if v == T_PATH:
+                        self.stats.paves = min(int(getattr(self.stats, "paves_cap", 999999)), int(self.stats.paves) + 1)
+                except Exception:
+                    pass
                 self.world.erase_tile(gx,gy)
 
         if event.type == pygame.MOUSEMOTION:
@@ -747,6 +761,11 @@ class GameScene(Scene):
                                 ne.idx = max(0, e.idx-1)
 
                 if e.finished:
+                    try:
+                        if getattr(self.game,'telemetry',None):
+                            self.game.telemetry.enemy_leaked(e.arch.key)
+                    except Exception:
+                        pass
                     if self.stats.core_shield > 0:
                         self.stats.core_shield -= 1
                     else:
@@ -755,6 +774,11 @@ class GameScene(Scene):
                     if self.stats.lives <= 0:
                         self.request("MENU", None)
                 elif not e.alive:
+                    try:
+                        if getattr(self.game,'telemetry',None):
+                            self.game.telemetry.enemy_killed(e.arch.key)
+                    except Exception:
+                        pass
                     gold = e.reward_gold + int(getattr(e, 'tile_gold_bonus', 0))
                     if self.plan.boss and self.stats.has_flag("flag_boss_bounty") and "BOSS" in e.arch.tags:
                         gold *= 2
