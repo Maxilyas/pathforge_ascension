@@ -1,5 +1,5 @@
 {
-  "seed": 850888336,
+  "seed": 117388137,
   "biome": "HIGHLANDS",
   "grid": {
     "cols": 32,
@@ -271,13 +271,13 @@
       0,
       0,
       0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
       2,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
       0,
       0,
       0,
@@ -305,9 +305,9 @@
       1,
       1,
       1,
-      1,
-      1,
-      1,
+      12,
+      12,
+      12,
       1,
       1,
       1,
@@ -333,7 +333,7 @@
       0,
       0,
       0,
-      2,
+      0,
       0,
       0,
       0,
@@ -592,42 +592,31 @@
     ],
     "relics": [
       [
-        21,
-        2
+        20,
+        4
+      ],
+      [
+        22,
+        3
+      ],
+      [
+        16,
+        8
       ],
       [
         14,
-        14
-      ],
-      [
-        7,
-        10
-      ],
-      [
-        24,
-        11
+        3
       ]
     ]
   },
   "towers": [
     {
-      "gx": 10,
+      "gx": 16,
       "gy": 8,
-      "key": "TESLA",
-      "level": 1,
-      "spent": 200,
-      "branch": null,
-      "target": 0,
-      "oc_cd": 0.0,
-      "oc_t": 0.0
-    },
-    {
-      "gx": 8,
-      "gy": 10,
       "key": "GATLING",
-      "level": 1,
-      "spent": 60,
-      "branch": null,
+      "level": 3,
+      "spent": 338,
+      "branch": "C",
       "target": 0,
       "oc_cd": 0.0,
       "oc_t": 0.0
@@ -640,30 +629,31 @@
     "shock_cd": 0.0
   },
   "stats": {
-    "gold": 134,
+    "gold": 142,
     "fragments": 0,
-    "paves": 104,
-    "lives": 8,
+    "paves": 19,
+    "lives": 9,
     "core_shield": 0,
     "wave": 2,
     "talent_pts": 0,
     "talent_nodes": [
-      "C4A",
-      "C1"
+      "F2",
+      "F1"
     ],
     "unlocked_towers": [
       "CANNON",
-      "GATLING",
-      "TESLA"
+      "GATLING"
     ],
     "unlocked_path_tiles": [
-      1
+      1,
+      11,
+      12
     ],
     "perks": [],
     "global_on_hit": {},
-    "rune_vuln_chance": 0.1,
-    "magma_burn_chance": 0.25,
-    "cryo_tile_slow_extend": 0.05,
+    "rune_vuln_chance": 0.22,
+    "magma_burn_chance": 0.35,
+    "cryo_tile_slow_extend": 0.1,
     "rune_aura_dmg_mul": 1.06,
     "rune_aura_range_mul": 1.05,
     "rune_aura_radius": 2,
@@ -684,16 +674,9 @@
     "spell_cd_mul": 1.0,
     "spell_energy_regen_mul": 1.0,
     "spell_double_chance": 0.0,
-    "flags": {
-      "flag_conduct_mastery": true
-    },
-    "tower_bonus": {
-      "TESLA": {
-        "chains_add": 2,
-        "shock_dur_add": 0.5
-      }
-    },
+    "flags": {},
+    "tower_bonus": {},
     "spell_bonus": {}
   },
-  "saved_at": 1770343318.2379656
+  "saved_at": 1770344954.7248397
 }

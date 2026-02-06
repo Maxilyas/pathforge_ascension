@@ -55,6 +55,16 @@ class GameScene(Scene):
         self.world = World(gs, tile_size=self.tile, offset_x=self.offset_x, offset_y=self.offset_y, w=self.w, h=self.game_h,
                            towers_db=self.game.towers_db, enemies_db=self.game.enemies_db, rng=self.rng)
 
+        # --- PAVÉS: ressource rare au départ (juste un peu plus que la distance Start->End) ---
+        if not run:
+            sx, sy = self.world.gs.start
+            ex, ey = self.world.gs.end
+            dist = abs(ex - sx) + abs(ey - sy)
+            base_paves = int(dist * 1.12) + 2  # ~ +10-15% buffer
+            self.stats.paves = int(base_paves)
+            self.stats.paves_cap = int(base_paves + 16)  # cap bas => le chemin reste un choix
+        
+
         self.director = WaveDirector(self.rng)
 
         self.mode = "BUILD"
@@ -67,12 +77,12 @@ class GameScene(Scene):
         
         self.all_path_variants = [
             (T_PATH, "Standard", 1),
-            (T_PATH_FAST, "Route", 2),
-            (T_PATH_MUD, "Boue", 2),
-            (T_PATH_CONDUCT, "Conducteur", 2),
-            (T_PATH_CRYO, "Cryo", 2),
-            (T_PATH_MAGMA, "Magma", 2),
-            (T_PATH_RUNE, "Rune", 4),
+            (T_PATH_FAST, "Route", 6),
+            (T_PATH_MUD, "Boue", 6),
+            (T_PATH_CONDUCT, "Conducteur", 8),
+            (T_PATH_CRYO, "Cryo", 9),
+            (T_PATH_MAGMA, "Magma", 9),
+            (T_PATH_RUNE, "Rune", 14),
         ]
         self.path_cost_by_tile = {t: c for (t, _n, c) in self.all_path_variants}
         self.path_tiles_all = set(self.path_cost_by_tile.keys())
@@ -386,7 +396,7 @@ class GameScene(Scene):
         self.stats.gold += reward
         self.stats.end_wave_income(self.plan.relics_in_path)
         # pave regeneration (forge essence): makes path placement a real resource
-        self.stats.paves = min(140, int(self.stats.paves + 4 + min(4, self.plan.relics_in_path) + (2 if self.plan.boss else 0)))
+        self.stats.paves = min(int(getattr(self.stats, 'paves_cap', 80)), int(self.stats.paves + 1 + min(2, self.plan.relics_in_path//2) + (3 if self.plan.boss else 0)))
 
         # boss => +1 talent point
         if self.plan.boss:
@@ -722,7 +732,7 @@ class GameScene(Scene):
                     if self.stats.lives <= 0:
                         self.request("MENU", None)
                 elif not e.alive:
-                    gold = e.reward_gold
+                    gold = e.reward_gold + int(getattr(e, 'tile_gold_bonus', 0))
                     if self.plan.boss and self.stats.has_flag("flag_boss_bounty") and "BOSS" in e.arch.tags:
                         gold *= 2
                     self.stats.gold += gold

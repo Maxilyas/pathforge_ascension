@@ -42,9 +42,9 @@ class CombatStats:
     overclock_dur_mul: float = 1.0
 
     # --- tile interactions tuning (set by talents/perks) ---
-    rune_vuln_chance: float = 0.10
-    magma_burn_chance: float = 0.25
-    cryo_tile_slow_extend: float = 0.05
+    rune_vuln_chance: float = 0.22
+    magma_burn_chance: float = 0.35
+    cryo_tile_slow_extend: float = 0.10
 
     # powered rune aura (nearby towers)
     rune_aura_dmg_mul: float = 1.06
@@ -164,8 +164,6 @@ class CombatStats:
         self.gold += int(self.gold * self.interest)
         if self.has_flag("flag_path_gold"):
             self.gold += 12 * relics_in_path
-        self.paves += 8 + min(8, relics_in_path * 2)
-
     # ----- talents -----
     def can_buy_node(self, node_id: str, prereq: list[str], exclusive: list[str]) -> bool:
         self._ensure_talent_nodes_set()

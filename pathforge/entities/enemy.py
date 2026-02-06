@@ -105,6 +105,11 @@ class Enemy:
         # vulnerability (VULN status)
         amt *= float(getattr(self, "vuln_mult", 1.0))
 
+        # tile-based multipliers (lanes): keeps towers non-exponential but makes terrain meaningful
+        amt *= float(getattr(self, 'tile_dmg_mul', 1.0))
+        if dmg_type == 'ENERGY':
+            amt *= float(getattr(self, 'tile_energy_mul', 1.0))
+
         # shield first (with type effectiveness; ENERGY usually drains shield faster)
         if self.shield > 0:
             sm = float((self.shield_mult or {}).get(dmg_type, 1.0))

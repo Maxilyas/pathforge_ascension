@@ -36,26 +36,23 @@ PATH_COLORS = {
 
 PATH_COST = {
     T_PATH: 1,
-    T_PATH_FAST: 2,
-    T_PATH_MUD: 2,
-    T_PATH_CONDUCT: 2,
-    T_PATH_CRYO: 2,
-    T_PATH_MAGMA: 2,
-    T_PATH_RUNE: 3,  # plus fragments (handled in GameScene)
+    # premium tiles (expensive but powerful)
+    T_PATH_FAST: 6,       # risk/reward lane
+    T_PATH_MUD: 6,        # hard slow lane (projectiles less reliable)
+    T_PATH_CONDUCT: 8,    # enables ENERGY synergies + runes powering (if on rune cells)
+    T_PATH_CRYO: 9,       # extends slows, mitigates FIRE
+    T_PATH_MAGMA: 9,      # reliable burn chip, anti-regen
+    T_PATH_RUNE: 14,      # high-impact vulnerability lane
 }
-
 PATH_SPEED_MUL = {
     T_PATH: 1.00,
-    T_PATH_FAST: 1.25,
-    T_PATH_MUD: 0.75,
+    T_PATH_FAST: 1.55,
+    T_PATH_MUD: 0.55,
     T_PATH_CONDUCT: 1.00,
-    T_PATH_CRYO: 0.90,
-    T_PATH_MAGMA: 1.00,
+    T_PATH_CRYO: 0.85,
+    T_PATH_MAGMA: 0.95,
     T_PATH_RUNE: 1.00,
-    T_START: 1.00,
-    T_END: 1.00,
 }
-
 def is_path_tile(v: int) -> bool:
     return v in PATH_TILES
 
