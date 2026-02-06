@@ -23,7 +23,7 @@ from .scenes.bestiary import BestiaryScene
 class Game:
     def __init__(self):
         pygame.init()
-        pygame.display.set_caption("Pathforge Ascension: V4.7.0")
+        pygame.display.set_caption("Pathforge Ascension: V4.7.1")
 
         self.fullscreen = False
         self.w, self.h = DEFAULT_W, DEFAULT_H

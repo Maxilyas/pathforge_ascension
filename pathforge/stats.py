@@ -102,7 +102,8 @@ class CombatStats:
     def apply_perk(self, perk: dict):
         self.perks.append(perk)
         mods = perk.get("mods") or {}
-        grant = perk.get("grant") or {}
+        # v4.7.2: perk DB uses the key "grants" (plural). Keep backward-compat.
+        grant = perk.get("grants") or perk.get("grant") or {}
 
         # optional unlocks coming from perks
         self._ensure_unlock_sets()

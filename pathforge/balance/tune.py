@@ -1,6 +1,7 @@
 
 from __future__ import annotations
 import json, os, random, math, statistics
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from dataclasses import asdict, dataclass
 from typing import Dict, Any, Tuple
 
@@ -8,8 +9,50 @@ from .sim import run_episode
 from ..core.balance_profile import PROFILE_FILE
 
 
+def _eval_genome_worker(
+    genome_tup: Tuple[float, float, float, float, int, float, float, float],
+    base_towers_db: Dict[str, Any],
+    base_enemies_db: Dict[str, Any],
+    perks_db: list[dict[str, Any]],
+    eval_seeds: list[int],
+    episodes: int,
+    max_waves: int,
+) -> Tuple[float, float, list[int]]:
+    """Evaluate a genome in an isolated process.
+
+    - Deep-copies the base DBs
+    - Applies the balance profile
+    - Runs multiple deterministic episodes (perk RNG is derived from episode seed)
+    """
+    from ..core.balance_profile import apply_profile
+    from ..systems.perk_factory import PerkPool
+
+    # reconstruct genome/profile in the worker
+    g = Genome(*genome_tup)
+    profile = _to_profile(g)
+
+    towers_db = json.loads(json.dumps(base_towers_db))
+    enemies_db = json.loads(json.dumps(base_enemies_db))
+    apply_profile(towers_db, enemies_db, profile)
+
+    pool = PerkPool(perks_db)
+    waves: list[int] = []
+    for s in eval_seeds[:episodes]:
+        prng = random.Random(int(s) ^ 0x9E3779B1)
+
+        def roll_fn(n, rarity_bias=0.0):
+            return pool.roll(prng, n=n, rarity_bias=rarity_bias)
+
+        res = run_episode(towers_db, enemies_db, roll_fn, seed=int(s), max_waves=max_waves)
+        waves.append(int(res.waves_cleared))
+
+    mean = float(sum(waves) / max(1, len(waves)))
+    std = float(statistics.pstdev(waves)) if len(waves) >= 2 else 0.0
+    return mean, std, waves
+
+
 # ------------------------------
-# Genetic algorithm tuner (v4.7.0)
+# Genetic algorithm tuner (v4.7.1)
 # ------------------------------
 
 
@@ -121,37 +164,56 @@ def tune_ga(game, target: str = "humain_solide", episodes: int = 6, seed: int = 
     elitism = int(os.environ.get("PATHFORGE_BALANCE_GA_ELITE", "4"))
     reseed_frac = float(os.environ.get("PATHFORGE_BALANCE_GA_RESEED", "0.12"))
 
-    # Deterministic episode seeds shared by all candidates (reduces noise)
-    eval_seeds = [rng.randint(0, 1_000_000) for _ in range(max(2, episodes))]
+    # Episode seed schedule -----------------------------------------------------
+    # By default we use *fixed* episode seeds shared by all candidates.
+    # This massively reduces evaluation noise ("common random numbers").
+    # If you want the GA to refresh seeds each generation (less repetition in logs,
+    # more generalization), set:
+    #   PATHFORGE_BALANCE_GA_SEED_MODE=rotate
+    seed_mode = str(os.environ.get("PATHFORGE_BALANCE_GA_SEED_MODE", "fixed")).strip().lower()
+    base_eval_seeds = [rng.randint(0, 1_000_000) for _ in range(max(2, episodes))]
 
-    cache: Dict[Tuple[float, float, float, float, int, float, float, float], Tuple[float, float, list[int]]] = {}
+    def _eval_seeds_for_gen(gen: int) -> list[int]:
+        if seed_mode == "rotate":
+            rrng = random.Random(int(seed) ^ (int(gen) * 0x9E3779B1))
+            return [rrng.randint(0, 1_000_000) for _ in range(max(2, episodes))]
+        if seed_mode == "mixed":
+            # Keep most seeds stable but swap the last one each gen to prevent overfit.
+            rrng = random.Random(int(seed) ^ (int(gen) * 0x85EBCA6B))
+            s = list(base_eval_seeds)
+            s[-1] = rrng.randint(0, 1_000_000)
+            return s
+        return list(base_eval_seeds)
 
-    def evaluate(genome: Genome) -> Tuple[float, float, list[int]]:
-        key = genome.as_tuple()
+    # Parallel evaluation (opt-in) ------------------------------------------------
+    # Set PATHFORGE_BALANCE_WORKERS (or PATHFORGE_BALANCE_GA_WORKERS) to >1.
+    # Uses processes because pygame + simulation loops are CPU-bound and not thread-safe.
+    workers = int(os.environ.get("PATHFORGE_BALANCE_WORKERS", os.environ.get("PATHFORGE_BALANCE_GA_WORKERS", "1")))
+    workers = max(1, workers)
+    perks_db = json.loads(json.dumps(getattr(game.perk_pool, "perks", [])))
+    executor = ProcessPoolExecutor(max_workers=workers) if workers > 1 else None
+
+    cache: Dict[Tuple[Tuple[float, float, float, float, int, float, float, float], Tuple[int, ...]], Tuple[float, float, list[int]]] = {}
+
+    def evaluate(genome: Genome, eval_seeds: list[int]) -> Tuple[float, float, list[int]]:
+        key = (genome.as_tuple(), tuple(eval_seeds[:episodes]))
         if key in cache:
             return cache[key]
 
-        profile = _to_profile(genome)
-        towers_db = json.loads(json.dumps(game.towers_db))
-        enemies_db = json.loads(json.dumps(game.enemies_db))
-        from ..core.balance_profile import apply_profile
-        apply_profile(towers_db, enemies_db, profile)
-
-        def roll_fn(n, rarity_bias=0.0):
-            return game.perk_pool.roll(game._perk_rng, n=n, rarity_bias=rarity_bias)
-
-        waves: list[int] = []
-        for s in eval_seeds[:episodes]:
-            res = run_episode(towers_db, enemies_db, roll_fn, seed=int(s), max_waves=max_waves)
-            waves.append(int(res.waves_cleared))
-
-        mean = float(sum(waves) / max(1, len(waves)))
-        std = float(statistics.pstdev(waves)) if len(waves) >= 2 else 0.0
+        mean, std, waves = _eval_genome_worker(
+            genome.as_tuple(),
+            game.towers_db,
+            game.enemies_db,
+            perks_db,
+            eval_seeds,
+            episodes,
+            max_waves,
+        )
         cache[key] = (mean, std, waves)
-        return mean, std, waves
+        return cache[key]
 
-    def fitness(genome: Genome) -> Tuple[float, float, float, list[int]]:
-        mean, std, waves = evaluate(genome)
+    def fitness(genome: Genome, eval_seeds: list[int]) -> Tuple[float, float, float, list[int]]:
+        mean, std, waves = evaluate(genome, eval_seeds)
         sc = _score_mean(mean, target_wave)
         # stability: discourage extreme variance that makes tuning unreliable
         sc2 = sc + 0.12 * std
@@ -164,53 +226,91 @@ def tune_ga(game, target: str = "humain_solide", episodes: int = 6, seed: int = 
     best_score = 1e18
     best_meta = None
 
-    for gen in range(1, gens + 1):
-        scored = []
-        for g in pop:
-            sc, mean, std, waves = fitness(g)
-            scored.append((sc, mean, std, waves, g))
-        scored.sort(key=lambda x: x[0])
+    try:
+        for gen in range(1, gens + 1):
+            eval_seeds = _eval_seeds_for_gen(gen)
+            if log_level and gen == 1:
+                print(f"[BAL][GA] eval_seeds(mode={seed_mode})={eval_seeds[:episodes]}", flush=True)
+            # Pre-evaluate genomes in parallel (fills cache). This keeps the rest of the GA code unchanged.
+            if executor is not None:
+                todo = [g for g in pop if (g.as_tuple(), tuple(eval_seeds[:episodes])) not in cache]
+                if todo:
+                    futs = {
+                        executor.submit(
+                            _eval_genome_worker,
+                            g.as_tuple(),
+                            game.towers_db,
+                            game.enemies_db,
+                            perks_db,
+                            eval_seeds,
+                            episodes,
+                            max_waves,
+                        ): g
+                        for g in todo
+                    }
+                    for fut in as_completed(futs):
+                        g = futs[fut]
+                        try:
+                            mean, std, waves = fut.result()
+                        except Exception:
+                            mean, std, waves = 0.0, 0.0, [0] * int(episodes)
+                        cache[(g.as_tuple(), tuple(eval_seeds[:episodes]))] = (mean, std, waves)
 
-        if scored and scored[0][0] < best_score:
-            best_score = scored[0][0]
-            best_g = scored[0][4]
-            best_meta = {"mean": scored[0][1], "std": scored[0][2], "waves": scored[0][3], "gen": gen}
+            scored = []
+            for g in pop:
+                sc, mean, std, waves = fitness(g, eval_seeds)
+                scored.append((sc, mean, std, waves, g))
+            scored.sort(key=lambda x: x[0])
+
+            if scored and scored[0][0] < best_score:
+                best_score = scored[0][0]
+                best_g = scored[0][4]
+                best_meta = {"mean": scored[0][1], "std": scored[0][2], "waves": scored[0][3], "gen": gen}
+                if log_level:
+                    print(f"[BAL][GA] NEW BEST gen={gen} score={best_score:.3f} mean={best_meta['mean']:.2f} std={best_meta['std']:.2f} {best_g}", flush=True)
+
             if log_level:
-                print(f"[BAL][GA] NEW BEST gen={gen} score={best_score:.3f} mean={best_meta['mean']:.2f} std={best_meta['std']:.2f} {best_g}", flush=True)
+                top = scored[:min(3, len(scored))]
+                tmsg = " | ".join([f"{i+1}:{t[0]:.2f} m={t[1]:.1f} sd={t[2]:.1f}" for i, t in enumerate(top)])
+                print(f"[BAL][GA] gen {gen:02d}/{gens:02d} best={best_score:.3f} :: {tmsg}", flush=True)
 
-        if log_level:
-            top = scored[:min(3, len(scored))]
-            tmsg = " | ".join([f"{i+1}:{t[0]:.2f} m={t[1]:.1f} sd={t[2]:.1f}" for i, t in enumerate(top)])
-            print(f"[BAL][GA] gen {gen:02d}/{gens:02d} best={best_score:.3f} :: {tmsg}", flush=True)
+            # Selection (tournament)
+            def tournament(k: int = 4) -> Genome:
+                cand = [scored[rng.randrange(0, len(scored))] for _ in range(k)]
+                cand.sort(key=lambda x: x[0])
+                return cand[0][4]
 
-        # Selection (tournament)
-        def tournament(k: int = 4) -> Genome:
-            cand = [scored[rng.randrange(0, len(scored))] for _ in range(k)]
-            cand.sort(key=lambda x: x[0])
-            return cand[0][4]
+            next_pop: list[Genome] = []
+            # Elitism
+            for _, _, _, _, g in scored[:max(1, elitism)]:
+                next_pop.append(g)
 
-        next_pop: list[Genome] = []
-        # Elitism
-        for _, _, _, _, g in scored[:max(1, elitism)]:
-            next_pop.append(g)
+            # Breed
+            while len(next_pop) < pop_n:
+                if rng.random() < reseed_frac:
+                    next_pop.append(_rand_genome(rng))
+                    continue
+                a = tournament()
+                b = tournament()
+                child = _crossover(a, b, rng)
+                if rng.random() < 0.90:
+                    child = _mutate(child, rng)
+                next_pop.append(child)
+            pop = next_pop
 
-        # Breed
-        while len(next_pop) < pop_n:
-            if rng.random() < reseed_frac:
-                next_pop.append(_rand_genome(rng))
-                continue
-            a = tournament()
-            b = tournament()
-            child = _crossover(a, b, rng)
-            if rng.random() < 0.90:
-                child = _mutate(child, rng)
-            next_pop.append(child)
-        pop = next_pop
+    finally:
+        if executor is not None:
+            try:
+                executor.shutdown(wait=True, cancel_futures=False)
+            except TypeError:
+                # Python <3.9 doesn't support cancel_futures
+                executor.shutdown(wait=True)
 
     assert best_g is not None
     profile = _to_profile(best_g)
     # attach metadata
-    mean, std, waves = evaluate(best_g)
+    # For reporting, evaluate with the last generation seeds (matches selection)
+    mean, std, waves = evaluate(best_g, _eval_seeds_for_gen(gens))
     profile["meta"] = {
         "algo": "GA",
         "target": target,
@@ -218,6 +318,7 @@ def tune_ga(game, target: str = "humain_solide", episodes: int = 6, seed: int = 
         "max_waves": max_waves,
         "mean_waves": mean,
         "std_waves": std,
+        "seed_mode": seed_mode,
         "samples": waves,
         "best_score": best_score,
         "gen": (best_meta or {}).get("gen"),
@@ -236,7 +337,7 @@ def tune_ga(game, target: str = "humain_solide", episodes: int = 6, seed: int = 
         lines.append("# Pathforge Balance Profile\n\n")
         lines.append(f"- Algo: **GA**\n")
         lines.append(f"- Target: **{target}** (target_mean≈{target_wave})\n")
-        lines.append(f"- Episodes: **{episodes}** (fixed seeds)\n")
+        lines.append(f"- Episodes: **{episodes}** (seed_mode={seed_mode})\n")
         lines.append(f"- Max waves: **{max_waves}**\n")
         lines.append(f"- Result mean waves: **{mean:.2f}** (std={std:.2f})\n")
         lines.append(f"- Samples: `{waves}`\n")

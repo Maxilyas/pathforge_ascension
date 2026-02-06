@@ -381,31 +381,9 @@ class World:
             desc=str(d.get("desc", "") or "")
         )
 
-    # --- Wave difficulty shaping -------------------------------------------------
-    # Purpose:
-    #   * Waves 1–5: softer baseline (armor + elite shields) so run-start isn't a brick wall
-    #   * Waves 6–10: smooth transition back to baseline
-    #   * Waves 11+: ramp up more aggressively so late-game still bites
-    # These modifiers stack on top of the balance profile (eh/aa/sh, etc.).
-    def _wave_armor_add(self, wave: int) -> float:
-        w = max(1, int(wave))
-        if w <= 5:
-            return -3.0
-        if w <= 10:
-            # Fade from -3 (wave 5) back to 0 (wave 10)
-            return -3.0 * (10 - w) / 5.0
-        # Post-wave10: armor ramps slowly (flat armor is very impactful)
-        return min(6.0, 0.25 * (w - 10))
-
-    def _wave_elite_shield_mul(self, wave: int) -> float:
-        w = max(1, int(wave))
-        if w <= 5:
-            return 0.60
-        if w <= 10:
-            # Fade from 0.6 (wave 5) to 1.0 (wave 10)
-            return 0.60 + (1.00 - 0.60) * (w - 5) / 5.0
-        # Post-wave10: ramp shield harder (elite shield is less oppressive than armor early)
-        return min(1.70, 1.00 + 0.03 * (w - 10))
+    # NOTE(v4.7.1): wave-based difficulty shaping is centralized in core.difficulty.
+    # Keeping it here too would double-apply early armor/shield nerfs and make the
+    # sim diverge from the live game.
 
     def spawn_enemy(self, key: str, wave: int, gold_bonus: int = 0):
         p = self.get_path()
@@ -425,20 +403,8 @@ class World:
             except Exception:
                 pass
 
-        # Wave shaping: make early waves (1–5) more forgiving (less armor & elite shields),
-        # then scale harder after wave 10.
-        try:
-            wa = float(self._wave_armor_add(int(wave)))
-            if wa != 0.0:
-                arch = replace(arch, armor=max(0.0, float(arch.armor) + wa))
-
-            # Elite/Boss shields get a special early reduction to avoid "brick wall" elites.
-            if float(getattr(arch, "shield", 0.0)) > 0 and ("ELITE" in arch.tags or "BOSS" in arch.tags):
-                sm = float(self._wave_elite_shield_mul(int(wave)))
-                if sm != 1.0:
-                    arch = replace(arch, shield=max(0.0, float(arch.shield) * sm))
-        except Exception:
-            pass
+        # Wave scaling (HP/armor/shield tiers, caps, early easing) happens in Enemy.__post_init__
+        # via core.difficulty.
         e = Enemy(
             arch=arch, path=p, tile=self.tile, offset_x=self.offset_x, offset_y=self.offset_y,
             wave=wave, weakness_mul=self.weakness_mul, speed_mul=self.enemy_speed_mul,

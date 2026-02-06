@@ -71,7 +71,9 @@ class AutoBot:
                     return o
             return None
 
-        core_dps = pick("GATLING", "SNIPER")
+        # Core: cheap DPS + add an early anti-armor spike if available.
+        core_dps = pick("GATLING")
+        anti_armor = pick("SNIPER")
         aoe = pick("CANNON", "MORTAR")
         anti_shield = pick("TESLA")
         control = pick("CRYO", "BEACON")
@@ -80,6 +82,13 @@ class AutoBot:
         cycle: List[str] = []
         if core_dps:
             cycle += [core_dps, core_dps]
+        # v4.7.2: the WaveDirector no longer spawns TANK/ELITE in waves 1–6,
+        # but we still inject a PIERCE option early when available so the bot
+        # doesn't overfit to pure-GATLING spam.
+        # Ensure at least one PIERCE option enters the composition when unlocked,
+        # otherwise the bot underestimates armor and the GA thinks "everything dies".
+        if wave >= 2 and anti_armor:
+            cycle += [anti_armor]
         if aoe:
             cycle += [aoe]
         if wave >= 6 and anti_shield:

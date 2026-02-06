@@ -87,7 +87,11 @@ class Enemy:
         tier_hp = hp_tier(self.wave)
         tier_sh = shield_tier(self.wave)
 
-        self.max_hp = 30.0 * float(self.arch.hp) * tier_hp
+        # NOTE(v4.7.1): enemy arch.hp values in data/enemies.json are already in
+        # gameplay HP units. A previous experimental scale factor (x30) made
+        # early waves effectively impossible (e.g. SOLDIER 10hp -> 300hp).
+        # Keep wave scaling via hp_tier(), but do NOT rescale the base HP.
+        self.max_hp = float(self.arch.hp) * tier_hp
         self.hp = self.max_hp
         self.armor = float(self.arch.armor) * float(armor_multiplier(self.wave, self.arch.tags))
         self.base_armor = self.armor

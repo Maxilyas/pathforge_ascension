@@ -72,10 +72,22 @@ def run_episode(towers_db: Dict[str,Any], enemies_db: Dict[str,Any], perks_roll_
     offset_y = int(h*TOP_BAR_FRAC)
 
     rng = random.Random(seed)
-    gs = generate_grid(COLS, ROWS, biome="PLAINS", seed=seed, rock_rate=0.0)
-    world = World(gs, tile_size=tile, offset_x=offset_x, offset_y=offset_y, w=w, h=game_h, towers_db=towers_db, enemies_db=enemies_db, rng=rng)
-
     stats = CombatStats()
+    gs = generate_grid(COLS, ROWS, biome="PLAINS", seed=seed, rock_rate=0.0)
+    world = World(
+        gs,
+        tile_size=tile,
+        offset_x=offset_x,
+        offset_y=offset_y,
+        w=w,
+        h=game_h,
+        towers_db=towers_db,
+        enemies_db=enemies_db,
+        rng=rng,
+    )
+    # Align sim with in-game behavior: World.spawn_enemy reads world.stats to apply
+    # perk-driven enemy debuffs (hp/speed/armor). The live GameScene sets it.
+    world.stats = stats
     bot = AutoBot(rng)
     director = WaveDirector(rng)
 
@@ -195,8 +207,9 @@ def run_episode(towers_db: Dict[str,Any], enemies_db: Dict[str,Any], perks_roll_
                     except ValueError:
                         pass
                 elif not getattr(e, "alive", True):
-                    # reward
-                    stats.gold += int(getattr(e, "reward", 0))
+                    # reward (match GameScene): reward_gold + tile bonus
+                    gold = int(getattr(e, "reward_gold", 0)) + int(getattr(e, "tile_gold_bonus", 0))
+                    stats.gold += gold
                     try:
                         world.enemies.remove(e)
                     except ValueError:
