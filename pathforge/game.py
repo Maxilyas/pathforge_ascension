@@ -9,6 +9,7 @@ from .assets import make_fonts
 from .core.time import GameClock
 from .core.storage import SaveManager
 from .core.balance_profile import load_profile, apply_profile
+from .core.telemetry import Telemetry
 from .systems.perk_factory import extend_with_procedural, PerkPool
 from .scenes.menu import MenuScene
 from .scenes.game import GameScene
@@ -53,6 +54,16 @@ class Game:
         self.biomes = json.loads((base / "biomes.json").read_text(encoding="utf-8"))
 
         self._perk_rng = random.Random()
+
+        # --- telemetry (balancing & debug) ---
+        import os as _os
+        tel_env = str(_os.environ.get('PATHFORGE_TELEMETRY', '1')).strip().lower()
+        tel_on = tel_env not in ('0','false','no','off')
+        self.telemetry = Telemetry(enabled=tel_on)
+        try:
+            self.telemetry.start_run(seed=self._perk_rng.randint(0, 10**9), meta={'version':'v4_6_1'})
+        except Exception:
+            pass
 
         self.running = True
         self.request_save = False
@@ -133,6 +144,10 @@ class Game:
             self.scene.draw(self.screen)
             pygame.display.flip()
 
+        try:
+            self.telemetry.close()
+        except Exception:
+            pass
         pygame.quit()
 
 

@@ -67,6 +67,9 @@ class Enemy:
 
     _sapper_t: float = 0.0
 
+    # optional telemetry recorder
+    telemetry: Any = None
+
     def __post_init__(self):
         self.x, self.y = self._pos(self.path[0])
         self.cell = self.path[0]
@@ -92,9 +95,11 @@ class Enemy:
     def is_elite(self) -> bool:
         return "ELITE" in self.arch.tags
 
-    def take_damage(self, amt: float, dmg_type: str, weakness_mul: float = 1.8):
+    def take_damage(self, amt: float, dmg_type: str, weakness_mul: float = 1.8, src: str = ""):
         if not self.alive:
             return False
+
+        dmg_applied = 0.0
 
         # terrain interactions (minimal but meaningful)
         if dmg_type == "FIRE" and self.tile_v == T_PATH_CRYO:
@@ -116,9 +121,14 @@ class Enemy:
             eff = amt * sm
             if eff <= self.shield:
                 self.shield -= eff
+                dmg_applied += float(eff)
+                if self.telemetry:
+                    try: self.telemetry.damage(src or "", dmg_type, dmg_applied, crit)
+                    except Exception: pass
                 return crit
             # shield breaks; carry remainder to HP space
             eff_rem = eff - self.shield
+            dmg_applied += float(self.shield)
             self.shield = 0.0
             amt = eff_rem / max(0.01, sm)
 
@@ -140,6 +150,10 @@ class Enemy:
         amt *= rm
 
         self.hp -= amt
+        dmg_applied += float(max(0.0, amt))
+        if self.telemetry:
+            try: self.telemetry.damage(src or "", dmg_type, dmg_applied, crit)
+            except Exception: pass
         if self.hp <= 0 and self.alive:
             self.alive = False
         return crit

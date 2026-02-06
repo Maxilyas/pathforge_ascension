@@ -17,6 +17,11 @@ class PerkScene(Scene):
     def _pick(self, idx: int):
         p = self.options[idx]
         self.stats.apply_perk(p)
+        try:
+            if getattr(self.game,'telemetry',None):
+                self.game.telemetry.perk_taken(p)
+        except Exception:
+            pass
         # Recalc tower-side dynamic mods if needed (simple approach: do nothing, towers read stats on tick)
         self.request("BACK", None)
 

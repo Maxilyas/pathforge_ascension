@@ -55,7 +55,7 @@ class Spellbook:
             x,y = pos
             r = world.tile*2.4
             for e in world.query_radius(x,y,r):
-                e.take_damage(70*dmg_mul("METEOR"), "FIRE")
+                e.take_damage(70*dmg_mul("METEOR"), "FIRE", src="SPELL")
                 e.add_status("BURN", 2.5, 2, 0.0)
             world.fx_explosion(x,y,r, (255,150,80), 0.28)
 
@@ -75,7 +75,7 @@ class Spellbook:
             x,y = pos
             r = world.tile*1.8
             for e in world.query_radius(x,y,r):
-                e.take_damage(85*dmg_mul("DRONE"), "ENERGY")
+                e.take_damage(85*dmg_mul("DRONE"), "ENERGY", src="SPELL")
                 e.add_status("SHOCK", 1.2, 1, 0.0)
             world.fx_ring(x,y,r,(120,200,255),0.22)
 
@@ -87,13 +87,13 @@ class Spellbook:
                     x,y = pos
                     r = world.tile*2.0
                     for e in world.query_radius(x,y,r):
-                        e.take_damage(40*dmg_mul("METEOR"), "FIRE")
+                        e.take_damage(40*dmg_mul("METEOR"), "FIRE", src="SPELL")
                     world.fx_explosion(x,y,r,(255,180,120),0.20)
                 if key == "DRONE":
                     x,y = pos
                     r = world.tile*1.5
                     for e in world.query_radius(x,y,r):
-                        e.take_damage(50*dmg_mul("DRONE"), "ENERGY")
+                        e.take_damage(50*dmg_mul("DRONE"), "ENERGY", src="SPELL")
                     world.fx_ring(x,y,r,(160,220,255),0.18)
                 if key == "FREEZE":
                     x,y = pos

@@ -41,7 +41,9 @@ class CombatStats:
     interest: float = 0.02
 
     weakness_mul: float = 1.8
+    enemy_hp_mul: float = 1.0
     enemy_speed_mul: float = 1.0
+    enemy_armor_add: float = 0.0
     tower_cost_mul: float = 1.0
     sell_refund: float = 0.70
     overclock_dur_mul: float = 1.0
@@ -114,6 +116,10 @@ class CombatStats:
                 pass
 
         self.dmg_mul *= float(mods.get("dmg_mul", 1.0))
+        # enemy debuffs
+        self.enemy_hp_mul *= float(mods.get("enemy_hp_mul", 1.0))
+        self.enemy_speed_mul *= float(mods.get("enemy_speed_mul", 1.0))
+        self.enemy_armor_add += float(mods.get("enemy_armor_add", 0.0))
         # damage-type specialization
         dtm = mods.get("dmg_type_mul") or {}
         if isinstance(dtm, dict):
@@ -228,6 +234,10 @@ class CombatStats:
         grant = (effect.get("grant") or {})
 
         self.dmg_mul *= float(mods.get("dmg_mul", 1.0))
+        # enemy debuffs
+        self.enemy_hp_mul *= float(mods.get("enemy_hp_mul", 1.0))
+        self.enemy_speed_mul *= float(mods.get("enemy_speed_mul", 1.0))
+        self.enemy_armor_add += float(mods.get("enemy_armor_add", 0.0))
         # damage-type specialization
         dtm = mods.get("dmg_type_mul") or {}
         if isinstance(dtm, dict):

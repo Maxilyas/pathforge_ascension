@@ -202,7 +202,7 @@ class Tower:
                 return
             strength = 0.22 + float(self._branch_mods().get("slow_strength_add", 0.0)) + float(stats.tower_bonus.get("CRYO", {}).get("slow_strength_add", 0.0))
             for e in targets:
-                e.take_damage(dmg, "COLD")
+                e.take_damage(dmg, "COLD", src=self.defn.key)
                 e.add_status("SLOW", 1.0, 1, strength)
                 # optional stun
                 bm = self._branch_mods()
@@ -230,7 +230,7 @@ class Tower:
                 return
             burn_stacks = 1 + int(self._branch_mods().get("burn_stacks_add", 0)) + int(stats.tower_bonus.get("FLAME", {}).get("burn_stacks_add", 0))
             for e in targets:
-                e.take_damage(dmg, "FIRE")
+                e.take_damage(dmg, "FIRE", src=self.defn.key)
                 e.add_status("BURN", 2.2, burn_stacks, 0.0)
                 bm = self._branch_mods()
                 for k, v in (bm.get("on_hit") or {}).items():
@@ -269,7 +269,7 @@ class Tower:
                 if stats.has_flag("flag_conduct_mastery"):
                     chains += 1
             shock_dur = 1.0 + float(self._branch_mods().get("shock_dur_add", 0.0)) + float(stats.tower_bonus.get("TESLA", {}).get("shock_dur_add", 0.0))
-            first.take_damage(dmg, "ENERGY", weakness_mul=getattr(world, "weakness_mul", 1.8))
+            first.take_damage(dmg, "ENERGY", weakness_mul=getattr(world, "weakness_mul", 1.8), src=self.defn.key)
             first.add_status("SHOCK", shock_dur, 1, 0.0)
             # apply any generic on-hit statuses (perks/talents)
             on_hit = {}
@@ -292,7 +292,7 @@ class Tower:
                     break
                 nxt = min(near, key=lambda e: (e.x-curr.x)**2+(e.y-curr.y)**2)
                 used_ids.add(id(nxt))
-                nxt.take_damage(dmg*0.72, "ENERGY", weakness_mul=getattr(world, "weakness_mul", 1.8))
+                nxt.take_damage(dmg*0.72, "ENERGY", weakness_mul=getattr(world, "weakness_mul", 1.8), src=self.defn.key)
                 nxt.add_status("SHOCK", shock_dur, 1, 0.0)
                 world.fx_arc(curr.x, curr.y, nxt.x, nxt.y, (100,200,255), 0.12)
                 curr = nxt

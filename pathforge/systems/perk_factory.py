@@ -123,6 +123,32 @@ def _resolve_roll(defn: Dict[str, Any], rng: random.Random) -> Dict[str, Any]:
         p["name"] = f"{p.get('name','Portée')} +{_fmt_pct(val)}"
         p["rolled"] = {"range_mul_add": val}
 
+    
+    elif kind == "enemy_hp_down":
+        # reduce enemy hp multiplier (applied on spawn)
+        lo, hi = RANGE_BY_RARITY.get(rarity, (0.06, 0.12))
+        # stronger effect than dmg_mul: early survival lever
+        lo *= 0.90
+        hi *= 1.35
+        val = rng.uniform(lo, hi)
+        mods["enemy_hp_mul"] = float(1.0 - val)
+        p["name"] = f"Ennemis -{_fmt_pct(val)} PV"
+        p["rolled"] = {"enemy_hp_down": val}
+    elif kind == "enemy_speed_down":
+        lo, hi = RANGE_BY_RARITY.get(rarity, (0.05, 0.10))
+        lo *= 0.80
+        hi *= 1.20
+        val = rng.uniform(lo, hi)
+        mods["enemy_speed_mul"] = float(1.0 - val)
+        p["name"] = f"Ennemis -{_fmt_pct(val)} Vitesse"
+        p["rolled"] = {"enemy_speed_down": val}
+    elif kind == "enemy_armor_down":
+        # integer armor reduction
+        base = {"C":1,"R":2,"E":3,"L":4,"SS+":6,"SS++":8,"SSS":10,"Ω":14}.get(rarity, 2)
+        val = int(rng.randint(base, max(base, base+2)))
+        mods["enemy_armor_add"] = float(-val)
+        p["name"] = f"Armure ennemie -{val}"
+        p["rolled"] = {"enemy_armor_down": val}
     elif kind == "gold_per_kill":
         lo, hi = GPK_BY_RARITY.get(rarity, (1, 2))
         val = rng.randint(int(lo), int(hi))
@@ -294,5 +320,13 @@ def extend_with_procedural(perks_db: List[Dict[str, Any]], towers_db: Dict[str, 
     # reroll economy variants
     out.append({"id":"SSS_REROLL_1", "name":"Forge du Destin • +1 reroll", "rarity":"SSS", "tags":["UNIQUE","PERK"], "mods":{"perk_rerolls_add":1}})
     out.append({"id":"L_REROLL_1", "name":"Reroll • +1", "rarity":"L", "tags":["PERK"], "mods":{"perk_rerolls_add":1}})
+
+    
+    # --- enemy debuffs (rare but very impactful) ---
+    for r in RARITIES:
+        for i, nm in enumerate(["Sabotage","Désossage","Affaiblissement","Inversion","Démantèlement","Contamination"]):
+            out.append({"id":f"GEN_EHP_{r}_{i}", "name":f"{nm} (PV ennemis)", "rarity":r, "tags":["CONTROL","DIFFICULTY"], "roll":{"kind":"enemy_hp_down"}})
+            out.append({"id":f"GEN_ESPD_{r}_{i}", "name":f"{nm} (Vitesse ennemis)", "rarity":r, "tags":["CONTROL"], "roll":{"kind":"enemy_speed_down"}})
+            out.append({"id":f"GEN_EARM_{r}_{i}", "name":f"{nm} (Armure ennemie)", "rarity":r, "tags":["ANTI_ARMOR"], "roll":{"kind":"enemy_armor_down"}})
 
     return out

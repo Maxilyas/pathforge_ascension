@@ -386,6 +386,14 @@ class GameScene(Scene):
             self.wave_queue.insert(0,"BOSS")
         self.rng.shuffle(self.wave_queue)
 
+        # telemetry
+        try:
+            self.stats._telemetry_towers = len(self.world.towers)
+            if getattr(self.game, 'telemetry', None):
+                self.game.telemetry.wave_start(self.stats.wave, bool(self.plan.boss), int(self.wave_multi), self.stats)
+        except Exception:
+            pass
+
     def _end_wave(self):
         base = 85 + int(self.stats.wave*7)
         relic_bonus = 1 + int(0.20*(self.plan.relics_in_path))
@@ -593,7 +601,17 @@ class GameScene(Scene):
                     cost = self.selected_tower.upgrade_cost()
                     if self.stats.gold >= cost:
                         self.stats.gold -= cost
+                        try:
+                            if getattr(self.game,'telemetry',None):
+                                self.game.telemetry.tower_placed(self.selected_tower_key)
+                        except Exception:
+                            pass
                         self.selected_tower.upgrade()
+                        try:
+                            if getattr(self.game,'telemetry',None):
+                                self.game.telemetry.tower_upgraded(self.selected_tower.defn.key)
+                        except Exception:
+                            pass
                     else:
                         self.world.fx_text(panel.x+30, panel.y+10, "Or insuffisant!", (255,120,120), 0.9)
                     return
@@ -645,6 +663,11 @@ class GameScene(Scene):
                     t = self.world.add_tower(gx,gy,self.selected_tower_key, allow_on_rock=allow_rock)
                     if t:
                         self.stats.gold -= cost
+                        try:
+                            if getattr(self.game,'telemetry',None):
+                                self.game.telemetry.tower_placed(self.selected_tower_key)
+                        except Exception:
+                            pass
                     else:
                         # restore if failed
                         if allow_rock and v == T_ROCK:

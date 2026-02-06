@@ -6,8 +6,8 @@
     "cost_mul": 1.0
   },
   "enemy": {
-    "hp_mul": 0.1,
-    "armor_add": -10,
+    "hp_mul": 1.0,
+    "armor_add": 0,
     "speed_mul": 1.0,
     "regen_mul": 1.0,
     "shield_mul": 1.0

@@ -34,13 +34,15 @@ class AutoBot:
         x1, y1 = end
         left = min(x0, x1)
         right = max(x0, x1)
-        top = 1
-        bot = rows-2
+        # keep the snake in a corridor around start/end y (avoids wasting steps)
+        top = max(1, min(y0, y1) - 3)
+        bot = min(rows-2, max(y0, y1) + 3)
 
         # We'll snake across the rectangle from left to right, then down, then right to left, etc,
         # ensuring we end near the end coord.
         path: List[Coord] = [start]
         x, y = start
+        y = max(top, min(y, bot))
         direction = 1  # 1 -> right, -1 -> left
         # reserve some steps to connect to end cleanly
         budget = max(0, max_len - 6)

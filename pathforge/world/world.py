@@ -1,4 +1,5 @@
 from __future__ import annotations
+from dataclasses import replace
 from typing import List, Tuple, Optional, Dict, Any
 import pygame, math, random
 
@@ -385,6 +386,18 @@ class World:
         if not p:
             return None
         arch = self._enemy_arch(key)
+
+        # apply spawn-time debuffs from perks (if world.stats is set by scene)
+        st = getattr(self, "stats", None)
+        if st is not None:
+            try:
+                eh = float(getattr(st, "enemy_hp_mul", 1.0))
+                es = float(getattr(st, "enemy_speed_mul", 1.0))
+                ea = float(getattr(st, "enemy_armor_add", 0.0))
+                if eh != 1.0 or es != 1.0 or ea != 0.0:
+                    arch = replace(arch, hp=float(arch.hp)*eh, spd=float(arch.spd)*es, armor=float(arch.armor)+ea)
+            except Exception:
+                pass
         e = Enemy(
             arch=arch, path=p, tile=self.tile, offset_x=self.offset_x, offset_y=self.offset_y,
             wave=wave, weakness_mul=self.weakness_mul, speed_mul=self.enemy_speed_mul,
@@ -397,6 +410,16 @@ class World:
         # idx as progress proxy (closer to end => higher)
         dmap = self.get_distmap()
         e.idx = -int(dmap.get(e.cell, 9999))
+        # attach telemetry
+        try:
+            e.telemetry = getattr(self, 'telemetry', None)
+        except Exception:
+            pass
+        try:
+            if getattr(self, 'telemetry', None):
+                self.telemetry.enemy_spawned(key)
+        except Exception:
+            pass
         self.enemies.append(e)
         return e
 
