@@ -406,9 +406,14 @@ class GameScene(Scene):
         # pave regeneration (forge essence): makes path placement a real resource
         self.stats.paves = min(int(getattr(self.stats, 'paves_cap', 80)), int(self.stats.paves + 1 + min(2, self.plan.relics_in_path//2) + (3 if self.plan.boss else 0)))
 
-        # boss => +1 talent point
+        # Talent points: +1 every 5 waves, plus +1 bonus on boss waves (killed)
+        gained = 0
+        if self.stats.wave % 5 == 0:
+            gained += 1
         if self.plan.boss:
-            self.stats.talent_pts += 1
+            gained += 1
+        if gained:
+            self.stats.talent_pts += gained
 
         # save
         self.game.request_save = True

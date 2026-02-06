@@ -16,25 +16,50 @@ def tune(game, target: str = "humain_solide", episodes: int = 6, seed: int = 123
     """
     rng = random.Random(seed)
     log_level = int(os.environ.get("PATHFORGE_BALANCE_LOG", "1"))
+    # keep sim logs aligned with the tuner verbosity
+    os.environ.setdefault("PATHFORGE_BALANCE_TRACE", str(log_level))
     exhaustive = str(os.environ.get("PATHFORGE_BALANCE_EXHAUSTIVE", "0")).strip().lower() in ("1","true","yes","on")
     sample_n = int(os.environ.get("PATHFORGE_BALANCE_SAMPLES", "28"))
     max_waves = int(os.environ.get("PATHFORGE_BALANCE_MAX_WAVES", "25"))
 
     # desired mean cleared waves
-    target_wave = 12 if target == "humain_solide" else 8
+    target_wave = 20 if target == "humain_solide" else 12
 
-    # search space (grid)
-    tower_dmg_opts = [0.85, 0.90, 0.95, 1.00, 1.05]
-    enemy_hp_opts = [1.00, 1.10, 1.25, 1.40, 1.60]
-    enemy_armor_opts = [0, 2, 4, 6]
-
-    combos = [(td, eh, aa) for td in tower_dmg_opts for eh in enemy_hp_opts for aa in enemy_armor_opts]
-    if not exhaustive:
-        # deterministic sampling
-        rng.shuffle(combos)
-        combos = combos[:min(sample_n, len(combos))]
-
-    if log_level:
+    # search space
+    # We explore a wider space than the initial coarse grid so the tuner can both ease or harden the game.
+    # When not exhaustive, we sample continuously (faster, more diverse).
+    if exhaustive:
+        tower_dmg_opts = [0.70, 0.80, 0.90, 1.00, 1.10, 1.20]
+        tower_rate_opts = [0.80, 0.90, 1.00, 1.10, 1.20]
+        tower_cost_opts = [0.90, 1.00, 1.10]
+        enemy_hp_opts = [0.50, 0.70, 0.85, 1.00, 1.20, 1.40, 1.70]
+        enemy_armor_opts = [-4, -2, 0, 2, 4, 6, 8]
+        enemy_speed_opts = [0.85, 0.95, 1.00, 1.10, 1.20]
+        enemy_regen_opts = [0.50, 0.80, 1.00, 1.20]
+        enemy_shield_opts = [0.70, 1.00, 1.30]
+        combos = [
+            (td, tr, tc, eh, aa, es, er, sh)
+            for td in tower_dmg_opts
+            for tr in tower_rate_opts
+            for tc in tower_cost_opts
+            for eh in enemy_hp_opts
+            for aa in enemy_armor_opts
+            for es in enemy_speed_opts
+            for er in enemy_regen_opts
+            for sh in enemy_shield_opts
+        ]
+    else:
+        combos = []
+        for _ in range(max(1, sample_n)):
+            td = rng.uniform(0.70, 1.30)
+            tr = rng.uniform(0.80, 1.25)
+            tc = rng.uniform(0.90, 1.15)
+            eh = rng.uniform(0.50, 1.80)
+            aa = rng.randint(-6, 10)
+            es = rng.uniform(0.85, 1.25)
+            er = rng.uniform(0.50, 1.30)
+            sh = rng.uniform(0.70, 1.40)
+            combos.append((td, tr, tc, eh, aa, es, er, sh))
         mode = "EXHAUSTIVE" if exhaustive else f"SAMPLED({len(combos)})"
         print(f"[BAL] tune target={target} target_mean≈{target_wave} episodes={episodes} max_waves={max_waves} mode={mode}")
 
@@ -54,14 +79,14 @@ def tune(game, target: str = "humain_solide", episodes: int = 6, seed: int = 123
         cand = [x for x in cand if lo <= x <= hi] + [lo, hi]
         return min(score_mean(x) for x in cand)
 
-    for i, (td, eh, aa) in enumerate(combos, start=1):
+    for i, (td, tr, tc, eh, aa, es, er, sh) in enumerate(combos, start=1):
         t0 = __import__("time").time()
         if log_level:
-            print(f"[BAL] [{i:03d}/{len(combos):03d}] td={td:.2f} eh={eh:.2f} aa={aa} ...", flush=True)
+            print(f"[BAL] [{i:03d}/{len(combos):03d}] td={td:.2f} tr={tr:.2f} tc={tc:.2f} eh={eh:.2f} aa={aa} es={es:.2f} er={er:.2f} sh={sh:.2f} ...", flush=True)
 
         profile = {
-            "tower": {"damage_mul": td, "rate_mul": 1.0, "range_mul": 1.0, "cost_mul": 1.0},
-            "enemy": {"hp_mul": eh, "armor_add": aa, "speed_mul": 1.0, "regen_mul": 1.0, "shield_mul": 1.0},
+            "tower": {"damage_mul": td, "rate_mul": tr, "range_mul": 1.0, "cost_mul": tc},
+            "enemy": {"hp_mul": eh, "armor_add": aa, "speed_mul": es, "regen_mul": er, "shield_mul": sh},
         }
 
         # create copies of dbs
@@ -101,7 +126,7 @@ def tune(game, target: str = "humain_solide", episodes: int = 6, seed: int = 123
             best_score = sc
             best = (profile, mean, waves)
             if log_level:
-                print(f"[BAL] NEW BEST score={best_score:.3f} mean={mean:.2f} td={td:.2f} eh={eh:.2f} aa={aa}", flush=True)
+                print(f"[BAL] NEW BEST score={best_score:.3f} mean={mean:.2f} td={td:.2f} tr={tr:.2f} tc={tc:.2f} eh={eh:.2f} aa={aa} es={es:.2f} er={er:.2f} sh={sh:.2f}", flush=True)
 
     assert best is not None
     profile, mean, waves = best
@@ -110,6 +135,35 @@ def tune(game, target: str = "humain_solide", episodes: int = 6, seed: int = 123
     os.makedirs(os.path.dirname(PROFILE_FILE), exist_ok=True)
     with open(PROFILE_FILE, "w", encoding="utf-8") as f:
         json.dump(profile, f, indent=2)
+    # write a human-readable summary alongside the json
+    try:
+        md_path = PROFILE_FILE.replace(".json", ".md")
+        lines = []
+        lines.append("# Pathforge Balance Profile\n")
+        lines.append(f"- Target: **{target}** (target_mean≈{target_wave})\n")
+        lines.append(f"- Episodes: **{episodes}**\n")
+        lines.append(f"- Max waves: **{max_waves}**\n")
+        lines.append(f"- Result mean waves: **{mean:.2f}**\n")
+        lines.append(f"- Samples: `{waves}`\n")
+        lines.append("\n## Multipliers\n")
+        lines.append("### Towers\n")
+        lines.append(f"- damage_mul: `{profile['tower'].get('damage_mul')}`\n")
+        lines.append(f"- rate_mul: `{profile['tower'].get('rate_mul')}`\n")
+        lines.append(f"- range_mul: `{profile['tower'].get('range_mul')}`\n")
+        lines.append(f"- cost_mul: `{profile['tower'].get('cost_mul')}`\n")
+        lines.append("\n### Enemies\n")
+        lines.append(f"- hp_mul: `{profile['enemy'].get('hp_mul')}`\n")
+        lines.append(f"- armor_add: `{profile['enemy'].get('armor_add')}`\n")
+        lines.append(f"- speed_mul: `{profile['enemy'].get('speed_mul')}`\n")
+        lines.append(f"- regen_mul: `{profile['enemy'].get('regen_mul')}`\n")
+        lines.append(f"- shield_mul: `{profile['enemy'].get('shield_mul')}`\n")
+        with open(md_path, "w", encoding="utf-8") as mf:
+            mf.write("".join(lines))
+        if log_level:
+            print(f"[BAL] wrote summary {md_path}", flush=True)
+    except Exception:
+        pass
+
 
     return profile
 

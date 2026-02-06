@@ -61,7 +61,7 @@ class Game:
         tel_on = tel_env not in ('0','false','no','off')
         self.telemetry = Telemetry(enabled=tel_on)
         try:
-            self.telemetry.start_run(seed=self._perk_rng.randint(0, 10**9), meta={'version':'v4_6_1'})
+            self.telemetry.start_run(seed=self._perk_rng.randint(0, 10**9), meta={'version':'v4_6_4_0'})
         except Exception:
             pass
 

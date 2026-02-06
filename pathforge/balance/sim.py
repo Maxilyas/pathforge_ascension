@@ -6,6 +6,8 @@ TRACE = int(os.environ.get('PATHFORGE_BALANCE_TRACE','0'))
 from dataclasses import dataclass
 from typing import Dict, Any, Optional
 
+from ..systems.wave_director import WaveDirector
+
 # Force dummy video driver for pygame headless runs
 os.environ.setdefault("SDL_VIDEODRIVER", "dummy")
 
@@ -58,6 +60,8 @@ def _make_wave_plan(enemies_db: Dict[str,Any], wave:int, rng: random.Random) -> 
     return plan
 
 def run_episode(towers_db: Dict[str,Any], enemies_db: Dict[str,Any], perks_roll_fn, seed:int=0, max_waves:int=35) -> EpisodeResult:
+    global TRACE
+    TRACE = int(os.environ.get("PATHFORGE_BALANCE_TRACE", str(TRACE)))
     pygame.init()
     pygame.display.set_mode((1,1))
 
@@ -73,6 +77,7 @@ def run_episode(towers_db: Dict[str,Any], enemies_db: Dict[str,Any], perks_roll_
 
     stats = CombatStats()
     bot = AutoBot(rng)
+    director = WaveDirector(rng)
 
     # Spend starting talent points (may unlock towers/paths)
     try:
@@ -134,6 +139,16 @@ def run_episode(towers_db: Dict[str,Any], enemies_db: Dict[str,Any], perks_roll_
     for wave in range(1, max_waves+1):
         if TRACE:
             print(f"[SIM] seed={seed} wave={wave} start gold={stats.gold} lives={stats.lives} paves={getattr(stats,'paves',0)} towers={len(world.towers)}")
+            if TRACE >= 2:
+                try:
+                    ts = []
+                    for t in world.towers[:12]:
+                        br = getattr(t, "branch", None)
+                        ts.append(f"{t.key}@{t.gx},{t.gy} L{t.level}{('/'+br) if br else ''}")
+                    if ts:
+                        print(f"[SIM] seed={seed} towers: " + ", ".join(ts))
+                except Exception:
+                    pass
         lives_before = int(stats.lives)
         # periodic upgrades/build
         multi = bot.choose_wave_multi(stats, wave, last_lives_lost)
@@ -142,9 +157,15 @@ def run_episode(towers_db: Dict[str,Any], enemies_db: Dict[str,Any], perks_roll_
 
         # spawn plan (supports assault multi)
         queue: list[tuple[str,int]] = []
+        # estimate relics in the built path (affects keywords / boss escorts)
+        path_cells = world.get_path() or []
+        relic_set = set(getattr(gs, "relics", []) or [])
+        relics_in_path = sum(1 for c in path_cells if c in relic_set)
+
         for i in range(max(1, int(multi))):
             wv = int(wave + i)
-            for k in _make_wave_plan(enemies_db, wv, rng):
+            plan = director.plan(wv, relics_in_path=relics_in_path, ascension=0)
+            for k in director.spawn_list(plan):
                 queue.append((k, wv))
         rng.shuffle(queue)
         spawn_cd = 0.0
@@ -203,11 +224,22 @@ def run_episode(towers_db: Dict[str,Any], enemies_db: Dict[str,Any], perks_roll_
         multi_reward = 1.0 + 0.55*max(0, int(multi)-1)
         stats.gold += int(base * multi_reward)
         stats.end_wave_income(0)
-        # boss => +1 talent point
+        # Talent points: +1 every 5 waves, plus +1 bonus on boss waves (killed)
+        gained = 0
+        if wave % 5 == 0:
+            gained += 1
         if wave % 10 == 0:
-            stats.talent_pts += 1
+            gained += 1
+        if gained:
+            stats.talent_pts += gained
             try:
+                before = set(getattr(stats, "talent_nodes", set()) or set())
                 bot.spend_talents(stats, wave=wave)
+                after = set(getattr(stats, "talent_nodes", set()) or set())
+                if TRACE >= 2:
+                    bought = sorted(list(after - before))
+                    if bought:
+                        print(f"[SIM] seed={seed} talents+{gained} bought={bought}")
             except Exception:
                 pass
 
@@ -216,7 +248,13 @@ def run_episode(towers_db: Dict[str,Any], enemies_db: Dict[str,Any], perks_roll_
         bias = min(0.85, max(0.0, bias))
         options = perks_roll_fn(3, rarity_bias=bias)
         pick = bot.choose_perk(options, wave=wave)
-        stats.apply_perk(options[pick])
+        chosen = options[pick]
+        stats.apply_perk(chosen)
+        if TRACE >= 2:
+            try:
+                print(f"[SIM] seed={seed} perk={chosen.get('name', chosen.get('id'))} rarity={chosen.get('rarity')} mods={chosen.get('mods',{})} grants={chosen.get('grants',{})}")
+            except Exception:
+                pass
         # if perk granted talent points, spend them
         try:
             bot.spend_talents(stats, wave=wave)
